@@ -1,15 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 
 namespace CoronaTracker.Core
@@ -27,9 +20,19 @@ namespace CoronaTracker.Core
         {
 
             services.AddControllers();
-            services.AddSwaggerGen(c =>
+
+
+
+            services.AddSwaggerGen(options =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "CoronaTracker.Core", Version = "v1" });
+                var openApiInfo = new OpenApiInfo
+                {
+                    Title = "CoronaTracker.Core",
+                    Version = "v1"
+                };
+                options.SwaggerDoc(
+                    name: "v1",
+                    info: openApiInfo);
             });
         }
 
@@ -39,7 +42,12 @@ namespace CoronaTracker.Core
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "CoronaTracker.Core v1"));
+                app.UseSwaggerUI(options =>
+                 {
+                     options.SwaggerEndpoint(
+                        url: "/swagger/v1/swagger.json",
+                        name: "CoronaTracker.Core v1");
+                 });
             }
 
             app.UseHttpsRedirection();
@@ -48,10 +56,7 @@ namespace CoronaTracker.Core
 
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+            app.UseEndpoints(endpoints => endpoints.MapControllers());
         }
     }
 }
