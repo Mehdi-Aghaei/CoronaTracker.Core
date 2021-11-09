@@ -1,3 +1,4 @@
+using CoronaTracker.Core.Brokers.APIs;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -18,8 +19,10 @@ namespace CoronaTracker.Core
 
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddControllers();
+            services.AddHttpClient();
+
+            services.AddTransient<IApiBroker, ApiBroker>();
 
 
 
