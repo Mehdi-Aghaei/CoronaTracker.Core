@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CoronaTracker.Core.Models.ExternalCountries;
 using CoronaTracker.Core.Models.ExternalCountries.Exceptions;
+using CoronaTrackerHungary.Web.Api.Models.Countries.Exceptions;
 using Moq;
 using Xunit;
 
@@ -88,5 +89,41 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.ExternalCountries
             this.loggingBrokerMock.VerifyNoOtherCalls();
         }
 
+        [Fact]
+        public async Task ShouldThrowServiceExceptionOnRetrieveAllIfServiceErrorOccursAndLogItAsync()
+        {
+            // given
+            var serviceException = new Exception();
+
+            var failedExternalCountryServiceException =
+                new FailedExternalCountryServiceException(serviceException);
+
+            var expectedExternalCountryServiceException =
+                new ExternalCountryServiceException(failedExternalCountryServiceException);
+
+            this.apiBrokerMock.Setup(broker =>
+                broker.GetAllCountriesAsync())
+                    .ThrowsAsync(serviceException);
+
+            // when
+            ValueTask<List<ExternalCountry>> getAllExternalCountriesTask =
+                this.externalCountryService.RetrieveAllCountriesAsync();
+
+            // then
+            await Assert.ThrowsAsync<ExternalCountryServiceException>(() =>
+                getAllExternalCountriesTask.AsTask());
+
+            this.apiBrokerMock.Verify(broker =>
+                broker.GetAllCountriesAsync(),
+                    Times.Once());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedExternalCountryServiceException))),
+                        Times.Once);
+
+            this.apiBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
