@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using CoronaTracker.Core.Brokers.APIs;
 using CoronaTracker.Core.Brokers.Loggings;
-using CoronaTracker.Core.Models.Countries;
+using CoronaTracker.Core.Models.ExternalCountries;
 
 namespace CoronaTracker.Core.Services.Foundations.ExternalCountries
 {
@@ -17,7 +17,7 @@ namespace CoronaTracker.Core.Services.Foundations.ExternalCountries
             this.loggingBroker = loggingBroker;
         }
 
-        public async ValueTask<List<Country>> RetrieveAllCountriesAsync() =>
+        public async ValueTask<List<ExternalCountry>> RetrieveAllCountriesAsync() =>
             await this.apiBroker.GetAllCountriesAsync();
     }
 }

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CoronaTracker.Core.Brokers.APIs;
 using CoronaTracker.Core.Brokers.Loggings;
-using CoronaTracker.Core.Models.Countries;
+using CoronaTracker.Core.Models.ExternalCountries;
 using CoronaTracker.Core.Services.Foundations.ExternalCountries;
 using Moq;
 using Tynamix.ObjectFiller;
@@ -28,7 +28,7 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.ExternalCountries
                loggingBroker: this.loggingBrokerMock.Object);
         }
 
-        private static List<Country> CreateRandomExternalCountries() =>
+        private static List<ExternalCountry> CreateRandomExternalCountries() =>
             CreateExternalCountryFiller().Create(count:GetRandomNumber()).ToList();
 
         private static int GetRandomNumber() =>
@@ -37,9 +37,9 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.ExternalCountries
         private static DateTimeOffset GetRandomDateTimeOffset() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
-        private static Filler<Country> CreateExternalCountryFiller()
+        private static Filler<ExternalCountry> CreateExternalCountryFiller()
         {
-            var filler= new Filler<Country>();
+            var filler= new Filler<ExternalCountry>();
 
             filler.Setup()
                 .OnType<DateTimeOffset>().Use(GetRandomDateTimeOffset());

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using CoronaTracker.Core.Models.Countries;
+using CoronaTracker.Core.Models.ExternalCountries;
 using FluentAssertions;
 using Force.DeepCloner;
 using Moq;
@@ -17,16 +17,16 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.ExternalCountries
         public async Task ShouldRetrieveAllExternalCountriesAsync()
         {
             // given
-            List<Country> randomCountries = CreateRandomExternalCountries();
-            List<Country> apiCountries = randomCountries;
-            List<Country> expectedExternalCountries = apiCountries.DeepClone();
+            List<ExternalCountry> randomCountries = CreateRandomExternalCountries();
+            List<ExternalCountry> apiCountries = randomCountries;
+            List <ExternalCountry> expectedExternalCountries = apiCountries.DeepClone();
 
             this.apiBrokerMock.Setup(broker =>
                 broker.GetAllCountriesAsync())
                     .ReturnsAsync(apiCountries);
 
             // when
-            List<Country> retrievedCountries =
+            List<ExternalCountry> retrievedCountries =
                 await this.externalCountryService.RetrieveAllCountriesAsync();
 
             // then
