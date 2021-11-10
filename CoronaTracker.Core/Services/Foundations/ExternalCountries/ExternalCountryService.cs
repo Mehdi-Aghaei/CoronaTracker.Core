@@ -18,6 +18,6 @@ namespace CoronaTracker.Core.Services.Foundations.ExternalCountries
         }
 
         public ValueTask<List<ExternalCountry>> RetrieveAllCountriesAsync() =>
-        TryCatch(async () => await this.apiBroker.GetAllCountriesAsync()); 
+        TryCatch(async () => await this.apiBroker.GetAllCountriesAsync());
     }
 }

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using CoronaTracker.Core.Models.ExternalCountries;
 using FluentAssertions;
@@ -19,7 +16,7 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.ExternalCountries
             // given
             List<ExternalCountry> randomCountries = CreateRandomExternalCountries();
             List<ExternalCountry> apiCountries = randomCountries;
-            List <ExternalCountry> expectedExternalCountries = apiCountries.DeepClone();
+            List<ExternalCountry> expectedExternalCountries = apiCountries.DeepClone();
 
             this.apiBrokerMock.Setup(broker =>
                 broker.GetAllCountriesAsync())
@@ -33,7 +30,7 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.ExternalCountries
             retrievedCountries.Should().BeEquivalentTo(expectedExternalCountries);
 
             this.apiBrokerMock.Verify(broker =>
-                broker.GetAllCountriesAsync(), 
+                broker.GetAllCountriesAsync(),
                     Times.Once());
 
             this.apiBrokerMock.VerifyNoOtherCalls();

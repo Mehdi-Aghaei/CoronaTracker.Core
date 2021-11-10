@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
 using CoronaTracker.Core.Brokers.APIs;
 using CoronaTracker.Core.Brokers.Loggings;
 using CoronaTracker.Core.Models.ExternalCountries;
@@ -90,7 +88,7 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.ExternalCountries
         }
 
         private static List<ExternalCountry> CreateRandomExternalCountries() =>
-            CreateExternalCountryFiller().Create(count:GetRandomNumber()).ToList();
+            CreateExternalCountryFiller().Create(count: GetRandomNumber()).ToList();
 
         private static string GetRandomString() =>
             new MnemonicString().GetValue();
@@ -103,7 +101,7 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.ExternalCountries
 
         private static Filler<ExternalCountry> CreateExternalCountryFiller()
         {
-            var filler= new Filler<ExternalCountry>();
+            var filler = new Filler<ExternalCountry>();
 
             filler.Setup()
                 .OnType<DateTimeOffset>().Use(GetRandomDateTimeOffset());
