@@ -6,7 +6,7 @@ using CoronaTracker.Core.Models.ExternalCountries;
 
 namespace CoronaTracker.Core.Services.Foundations.ExternalCountries
 {
-    public class ExternalCountryService : IExternalCountryService
+    public partial class ExternalCountryService : IExternalCountryService
     {
         private readonly IApiBroker apiBroker;
         private readonly ILoggingBroker loggingBroker;
@@ -17,7 +17,7 @@ namespace CoronaTracker.Core.Services.Foundations.ExternalCountries
             this.loggingBroker = loggingBroker;
         }
 
-        public async ValueTask<List<ExternalCountry>> RetrieveAllCountriesAsync() =>
-            await this.apiBroker.GetAllCountriesAsync();
+        public ValueTask<List<ExternalCountry>> RetrieveAllCountriesAsync() =>
+        TryCatch(async () => await this.apiBroker.GetAllCountriesAsync()); 
     }
 }
