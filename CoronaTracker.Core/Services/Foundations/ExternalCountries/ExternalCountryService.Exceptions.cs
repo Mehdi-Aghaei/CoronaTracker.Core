@@ -20,35 +20,60 @@ namespace CoronaTracker.Core.Services.Foundations.ExternalCountries
             }
             catch (HttpRequestException httpRequestException)
             {
-                var failedCountryDependencyException =
+                var failedExternalCountryDependencyException =
                     new FailedExternalCountryDependencyException(httpRequestException);
 
-                throw CreateAndLogCriticalDependencyException(failedCountryDependencyException);
+                throw CreateAndLogCriticalDependencyException(failedExternalCountryDependencyException);
             }
             catch (HttpResponseUrlNotFoundException httpResponseUrlNotFoundException)
             {
-                var failedCountryDependencyException =
+                var failedExternalCountryDependencyException =
                     new FailedExternalCountryDependencyException(httpResponseUrlNotFoundException);
 
-                throw CreateAndLogCriticalDependencyException(failedCountryDependencyException);
+                throw CreateAndLogCriticalDependencyException(failedExternalCountryDependencyException);
             }
             catch (HttpResponseUnauthorizedException httpResponseUnauthorizedException)
             {
-                var failedCountryDependencyExcpetion =
+                var failedExternalCountryDependencyExcpetion =
                     new FailedExternalCountryDependencyException(httpResponseUnauthorizedException);
 
-                throw CreateAndLogCriticalDependencyException(failedCountryDependencyExcpetion);
+                throw CreateAndLogCriticalDependencyException(failedExternalCountryDependencyExcpetion);
+            }
+            catch (HttpResponseInternalServerErrorException httpResponseInternalServerErrorException)
+            {
+                var failedExternalCountryDependencyException =
+                    new FailedExternalCountryDependencyException(httpResponseInternalServerErrorException);
+
+                throw CreateAndLogDependencyException(failedExternalCountryDependencyException);
+
+            }
+            catch (HttpResponseException httpResponseException)
+            {
+                var failedExternalCountryDependencyException =
+                    new FailedExternalCountryDependencyException(httpResponseException);
+
+                throw CreateAndLogDependencyException(failedExternalCountryDependencyException);
             }
         }
 
         private ExternalCountryDependencyException CreateAndLogCriticalDependencyException(Xeption exception)
         {
-            var countryDependencyException =
+            var externalCountryDependencyException =
                 new ExternalCountryDependencyException(exception);
 
-            this.loggingBroker.LogCritical(countryDependencyException);
+            this.loggingBroker.LogCritical(externalCountryDependencyException);
 
-            return countryDependencyException;
+            return externalCountryDependencyException;
+        }
+
+        private ExternalCountryDependencyException CreateAndLogDependencyException(Xeption exception)
+        {
+            var externalCountryDependencyException =
+                new ExternalCountryDependencyException(exception);
+
+            this.loggingBroker.LogError(externalCountryDependencyException);
+
+            return externalCountryDependencyException;
         }
     }
 }
