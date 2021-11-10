@@ -17,9 +17,7 @@ namespace CoronaTracker.Core.Services.Foundations.ExternalCountries
             this.loggingBroker = loggingBroker;
         }
 
-        public ValueTask<List<Country>> RetrieveAllCountriesAsync()
-        {
-            throw new System.NotImplementedException();
-        }
+        public async ValueTask<List<Country>> RetrieveAllCountriesAsync() =>
+            await this.apiBroker.GetAllCountriesAsync();
     }
 }
