@@ -1,5 +1,6 @@
 using CoronaTracker.Core.Brokers.APIs;
 using CoronaTracker.Core.Brokers.Loggings;
+using CoronaTracker.Core.Services.Foundations.ExternalCountries;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -26,6 +27,8 @@ namespace CoronaTracker.Core
 
             services.AddTransient<IApiBroker, ApiBroker>();
             services.AddTransient<ILoggingBroker, LoggingBroker>();
+
+            services.AddTransient<IExternalCountryService, ExternalCountryService>();
 
 
             services.AddSwaggerGen(options =>
