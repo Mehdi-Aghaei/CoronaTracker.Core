@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using CoronaTracker.Core.Models.ExternalCountries;
 using CoronaTracker.Core.Models.ExternalCountries.Exceptions;
+using CoronaTrackerHungary.Web.Api.Models.Countries.Exceptions;
 using RESTFulSense.Exceptions;
 using Xeptions;
 
@@ -54,6 +56,13 @@ namespace CoronaTracker.Core.Services.Foundations.ExternalCountries
 
                 throw CreateAndLogDependencyException(failedExternalCountryDependencyException);
             }
+            catch (Exception serviceException)
+            {
+                var failedExternalCountryServiceException =
+                    new FailedExternalCountryServiceException(serviceException);
+
+                throw CreateAndLogServiceException(failedExternalCountryServiceException);
+            }
         }
 
         private ExternalCountryDependencyException CreateAndLogCriticalDependencyException(Xeption exception)
@@ -74,6 +83,16 @@ namespace CoronaTracker.Core.Services.Foundations.ExternalCountries
             this.loggingBroker.LogError(externalCountryDependencyException);
 
             return externalCountryDependencyException;
+        }
+
+        private ExternalCountryServiceException CreateAndLogServiceException(Exception exception)
+        {
+            var externalCountryServiceException =
+                new ExternalCountryServiceException(exception);
+
+            this.loggingBroker.LogError(externalCountryServiceException);
+
+            return externalCountryServiceException;
         }
     }
 }
