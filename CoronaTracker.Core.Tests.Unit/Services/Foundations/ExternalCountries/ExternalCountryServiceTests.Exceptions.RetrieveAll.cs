@@ -51,5 +51,42 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.ExternalCountries
             this.loggingBrokerMock.VerifyNoOtherCalls();
         }
 
+        [Theory]
+        [MemberData(nameof(DependencyApiExceptions))]
+        public async Task ShouldThrowDependencyExceptionOnRetrieveAllIfDependencyApiErrorOccursAndLogItAsync(
+          Exception dependencyApiException)
+        {
+            // given 
+            var failedCountryDependencyException =
+                new FailedExternalCountryDependencyException(dependencyApiException);
+
+            var expectedCountryDependencyException =
+                new ExternalCountryDependencyException(failedCountryDependencyException);
+
+            this.apiBrokerMock.Setup(broker =>
+                broker.GetAllCountriesAsync())
+                .ThrowsAsync(dependencyApiException);
+
+            // when
+            ValueTask<List<ExternalCountry>> getAllCountriesTask =
+                this.externalCountryService.RetrieveAllCountriesAsync();
+
+            // then
+            await Assert.ThrowsAsync<ExternalCountryDependencyException>(() =>
+                getAllCountriesTask.AsTask());
+
+            this.apiBrokerMock.Verify(broker =>
+                broker.GetAllCountriesAsync(),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedCountryDependencyException))),
+                        Times.Once);
+
+            this.apiBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+        }
+
     }
 }
