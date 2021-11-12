@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using CoronaTracker.Core.Models.Countries;
+using CoronaTracker.Core.Models.ExternalCountries;
 
 namespace CoronaTracker.Core.Brokers.APIs
 {
     public partial interface IApiBroker
     {
-        ValueTask<List<Country>> GetAllCountriesAsync();
+        ValueTask<List<ExternalCountry>> GetAllCountriesAsync();
     }
 }

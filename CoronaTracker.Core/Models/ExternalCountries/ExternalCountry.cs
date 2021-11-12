@@ -1,8 +1,8 @@
 ﻿using Newtonsoft.Json;
 
-namespace CoronaTracker.Core.Models.Countries
+namespace CoronaTracker.Core.Models.ExternalCountries
 {
-    public class Country
+    public class ExternalCountry
     {
         [JsonProperty("country")]
         public string CountryName { get; set; }

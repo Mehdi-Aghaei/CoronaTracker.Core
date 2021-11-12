@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace CoronaTracker.Core.Models.Countries
+namespace CoronaTracker.Core.Models.ExternalCountries
 {
     public class CountryInfo
     {
