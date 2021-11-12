@@ -1,5 +1,6 @@
 using CoronaTracker.Core.Brokers.APIs;
 using CoronaTracker.Core.Brokers.Loggings;
+using CoronaTracker.Core.Brokers.Storages;
 using CoronaTracker.Core.Services.Foundations.ExternalCountries;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -24,9 +25,9 @@ namespace CoronaTracker.Core
             services.AddLogging();
             services.AddControllers();
             services.AddHttpClient();
-            services.AddTransient<IApiBroker, ApiBroker>();
-            services.AddTransient<ILoggingBroker, LoggingBroker>();
-            services.AddTransient<IExternalCountryService, ExternalCountryService>();
+            services.AddDbContext<StorageBroker>();
+            AddBrokers(services);
+            AddServices(services);
 
             services.AddSwaggerGen(options =>
             {
@@ -62,6 +63,18 @@ namespace CoronaTracker.Core
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints => endpoints.MapControllers());
+        }
+
+        private static void AddBrokers(IServiceCollection services)
+        {
+            services.AddTransient<IApiBroker, ApiBroker>();
+            services.AddTransient<IStorageBroker, StorageBroker>();
+            services.AddTransient<ILoggingBroker, LoggingBroker>();
+        }
+
+        private static void AddServices(IServiceCollection services)
+        {
+            services.AddTransient<IExternalCountryService, ExternalCountryService>();
         }
     }
 }
