@@ -24,12 +24,9 @@ namespace CoronaTracker.Core
             services.AddLogging();
             services.AddControllers();
             services.AddHttpClient();
-
             services.AddTransient<IApiBroker, ApiBroker>();
             services.AddTransient<ILoggingBroker, LoggingBroker>();
-
             services.AddTransient<IExternalCountryService, ExternalCountryService>();
-
 
             services.AddSwaggerGen(options =>
             {
