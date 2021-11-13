@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -12,7 +13,8 @@ namespace CoronaTracker.Core.Migrations
                 name: "Countries",
                 columns: table => new
                 {
-                    CountryName = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CountryName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Iso3 = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Continent = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Cases = table.Column<int>(type: "int", nullable: false),
@@ -29,7 +31,7 @@ namespace CoronaTracker.Core.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Countries", x => x.CountryName);
+                    table.PrimaryKey("PK_Countries", x => x.Id);
                 });
         }
 

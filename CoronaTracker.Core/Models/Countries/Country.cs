@@ -1,11 +1,10 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
 
 namespace CoronaTracker.Core.Models.Countries
 {
     public class Country
     {
-        [Key]
+        public Guid Id { get; set; }
         public string CountryName { get; set; }
         public string Iso3 { get; set; }
         public string Continent { get; set; }
