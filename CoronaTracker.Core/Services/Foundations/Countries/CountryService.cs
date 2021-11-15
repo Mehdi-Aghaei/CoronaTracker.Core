@@ -17,9 +17,7 @@ namespace CoronaTracker.Core.Services.Foundations.Countries
             this.loggingBroker = loggingBroker;
         }
 
-        public ValueTask<Country> AddCountryAsync(Country country)
-        {
-            throw new System.NotImplementedException();
-        }
+        public ValueTask<Country> AddCountryAsync(Country country) =>
+            this.storageBroker.InsertCountryAsync(country);
     }
 }
