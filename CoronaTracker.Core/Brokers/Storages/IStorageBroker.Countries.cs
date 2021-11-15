@@ -1,6 +1,10 @@
-﻿namespace CoronaTracker.Core.Brokers.Storages
+﻿using System.Threading.Tasks;
+using CoronaTracker.Core.Models.Countries;
+
+namespace CoronaTracker.Core.Brokers.Storages
 {
     public partial interface IStorageBroker
     {
+        ValueTask<Country> InsertCountryAsync(Country country);
     }
 }
