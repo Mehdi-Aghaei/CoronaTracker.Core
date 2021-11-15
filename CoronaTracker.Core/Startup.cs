@@ -1,6 +1,7 @@
 using CoronaTracker.Core.Brokers.APIs;
 using CoronaTracker.Core.Brokers.Loggings;
 using CoronaTracker.Core.Brokers.Storages;
+using CoronaTracker.Core.Services.Foundations.Countries;
 using CoronaTracker.Core.Services.Foundations.ExternalCountries;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -75,6 +76,7 @@ namespace CoronaTracker.Core
         private static void AddServices(IServiceCollection services)
         {
             services.AddTransient<IExternalCountryService, ExternalCountryService>();
+            services.AddTransient<ICountryService, CountryService>();
         }
     }
 }
