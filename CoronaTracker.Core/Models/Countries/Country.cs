@@ -18,6 +18,6 @@ namespace CoronaTracker.Core.Models.Countries
         public int CasesPerOneMillion { get; set; }
         public int DeathsPerOneMillion { get; set; }
         public float RecoveredPerOneMillion { get; set; }
-        public float criticalPerOneMillion { get; set; }
+        public float CriticalPerOneMillion { get; set; }
     }
 }
