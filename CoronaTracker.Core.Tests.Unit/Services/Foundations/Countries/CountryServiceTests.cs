@@ -1,14 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Linq.Expressions;
 using CoronaTracker.Core.Brokers.Loggings;
 using CoronaTracker.Core.Brokers.Storages;
 using CoronaTracker.Core.Models.Countries;
 using CoronaTracker.Core.Services.Foundations.Countries;
 using Moq;
 using Tynamix.ObjectFiller;
+using Xeptions;
 
 namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.Countries
 {
@@ -33,7 +31,16 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.Countries
         private static DateTimeOffset GetRandomDateTimeOffset() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
-        private static  Filler<Country> CreateCountryFiller()
+        private static Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)
+        {
+
+            return actualException =>
+                actualException.Message == expectedException.Message
+                && actualException.InnerException.Message == expectedException.InnerException.Message
+                && (actualException.InnerException as Xeption).DataEquals(expectedException.InnerException.Data);
+        }
+
+        private static Filler<Country> CreateCountryFiller()
         {
             var filler = new Filler<Country>();
 
