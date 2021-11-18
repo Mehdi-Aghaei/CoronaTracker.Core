@@ -5,7 +5,7 @@ using CoronaTracker.Core.Models.Countries;
 
 namespace CoronaTracker.Core.Services.Foundations.Countries
 {
-    public class CountryService : ICountryService
+    public partial class CountryService : ICountryService
     {
         private readonly IStorageBroker storageBroker;
 
@@ -18,6 +18,11 @@ namespace CoronaTracker.Core.Services.Foundations.Countries
         }
 
         public ValueTask<Country> AddCountryAsync(Country country) =>
-            this.storageBroker.InsertCountryAsync(country);
+        TryCatch(async () => 
+        {
+            ValidateCountryOnAdd(country);
+        
+             return await this.storageBroker.InsertCountryAsync(country);
+        });
     }
 }
