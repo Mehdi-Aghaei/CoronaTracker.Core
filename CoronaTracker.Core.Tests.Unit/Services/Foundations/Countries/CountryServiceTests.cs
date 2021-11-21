@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Linq.Expressions;
+using System.Runtime.Serialization;
 using CoronaTracker.Core.Brokers.Loggings;
 using CoronaTracker.Core.Brokers.Storages;
 using CoronaTracker.Core.Models.Countries;
 using CoronaTracker.Core.Services.Foundations.Countries;
+using Microsoft.Data.SqlClient;
 using Moq;
 using Tynamix.ObjectFiller;
 using Xeptions;
@@ -27,6 +29,9 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.Countries
 
         private static Country CreateRandomCountry() =>
             CreateCountryFiller().Create();
+
+        private static SqlException GetSqlException() =>
+            (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
 
         private static DateTimeOffset GetRandomDateTimeOffset() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
