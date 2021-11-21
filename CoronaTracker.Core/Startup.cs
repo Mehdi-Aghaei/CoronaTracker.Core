@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Taarafo.Core.Brokers.DateTimes;
 
 namespace CoronaTracker.Core
 {
@@ -71,6 +72,7 @@ namespace CoronaTracker.Core
             services.AddTransient<IApiBroker, ApiBroker>();
             services.AddTransient<IStorageBroker, StorageBroker>();
             services.AddTransient<ILoggingBroker, LoggingBroker>();
+            services.AddTransient<IDateTimeBroker,DateTimeBroker>();
         }
 
         private static void AddServices(IServiceCollection services)
