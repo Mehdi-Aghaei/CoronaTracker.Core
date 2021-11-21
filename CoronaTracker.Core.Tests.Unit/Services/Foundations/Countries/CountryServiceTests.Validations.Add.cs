@@ -38,10 +38,10 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.Countries
         }
 
         [Theory]
-        [InlineData (null)]
+        [InlineData(null)]
         [InlineData("")]
-        [InlineData (" ")]
-        public async Task ShouldThrowValidationExceptionOnAddIfCountryIsInvalidAndLogItAsync(string invalidText) 
+        [InlineData(" ")]
+        public async Task ShouldThrowValidationExceptionOnAddIfCountryIsInvalidAndLogItAsync(string invalidText)
         {
             // given
             var invalidCountry = new Country
@@ -59,60 +59,15 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.Countries
 
             invalidCountryException.AddData(
                 key: nameof(Country.CountryName),
-                values: "Name is required");
+                values: "Text is required");
 
             invalidCountryException.AddData(
                 key: nameof(Country.Iso3),
-                values: "Iso3 is required");  
-            
+                values: "Text is required");
+
             invalidCountryException.AddData(
                 key: nameof(Country.Continent),
-                values: "Continent is required");   
-            
-            invalidCountryException.AddData(
-                key: nameof(Country.Cases),
-                values: "Cases is required");     
-            
-            invalidCountryException.AddData(
-                key: nameof(Country.TodayCases),
-                values: "TodayCases is required"); 
-            
-            invalidCountryException.AddData(
-                key: nameof(Country.Deaths),
-                values: "Deaths is required"); 
-            
-            invalidCountryException.AddData(
-                key: nameof(Country.TodayDeaths),
-                values: "TodayDeaths is required"); 
-            
-            invalidCountryException.AddData(
-                key: nameof(Country.Recovered),
-                values: "Recovered is required"); 
-            
-            invalidCountryException.AddData(
-                key: nameof(Country.TodayRecovered),
-                values: "TodayRecovered is required"); 
-            
-            invalidCountryException.AddData(
-                key: nameof(Country.Population),
-                values: "Population is required");  
-            
-            invalidCountryException.AddData(
-                key: nameof(Country.CasesPerOneMillion),
-                values: "CasesPerOneMillion is required");
-
-            invalidCountryException.AddData(
-              key: nameof(Country.DeathsPerOneMillion),
-              values: "DeathsPerOneMillion is required");
-
-            invalidCountryException.AddData(
-                key: nameof(Country.RecoveredPerOneMillion),
-                values: "RecoveredPerOneMillion is required");  
-            
-            
-            invalidCountryException.AddData(
-                key: nameof(Country.CriticalPerOneMillion),
-                values: "TodayRecovered is required");
+                values: "Text is required");
 
             var expectedCountryValidationException =
                 new CountryValidationException(invalidCountryException);

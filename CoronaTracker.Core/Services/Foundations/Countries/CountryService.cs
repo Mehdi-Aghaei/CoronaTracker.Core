@@ -18,11 +18,11 @@ namespace CoronaTracker.Core.Services.Foundations.Countries
         }
 
         public ValueTask<Country> AddCountryAsync(Country country) =>
-        TryCatch(async () => 
+        TryCatch(async () =>
         {
             ValidateCountryOnAdd(country);
-        
-             return await this.storageBroker.InsertCountryAsync(country);
+
+            return await this.storageBroker.InsertCountryAsync(country);
         });
     }
 }
