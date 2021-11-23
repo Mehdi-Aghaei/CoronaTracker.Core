@@ -50,6 +50,9 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.Countries
         private static Country CreateRandomCountry(DateTimeOffset dates) =>
             CreateCountryFiller(dates).Create();
 
+        private static string GetRandomMessage() =>
+            new MnemonicString(wordCount: GetRandomNumber()).GetValue();
+
         private static int GetRandomNumber() =>
             new IntRange(min: 2, max: 10).GetValue();
 
