@@ -46,7 +46,7 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.Countries
             // given
             var invalidCountry = new Country
             {
-                CountryName = invalidText,
+                Name = invalidText,
                 Iso3 = invalidText,
                 Continent = invalidText
             };
@@ -58,7 +58,7 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.Countries
                 values: "Id is required");
 
             invalidCountryException.AddData(
-                key: nameof(Country.CountryName),
+                key: nameof(Country.Name),
                 values: "Text is required");
 
             invalidCountryException.AddData(
@@ -68,6 +68,14 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.Countries
             invalidCountryException.AddData(
                 key: nameof(Country.Continent),
                 values: "Text is required");
+
+            invalidCountryException.AddData(
+                key: nameof(Country.CreatedDate),
+                values: "Date is required");
+
+            invalidCountryException.AddData(
+                key: nameof(Country.UpdatedDate),
+                values: "Date is required");
 
             var expectedCountryValidationException =
                 new CountryValidationException(invalidCountryException);

@@ -12,7 +12,7 @@ namespace CoronaTracker.Core.Services.Foundations.Countries
 
             Validate(
             (Rule: IsInvalid(country.Id), Parameter: nameof(country.Id)),
-            (Rule: IsInvalid(country.CountryName), Parameter: nameof(country.CountryName)),
+            (Rule: IsInvalid(country.Name), Parameter: nameof(country.Name)),
             (Rule: IsInvalid(country.Iso3), Parameter: nameof(country.Iso3)),
             (Rule: IsInvalid(country.Continent), Parameter: nameof(country.Continent)));
         }
