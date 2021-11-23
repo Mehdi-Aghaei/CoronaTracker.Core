@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using CoronaTracker.Core.Models.Countries;
 using FluentAssertions;
 using Force.DeepCloner;
@@ -13,10 +14,15 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.Countries
         public async Task ShouldAddCountryAsync()
         {
             // given
-            Country randomCountry = CreateRandomCountry();
+            DateTimeOffset dateTime = GetRandomDateTimeOffset();
+            Country randomCountry = CreateRandomCountry(dateTime);
             Country inputCountry = randomCountry;
             Country storageCountry = inputCountry;
             Country expectedCountry = storageCountry.DeepClone();
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTimeOffset())
+                    .Returns(dateTime);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.InsertCountryAsync(inputCountry))
@@ -29,10 +35,15 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.Countries
             // then
             actualCountry.Should().BeEquivalentTo(expectedCountry);
 
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTimeOffset(),
+                    Times.Once);
+
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertCountryAsync(inputCountry),
                     Times.Once);
 
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
         }
