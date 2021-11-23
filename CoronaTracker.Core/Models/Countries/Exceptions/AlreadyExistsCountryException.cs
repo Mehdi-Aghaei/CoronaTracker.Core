@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xeptions;
 
-namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.Countries
+namespace CoronaTracker.Core.Models.Countries.Exceptions
 {
     public class AlreadyExistsCountryException : Xeption
     {
