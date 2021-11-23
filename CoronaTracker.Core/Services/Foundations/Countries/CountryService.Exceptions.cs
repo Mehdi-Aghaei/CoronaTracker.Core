@@ -3,6 +3,7 @@ using CoronaTracker.Core.Models.Countries;
 using CoronaTracker.Core.Models.Countries.Exceptions;
 using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using Xeptions;
 
 namespace CoronaTracker.Core.Services.Foundations.Countries
@@ -40,6 +41,13 @@ namespace CoronaTracker.Core.Services.Foundations.Countries
 
                 throw CreateAndLogDependencyValidationException(alreadyExistsCountryException);
             }
+            catch(DbUpdateException databaseUpdateException)
+            {
+                var failedCountryStorageException =
+                    new FailedCountryStorageException(databaseUpdateException);
+
+                throw CreateAndLogDependencyException(failedCountryStorageException);
+            }
         }
 
         private CountryDependencyValidationException CreateAndLogDependencyValidationException(
@@ -58,6 +66,14 @@ namespace CoronaTracker.Core.Services.Foundations.Countries
             var countryDependencyExceptin = new CountryDependencyException(exception);
 
             this.loggingBroker.LogCritical(countryDependencyExceptin);
+
+            return countryDependencyExceptin;
+        }  
+        private CountryDependencyException CreateAndLogDependencyException(Xeption exception)
+        {
+            var countryDependencyExceptin = new CountryDependencyException(exception);
+
+            this.loggingBroker.LogError(countryDependencyExceptin);
 
             return countryDependencyExceptin;
         }
