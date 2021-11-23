@@ -7,6 +7,7 @@ using CoronaTracker.Core.Models.Countries;
 using CoronaTracker.Core.Models.Countries.Exceptions;
 using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using Moq;
 using Xunit;
 
@@ -97,6 +98,51 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.Countries
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(
                     expectedCountryDependencyValidationException))),
+                        Times.Once);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async Task ShouldThrowDependencyExceptionOnAddIfDatabaseErrorOccursAndLogItAsync()
+        {
+            // given
+            Country someCountry = CreateRandomCountry();
+
+            var databseUpdateException =
+                new DbUpdateException();
+
+            var failedCountryStorageException =
+                new FailedCountryStorageException(databseUpdateException);
+
+            var expectedCountryDependencyException =
+                new CountryDependencyException(failedCountryStorageException);
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTimeOffset())
+                    .Throws(databseUpdateException);
+
+            // when
+            ValueTask<Country> addCountryTask =
+                this.countryService.AddCountryAsync(someCountry);
+
+            // then
+            await Assert.ThrowsAsync<CountryDependencyException>(() =>
+                addCountryTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+               broker.GetCurrentDateTimeOffset(),
+                   Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertCountryAsync(It.IsAny<Country>()),
+                    Times.Never);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedCountryDependencyException))),
                         Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
