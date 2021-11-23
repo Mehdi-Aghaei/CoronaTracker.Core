@@ -100,5 +100,46 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.Countries
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
+        [Fact]
+        public async Task ShouldThrowValidationExceptionOnAddIfCreateAndUpdateDateIsNotSameAndLogItAsync()
+        {
+            // give
+            int randomNumber = GetRandomNumber();
+            Country randomCountry = CreateRandomCountry();
+            Country invalidCountry = randomCountry;
+
+            invalidCountry.UpdatedDate =
+                invalidCountry.CreatedDate.AddDays(randomNumber);
+
+            var invalidCountryException =
+                new InvalidCountryException();
+
+            invalidCountryException.AddData(
+                key: nameof(Country.UpdatedDate),
+                values: $"Date is not the same as {nameof(Country.CreatedDate)}");
+
+            var expectedCountryValidationException =
+                    new CountryValidationException(invalidCountryException);
+
+            // when
+            ValueTask<Country> addCountryTask =
+                this.countryService.AddCountryAsync(invalidCountry);
+
+            // then
+            await Assert.ThrowsAsync<CountryValidationException>(() =>
+                addCountryTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedCountryValidationException))),
+                        Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertCountryAsync(It.IsAny<Country>()),
+                    Times.Never);
+
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
