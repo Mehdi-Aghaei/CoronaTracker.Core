@@ -149,5 +149,48 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.Countries
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async Task ShouldThrowServiceExceptionOnAddIfDatabaseErrorOccursAndLogItAsync()
+        {
+            // given
+            Country someCountry = CreateRandomCountry();
+            var serviceException = new Exception();
+
+            var failedCountryServiceExcepiton =
+                new FailedCountryServiceException(serviceException);
+
+            var expectedCountryServiceException =
+                new CountryServiceException(failedCountryServiceExcepiton);
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTimeOffset())
+                    .Throws(serviceException);
+
+            // when
+            ValueTask<Country> addCountryTask =
+                this.countryService.AddCountryAsync(someCountry);
+
+            //then
+            await Assert.ThrowsAsync<CountryDependencyException>(() =>
+               addCountryTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+               broker.GetCurrentDateTimeOffset(),
+                   Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertCountryAsync(It.IsAny<Country>()),
+                    Times.Never);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedCountryServiceException))),
+                        Times.Once);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
