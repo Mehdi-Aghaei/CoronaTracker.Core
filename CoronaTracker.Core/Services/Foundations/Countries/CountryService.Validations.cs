@@ -16,7 +16,14 @@ namespace CoronaTracker.Core.Services.Foundations.Countries
             (Rule: IsInvalid(country.Iso3), Parameter: nameof(country.Iso3)),
             (Rule: IsInvalid(country.Continent), Parameter: nameof(country.Continent)),
             (Rule: IsInvalid(country.CreatedDate), Parameter: nameof(country.CreatedDate)),
-            (Rule: IsInvalid(country.UpdatedDate), Parameter: nameof(country.UpdatedDate)));
+            (Rule: IsInvalid(country.UpdatedDate), Parameter: nameof(country.UpdatedDate)),
+
+            (Rule:IsNotSame(
+                firstDate:country.CreatedDate,
+                secondDate:country.UpdatedDate,
+                secondDateName:nameof(country.CreatedDate)),
+            Parameter: nameof(country.UpdatedDate))
+            );
         }
 
         private void ValidateCountryIsNotNull(Country country)
@@ -44,6 +51,15 @@ namespace CoronaTracker.Core.Services.Foundations.Countries
             Condition = date == default,
             Message = "Date is required"
         };
+
+        private static dynamic IsNotSame(
+            DateTimeOffset firstDate,
+            DateTimeOffset secondDate,
+            string secondDateName) => new
+            {
+                Condition = firstDate != secondDate,
+                Message = $"Date is not the same as {secondDateName}"
+            };
 
         private static void Validate(params (dynamic Rule, string Parameter)[] validations)
         {
