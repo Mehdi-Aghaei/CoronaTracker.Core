@@ -10,6 +10,7 @@ using Moq;
 using Taarafo.Core.Brokers.DateTimes;
 using Tynamix.ObjectFiller;
 using Xeptions;
+using Xunit;
 
 namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.Countries
 {
@@ -31,11 +32,29 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.Countries
                 loggingBroker: loggingBrokerMock.Object);
         }
 
+        public static TheoryData MinutesBeforeOrAfter()
+        {
+            int randomNumber = GetRandomNumber();
+            int randomNegativeNumber = GetRandomNegativeNumber();
+
+            return new TheoryData<int>
+            {
+                randomNumber,
+                randomNegativeNumber
+            };
+        }
+
         private static Country CreateRandomCountry() =>
-            CreateCountryFiller().Create();
+            CreateCountryFiller(dates:GetRandomDateTimeOffset()).Create();  
+        
+        private static Country CreateRandomCountry(DateTimeOffset dates) =>
+            CreateCountryFiller(dates).Create();
 
         private static int GetRandomNumber() =>
             new IntRange(min: 2, max: 10).GetValue();
+
+        private static int GetRandomNegativeNumber() =>
+            -1 * new IntRange(min: 2, max: 10).GetValue();
 
         private static SqlException GetSqlException() =>
             (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
@@ -52,12 +71,12 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.Countries
                 && (actualException.InnerException as Xeption).DataEquals(expectedException.InnerException.Data);
         }
 
-        private static Filler<Country> CreateCountryFiller()
+        private static Filler<Country> CreateCountryFiller(DateTimeOffset dates)
         {
             var filler = new Filler<Country>();
 
             filler.Setup()
-                .OnType<DateTimeOffset>().Use(GetRandomDateTimeOffset());
+                .OnType<DateTimeOffset>().Use(dates);
 
             return filler;
         }
