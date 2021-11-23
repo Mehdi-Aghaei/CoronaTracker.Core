@@ -25,6 +25,22 @@ namespace CoronaTracker.Core.Services.Foundations.Countries
             {
                 throw CreateAndLogValidationException(invalidCountryInputException);
             }
+            catch(SqlException sqlException)
+            {
+                var failedCountryStorageException = 
+                    new FailedCountryStorageException(sqlException);
+
+                throw CreateAndLogCriticalDependencyException(failedCountryStorageException);
+            }
+        }
+
+        private CountryDependencyException CreateAndLogCriticalDependencyException(Xeption exception)
+        {
+            var countryDependencyExceptin = new CountryDependencyException(exception);
+
+            this.loggingBroker.LogCritical(countryDependencyExceptin);
+
+            return countryDependencyExceptin;
         }
 
         private CountryValidationException CreateAndLogValidationException(Xeption exception)
