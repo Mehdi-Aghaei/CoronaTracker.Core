@@ -26,9 +26,9 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.Countries
             var expectedCountryDependencyException =
                 new CountryDependencyException(failedCountryStorageException);
 
-            this.storageBrokerMock.Setup(broker =>
-                broker.InsertCountryAsync(someCountry))
-                    .ThrowsAsync(sqlException); 
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTimeOffset())
+                    .Throws(sqlException); 
 
             // when 
             ValueTask<Country> addCountryTask = 
@@ -37,6 +37,10 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.Countries
             // then
             await Assert.ThrowsAsync<CountryDependencyException>(() =>
                 addCountryTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+               broker.GetCurrentDateTimeOffset(),
+                   Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogCritical(It.Is(SameExceptionAs(
@@ -47,6 +51,7 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.Countries
                 broker.InsertCountryAsync(It.IsAny<Country>()),
                     Times.Never);
 
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }

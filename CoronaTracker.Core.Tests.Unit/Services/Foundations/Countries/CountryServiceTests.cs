@@ -7,6 +7,7 @@ using CoronaTracker.Core.Models.Countries;
 using CoronaTracker.Core.Services.Foundations.Countries;
 using Microsoft.Data.SqlClient;
 using Moq;
+using Taarafo.Core.Brokers.DateTimes;
 using Tynamix.ObjectFiller;
 using Xeptions;
 
@@ -15,15 +16,18 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.Countries
     public partial class CountryServiceTests
     {
         private readonly Mock<IStorageBroker> storageBrokerMock;
+        private readonly Mock<IDateTimeBroker> dateTimeBrokerMock;
         private readonly Mock<ILoggingBroker> loggingBrokerMock;
         private readonly ICountryService countryService;
         public CountryServiceTests()
         {
             this.storageBrokerMock = new Mock<IStorageBroker>();
+            this.dateTimeBrokerMock = new Mock<IDateTimeBroker>();
             this.loggingBrokerMock = new Mock<ILoggingBroker>();
 
             this.countryService = new CountryService(
                 storageBroker: storageBrokerMock.Object,
+                dateTimeBroker: dateTimeBrokerMock.Object,
                 loggingBroker: loggingBrokerMock.Object);
         }
 
