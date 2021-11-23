@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using CoronaTracker.Core.Models.Countries;
 using CoronaTracker.Core.Models.Countries.Exceptions;
 using EFxceptions.Models.Exceptions;
@@ -27,26 +28,33 @@ namespace CoronaTracker.Core.Services.Foundations.Countries
             {
                 throw CreateAndLogValidationException(invalidCountryInputException);
             }
-            catch(SqlException sqlException)
+            catch (SqlException sqlException)
             {
-                var failedCountryStorageException = 
+                var failedCountryStorageException =
                     new FailedCountryStorageException(sqlException);
 
                 throw CreateAndLogCriticalDependencyException(failedCountryStorageException);
             }
-            catch( DuplicateKeyException duplicateKeyException)
+            catch (DuplicateKeyException duplicateKeyException)
             {
                 var alreadyExistsCountryException =
                     new AlreadyExistsCountryException(duplicateKeyException);
 
                 throw CreateAndLogDependencyValidationException(alreadyExistsCountryException);
             }
-            catch(DbUpdateException databaseUpdateException)
+            catch (DbUpdateException databaseUpdateException)
             {
                 var failedCountryStorageException =
                     new FailedCountryStorageException(databaseUpdateException);
 
                 throw CreateAndLogDependencyException(failedCountryStorageException);
+            }
+            catch (Exception exception)
+            {
+                var failedCountryServiceException =
+                    new FailedCountryServiceException(exception);
+
+                throw CreateAndLogServiceException(failedCountryServiceException);
             }
         }
 
@@ -55,7 +63,7 @@ namespace CoronaTracker.Core.Services.Foundations.Countries
         {
             var countryDependencyValidationException =
                 new CountryDependencyValidationException(exception);
-            
+
             this.loggingBroker.LogError(countryDependencyValidationException);
 
             return countryDependencyValidationException;
@@ -68,7 +76,7 @@ namespace CoronaTracker.Core.Services.Foundations.Countries
             this.loggingBroker.LogCritical(countryDependencyExceptin);
 
             return countryDependencyExceptin;
-        }  
+        }
         private CountryDependencyException CreateAndLogDependencyException(Xeption exception)
         {
             var countryDependencyExceptin = new CountryDependencyException(exception);
@@ -86,6 +94,14 @@ namespace CoronaTracker.Core.Services.Foundations.Countries
             this.loggingBroker.LogError(countryValidationException);
 
             return countryValidationException;
+        }
+        private CountryServiceException CreateAndLogServiceException(Exception exception)
+        {
+            var countryServiceException =
+                new CountryServiceException(exception);
+            this.loggingBroker.LogError(countryServiceException);
+
+            return countryServiceException;
         }
     }
 }

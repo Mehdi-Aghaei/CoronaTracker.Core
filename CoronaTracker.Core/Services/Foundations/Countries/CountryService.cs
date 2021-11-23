@@ -12,7 +12,7 @@ namespace CoronaTracker.Core.Services.Foundations.Countries
         private readonly IDateTimeBroker dateTimeBroker;
         private readonly ILoggingBroker loggingBroker;
 
-        public CountryService(IStorageBroker storageBroker,IDateTimeBroker dateTimeBroker, ILoggingBroker loggingBroker)
+        public CountryService(IStorageBroker storageBroker, IDateTimeBroker dateTimeBroker, ILoggingBroker loggingBroker)
         {
             this.storageBroker = storageBroker;
             this.dateTimeBroker = dateTimeBroker;

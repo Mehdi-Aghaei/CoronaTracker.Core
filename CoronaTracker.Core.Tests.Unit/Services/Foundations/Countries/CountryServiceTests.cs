@@ -45,8 +45,8 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.Countries
         }
 
         private static Country CreateRandomCountry() =>
-            CreateCountryFiller(dates:GetRandomDateTimeOffset()).Create();  
-        
+            CreateCountryFiller(dates: GetRandomDateTimeOffset()).Create();
+
         private static Country CreateRandomCountry(DateTimeOffset dates) =>
             CreateCountryFiller(dates).Create();
 

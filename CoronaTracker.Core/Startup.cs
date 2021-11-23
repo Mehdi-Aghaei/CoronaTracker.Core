@@ -72,7 +72,7 @@ namespace CoronaTracker.Core
             services.AddTransient<IApiBroker, ApiBroker>();
             services.AddTransient<IStorageBroker, StorageBroker>();
             services.AddTransient<ILoggingBroker, LoggingBroker>();
-            services.AddTransient<IDateTimeBroker,DateTimeBroker>();
+            services.AddTransient<IDateTimeBroker, DateTimeBroker>();
         }
 
         private static void AddServices(IServiceCollection services)

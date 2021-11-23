@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using CoronaTracker.Core.Models.Countries;
 using CoronaTracker.Core.Models.Countries.Exceptions;
@@ -172,7 +169,7 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.Countries
                 this.countryService.AddCountryAsync(someCountry);
 
             //then
-            await Assert.ThrowsAsync<CountryDependencyException>(() =>
+            await Assert.ThrowsAsync<CountryServiceException>(() =>
                addCountryTask.AsTask());
 
             this.dateTimeBrokerMock.Verify(broker =>
