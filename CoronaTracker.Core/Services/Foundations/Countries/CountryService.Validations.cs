@@ -18,12 +18,13 @@ namespace CoronaTracker.Core.Services.Foundations.Countries
             (Rule: IsInvalid(country.CreatedDate), Parameter: nameof(country.CreatedDate)),
             (Rule: IsInvalid(country.UpdatedDate), Parameter: nameof(country.UpdatedDate)),
 
-            (Rule:IsNotSame(
-                firstDate:country.CreatedDate,
-                secondDate:country.UpdatedDate,
-                secondDateName:nameof(country.CreatedDate)),
-            Parameter: nameof(country.UpdatedDate))
-            );
+            (Rule: IsNotSame(
+                firstDate: country.CreatedDate,
+                secondDate: country.UpdatedDate,
+                secondDateName: nameof(country.CreatedDate)),
+            Parameter: nameof(country.UpdatedDate)),
+
+            (Rule: IsNotRecent(country.CreatedDate), Parameter: nameof(country.CreatedDate)));
         }
 
         private void ValidateCountryIsNotNull(Country country)
@@ -51,6 +52,24 @@ namespace CoronaTracker.Core.Services.Foundations.Countries
             Condition = date == default,
             Message = "Date is required"
         };
+
+        private dynamic IsNotRecent(
+            DateTimeOffset date) => new
+            {
+                Condition = IsDateNotRecent(date),
+                Message = $"Date is not recent"
+            };
+
+        private bool IsDateNotRecent(DateTimeOffset date)
+        {
+            DateTimeOffset currentDateTime =
+                this.dateTimeBroker.GetCurrentDateTimeOffset();
+
+            TimeSpan timeDiffrence = currentDateTime.Subtract(date);
+            TimeSpan oneMinute = TimeSpan.FromMinutes(1);
+
+            return timeDiffrence.Duration() > oneMinute;
+        }
 
         private static dynamic IsNotSame(
             DateTimeOffset firstDate,
