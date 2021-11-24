@@ -34,6 +34,10 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.Countries
                     expectedCountryValidationException))),
                     Times.Once);
 
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertCountryAsync(It.IsAny<Country>()),
+                    Times.Never);
+
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }

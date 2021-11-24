@@ -7,6 +7,7 @@ namespace CoronaTracker.Core.Brokers.Storages
     public partial class StorageBroker : EFxceptionsContext, IStorageBroker
     {
         private readonly IConfiguration counfiguration;
+
         public StorageBroker(IConfiguration configuration)
         {
             this.counfiguration = configuration;

@@ -15,10 +15,9 @@ namespace CoronaTracker.Core
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
-        {
+        public Startup(IConfiguration configuration) =>
             Configuration = configuration;
-        }
+
 
         public IConfiguration Configuration { get; }
 
@@ -38,6 +37,7 @@ namespace CoronaTracker.Core
                     Title = "CoronaTracker.Core",
                     Version = "v1"
                 };
+
                 options.SwaggerDoc(
                     name: "v1",
                     info: openApiInfo);
@@ -50,6 +50,7 @@ namespace CoronaTracker.Core
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
+
                 app.UseSwaggerUI(options =>
                  {
                      options.SwaggerEndpoint(
@@ -59,11 +60,8 @@ namespace CoronaTracker.Core
             }
 
             app.UseHttpsRedirection();
-
             app.UseRouting();
-
             app.UseAuthorization();
-
             app.UseEndpoints(endpoints => endpoints.MapControllers());
         }
 
