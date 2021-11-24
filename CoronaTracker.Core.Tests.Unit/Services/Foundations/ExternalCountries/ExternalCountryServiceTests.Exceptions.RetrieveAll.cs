@@ -27,7 +27,7 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.ExternalCountries
 
             this.apiBrokerMock.Setup(broker =>
                 broker.GetAllExternalCountriesAsync())
-                .ThrowsAsync(criticalDependencyException);
+                    .ThrowsAsync(criticalDependencyException);
 
             // when
             ValueTask<List<ExternalCountry>> getAllExternalCountriesTask =
@@ -64,7 +64,7 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.ExternalCountries
 
             this.apiBrokerMock.Setup(broker =>
                 broker.GetAllExternalCountriesAsync())
-                .ThrowsAsync(dependencyApiException);
+                    .ThrowsAsync(dependencyApiException);
 
             // when
             ValueTask<List<ExternalCountry>> getAllExternalCountriesTask =

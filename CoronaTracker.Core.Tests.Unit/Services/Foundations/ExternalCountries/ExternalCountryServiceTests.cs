@@ -79,7 +79,7 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.ExternalCountries
             };
         }
 
-        private static Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)
+        private static Expression<Func<Xeption, bool>> SameExceptionAs(Xeption expectedException)
         {
             return actualException =>
                 actualException.Message == expectedException.Message

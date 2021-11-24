@@ -10,21 +10,23 @@ namespace CoronaTracker.Core.Services.Foundations.Countries
         {
             ValidateCountryIsNotNull(country);
 
-            Validate(
-            (Rule: IsInvalid(country.Id), Parameter: nameof(country.Id)),
-            (Rule: IsInvalid(country.Name), Parameter: nameof(country.Name)),
-            (Rule: IsInvalid(country.Iso3), Parameter: nameof(country.Iso3)),
-            (Rule: IsInvalid(country.Continent), Parameter: nameof(country.Continent)),
-            (Rule: IsInvalid(country.CreatedDate), Parameter: nameof(country.CreatedDate)),
-            (Rule: IsInvalid(country.UpdatedDate), Parameter: nameof(country.UpdatedDate)),
+            Validate
+            (
+                (Rule: IsInvalid(country.Id), Parameter: nameof(country.Id)),
+                (Rule: IsInvalid(country.Name), Parameter: nameof(country.Name)),
+                (Rule: IsInvalid(country.Iso3), Parameter: nameof(country.Iso3)),
+                (Rule: IsInvalid(country.Continent), Parameter: nameof(country.Continent)),
+                (Rule: IsInvalid(country.CreatedDate), Parameter: nameof(country.CreatedDate)),
+                (Rule: IsInvalid(country.UpdatedDate), Parameter: nameof(country.UpdatedDate)),
 
-            (Rule: IsNotSame(
-                firstDate: country.CreatedDate,
-                secondDate: country.UpdatedDate,
-                secondDateName: nameof(country.CreatedDate)),
-            Parameter: nameof(country.UpdatedDate)),
+                (Rule: IsNotSame(
+                    firstDate: country.CreatedDate,
+                    secondDate: country.UpdatedDate,
+                    secondDateName: nameof(country.CreatedDate)),
+                Parameter: nameof(country.UpdatedDate)),
 
-            (Rule: IsNotRecent(country.CreatedDate), Parameter: nameof(country.CreatedDate)));
+                (Rule: IsNotRecent(country.CreatedDate), Parameter: nameof(country.CreatedDate))
+            );
         }
 
         private void ValidateCountryIsNotNull(Country country)

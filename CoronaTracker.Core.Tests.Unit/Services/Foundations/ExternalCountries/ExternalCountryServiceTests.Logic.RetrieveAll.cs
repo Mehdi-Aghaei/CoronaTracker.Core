@@ -15,19 +15,19 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.ExternalCountries
         {
             // given
             List<ExternalCountry> randomCountries = CreateRandomExternalCountries();
-            List<ExternalCountry> apiCountries = randomCountries;
-            List<ExternalCountry> expectedExternalCountries = apiCountries.DeepClone();
+            List<ExternalCountry> externalCountries = randomCountries;
+            List<ExternalCountry> expectedExternalCountries = externalCountries.DeepClone();
 
             this.apiBrokerMock.Setup(broker =>
                 broker.GetAllExternalCountriesAsync())
-                    .ReturnsAsync(apiCountries);
+                    .ReturnsAsync(externalCountries);
 
             // when
-            List<ExternalCountry> retrievedCountries =
+            List<ExternalCountry> retrieveAllCountries =
                 await this.externalCountryService.RetrieveAllExternalCountriesAsync();
 
             // then
-            retrievedCountries.Should().BeEquivalentTo(expectedExternalCountries);
+            retrieveAllCountries.Should().BeEquivalentTo(expectedExternalCountries);
 
             this.apiBrokerMock.Verify(broker =>
                 broker.GetAllExternalCountriesAsync(),
