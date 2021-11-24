@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Runtime.Serialization;
 using CoronaTracker.Core.Brokers.DateTimes;
@@ -47,6 +48,10 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.Countries
 
         private static Country CreateRandomCountry() =>
             CreateCountryFiller(dates: GetRandomDateTimeOffset()).Create();
+
+        private static IQueryable<Country> CreateRandomCountries() =>
+            CreateCountryFiller(dates:GetRandomDateTimeOffset())
+                .Create(count:GetRandomNumber()).AsQueryable();
 
         private static Country CreateRandomCountry(DateTimeOffset dates) =>
             CreateCountryFiller(dates).Create();
