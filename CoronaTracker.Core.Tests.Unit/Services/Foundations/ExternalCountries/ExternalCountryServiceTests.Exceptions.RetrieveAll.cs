@@ -26,19 +26,19 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.ExternalCountries
                     failedExternalCountryDependencyException);
 
             this.apiBrokerMock.Setup(broker =>
-                broker.GetAllCountriesAsync())
+                broker.GetAllExternalCountriesAsync())
                 .ThrowsAsync(criticalDependencyException);
 
             // when
             ValueTask<List<ExternalCountry>> getAllExternalCountriesTask =
-                this.externalCountryService.RetrieveAllCountriesAsync();
+                this.externalCountryService.RetrieveAllExternalCountriesAsync();
 
             // then
             await Assert.ThrowsAsync<ExternalCountryDependencyException>(() =>
                 getAllExternalCountriesTask.AsTask());
 
             this.apiBrokerMock.Verify(broker =>
-                broker.GetAllCountriesAsync(),
+                broker.GetAllExternalCountriesAsync(),
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
@@ -63,19 +63,19 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.ExternalCountries
                 new ExternalCountryDependencyException(failedExternalCountryDependencyException);
 
             this.apiBrokerMock.Setup(broker =>
-                broker.GetAllCountriesAsync())
+                broker.GetAllExternalCountriesAsync())
                 .ThrowsAsync(dependencyApiException);
 
             // when
             ValueTask<List<ExternalCountry>> getAllExternalCountriesTask =
-                this.externalCountryService.RetrieveAllCountriesAsync();
+                this.externalCountryService.RetrieveAllExternalCountriesAsync();
 
             // then
             await Assert.ThrowsAsync<ExternalCountryDependencyException>(() =>
                 getAllExternalCountriesTask.AsTask());
 
             this.apiBrokerMock.Verify(broker =>
-                broker.GetAllCountriesAsync(),
+                broker.GetAllExternalCountriesAsync(),
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
@@ -100,19 +100,19 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.ExternalCountries
                 new ExternalCountryServiceException(failedExternalCountryServiceException);
 
             this.apiBrokerMock.Setup(broker =>
-                broker.GetAllCountriesAsync())
+                broker.GetAllExternalCountriesAsync())
                     .ThrowsAsync(serviceException);
 
             // when
             ValueTask<List<ExternalCountry>> getAllExternalCountriesTask =
-                this.externalCountryService.RetrieveAllCountriesAsync();
+                this.externalCountryService.RetrieveAllExternalCountriesAsync();
 
             // then
             await Assert.ThrowsAsync<ExternalCountryServiceException>(() =>
                 getAllExternalCountriesTask.AsTask());
 
             this.apiBrokerMock.Verify(broker =>
-                broker.GetAllCountriesAsync(),
+                broker.GetAllExternalCountriesAsync(),
                     Times.Once());
 
             this.loggingBrokerMock.Verify(broker =>
