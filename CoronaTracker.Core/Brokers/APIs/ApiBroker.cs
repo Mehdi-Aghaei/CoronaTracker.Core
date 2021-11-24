@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Net.Http;
+using System.Threading.Tasks;
 using CoronaTracker.Core.Models.Configurations;
 using Microsoft.Extensions.Configuration;
 using RESTFulSense.Clients;
 
-namespace CoronaTracker.Core.Brokers.APIs
+namespace CoronaTracker.Core.Brokers.Apis
 {
     public partial class ApiBroker : IApiBroker
     {
@@ -17,7 +18,7 @@ namespace CoronaTracker.Core.Brokers.APIs
             this.apiClient = GetApiClient(configuration);
         }
 
-        private async System.Threading.Tasks.ValueTask<T> GetAsync<T>(string relativeUrl) =>
+        private async ValueTask<T> GetAsync<T>(string relativeUrl) =>
             await this.apiClient.GetContentAsync<T>(relativeUrl);
 
         private IRESTFulApiFactoryClient GetApiClient(IConfiguration configuration)
