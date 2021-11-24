@@ -1,4 +1,4 @@
-﻿namespace CoronaTracker.Core.Brokers.APIs
+﻿namespace CoronaTracker.Core.Brokers.Apis
 {
     public partial interface IApiBroker
     {
