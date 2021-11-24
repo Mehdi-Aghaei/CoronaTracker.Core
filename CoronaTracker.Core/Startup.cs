@@ -1,4 +1,4 @@
-using CoronaTracker.Core.Brokers.APIs;
+using CoronaTracker.Core.Brokers.Apis;
 using CoronaTracker.Core.Brokers.DateTimes;
 using CoronaTracker.Core.Brokers.Loggings;
 using CoronaTracker.Core.Brokers.Storages;

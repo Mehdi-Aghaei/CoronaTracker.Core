@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using CoronaTracker.Core.Brokers.APIs;
+using CoronaTracker.Core.Brokers.Apis;
 using CoronaTracker.Core.Brokers.Loggings;
 using CoronaTracker.Core.Models.ExternalCountries;
 
