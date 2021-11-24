@@ -5,7 +5,7 @@
 
 using System;
 
-namespace Taarafo.Core.Brokers.DateTimes
+namespace CoronaTracker.Core.Brokers.DateTimes
 {
     public class DateTimeBroker : IDateTimeBroker
     {
