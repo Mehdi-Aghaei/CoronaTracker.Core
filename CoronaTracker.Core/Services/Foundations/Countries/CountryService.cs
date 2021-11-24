@@ -29,9 +29,7 @@ namespace CoronaTracker.Core.Services.Foundations.Countries
             return await this.storageBroker.InsertCountryAsync(country);
         });
 
-        public IQueryable<Country> RetrieveAllCountries()
-        {
-            return this.storageBroker.SelectAllCountries();
-        }
+        public IQueryable<Country> RetrieveAllCountries() =>
+        TryCatch(() => this.storageBroker.SelectAllCountries());
     }
 }
