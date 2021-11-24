@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using CoronaTracker.Core.Models.Countries;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
@@ -20,6 +21,14 @@ namespace CoronaTracker.Core.Brokers.Storages
             await broker.SaveChangesAsync();
 
             return countryEntityEntry.Entity;
+        }
+
+        public IQueryable<Country> SelectAllCountries()
+        {
+            using var broker = 
+                new StorageBroker(this.counfiguration);
+
+            return broker.Countries;
         }
     }
 }
