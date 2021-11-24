@@ -26,7 +26,7 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.ExternalCountries
                     failedExternalCountryDependencyException);
 
             this.apiBrokerMock.Setup(broker =>
-                broker.GetAllCountriesAsync())
+                broker.GetAllExternalCountriesAsync())
                 .ThrowsAsync(criticalDependencyException);
 
             // when
@@ -38,7 +38,7 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.ExternalCountries
                 getAllExternalCountriesTask.AsTask());
 
             this.apiBrokerMock.Verify(broker =>
-                broker.GetAllCountriesAsync(),
+                broker.GetAllExternalCountriesAsync(),
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
@@ -63,7 +63,7 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.ExternalCountries
                 new ExternalCountryDependencyException(failedExternalCountryDependencyException);
 
             this.apiBrokerMock.Setup(broker =>
-                broker.GetAllCountriesAsync())
+                broker.GetAllExternalCountriesAsync())
                 .ThrowsAsync(dependencyApiException);
 
             // when
@@ -75,7 +75,7 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.ExternalCountries
                 getAllExternalCountriesTask.AsTask());
 
             this.apiBrokerMock.Verify(broker =>
-                broker.GetAllCountriesAsync(),
+                broker.GetAllExternalCountriesAsync(),
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
@@ -100,7 +100,7 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.ExternalCountries
                 new ExternalCountryServiceException(failedExternalCountryServiceException);
 
             this.apiBrokerMock.Setup(broker =>
-                broker.GetAllCountriesAsync())
+                broker.GetAllExternalCountriesAsync())
                     .ThrowsAsync(serviceException);
 
             // when
@@ -112,7 +112,7 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.ExternalCountries
                 getAllExternalCountriesTask.AsTask());
 
             this.apiBrokerMock.Verify(broker =>
-                broker.GetAllCountriesAsync(),
+                broker.GetAllExternalCountriesAsync(),
                     Times.Once());
 
             this.loggingBrokerMock.Verify(broker =>
