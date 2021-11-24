@@ -31,7 +31,7 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.ExternalCountries
 
             // when
             ValueTask<List<ExternalCountry>> getAllExternalCountriesTask =
-                this.externalCountryService.RetrieveAllCountriesAsync();
+                this.externalCountryService.RetrieveAllExternalCountriesAsync();
 
             // then
             await Assert.ThrowsAsync<ExternalCountryDependencyException>(() =>
@@ -68,7 +68,7 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.ExternalCountries
 
             // when
             ValueTask<List<ExternalCountry>> getAllExternalCountriesTask =
-                this.externalCountryService.RetrieveAllCountriesAsync();
+                this.externalCountryService.RetrieveAllExternalCountriesAsync();
 
             // then
             await Assert.ThrowsAsync<ExternalCountryDependencyException>(() =>
@@ -105,7 +105,7 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.ExternalCountries
 
             // when
             ValueTask<List<ExternalCountry>> getAllExternalCountriesTask =
-                this.externalCountryService.RetrieveAllCountriesAsync();
+                this.externalCountryService.RetrieveAllExternalCountriesAsync();
 
             // then
             await Assert.ThrowsAsync<ExternalCountryServiceException>(() =>

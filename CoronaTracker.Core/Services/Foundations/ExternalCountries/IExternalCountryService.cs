@@ -6,6 +6,6 @@ namespace CoronaTracker.Core.Services.Foundations.ExternalCountries
 {
     public interface IExternalCountryService
     {
-        ValueTask<List<ExternalCountry>> RetrieveAllCountriesAsync();
+        ValueTask<List<ExternalCountry>> RetrieveAllExternalCountriesAsync();
     }
 }
