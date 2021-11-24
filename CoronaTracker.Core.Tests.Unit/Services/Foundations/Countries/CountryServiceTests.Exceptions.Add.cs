@@ -19,11 +19,11 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.Countries
             Country someCountry = CreateRandomCountry();
             SqlException sqlException = GetSqlException();
 
-            var failedCountryException =
+            var failedCountryStorageException =
                 new FailedCountryStorageException(sqlException);
 
             var expectedCountryDependencyException =
-                new CountryDependencyException(failedCountryException);
+                new CountryDependencyException(failedCountryStorageException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTimeOffset())
@@ -56,7 +56,7 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.Countries
         }
 
         [Fact]
-        public async Task ShouldThrowDependencyValidationExceptionOnAddIfCountryAlreadyExsitsAndLogItAsync()
+        public async Task ShouldThrowDependencyValidationExceptionOnAddIfCountryAlreadyExistsAndLogItAsync()
         {
             // given
             Country randomCountry = CreateRandomCountry();
@@ -88,18 +88,18 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.Countries
                 broker.GetCurrentDateTimeOffset(),
                     Times.Once);
 
-            this.storageBrokerMock.Verify(broker =>
-                broker.InsertCountryAsync(It.IsAny<Country>()),
-                    Times.Never);
-
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(
                     expectedCountryDependencyValidationException))),
                         Times.Once);
 
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertCountryAsync(It.IsAny<Country>()),
+                    Times.Never);
+
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
@@ -133,22 +133,22 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.Countries
                broker.GetCurrentDateTimeOffset(),
                    Times.Once);
 
-            this.storageBrokerMock.Verify(broker =>
-                broker.InsertCountryAsync(It.IsAny<Country>()),
-                    Times.Never);
-
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(
                     expectedCountryDependencyException))),
                         Times.Once);
 
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertCountryAsync(It.IsAny<Country>()),
+                    Times.Never);
+
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
-        public async Task ShouldThrowServiceExceptionOnAddIfDatabaseErrorOccursAndLogItAsync()
+        public async Task ShouldThrowServiceExceptionOnAddIfServiceErrorOccursAndLogItAsync()
         {
             // given
             Country someCountry = CreateRandomCountry();
@@ -176,18 +176,18 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.Countries
                broker.GetCurrentDateTimeOffset(),
                    Times.Once);
 
-            this.storageBrokerMock.Verify(broker =>
-                broker.InsertCountryAsync(It.IsAny<Country>()),
-                    Times.Never);
-
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(
                     expectedCountryServiceException))),
                         Times.Once);
 
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertCountryAsync(It.IsAny<Country>()),
+                    Times.Never);
+
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
         }
     }
 }

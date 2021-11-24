@@ -1,11 +1,10 @@
-﻿using System;
-using Xeptions;
+﻿using Xeptions;
 
 namespace CoronaTrackerHungary.Web.Api.Models.Countries.Exceptions
 {
     public class ExternalCountryServiceException : Xeption
     {
-        public ExternalCountryServiceException(Exception innerException)
+        public ExternalCountryServiceException(Xeption innerException)
             : base(message: "External country service error occurred, contact support.", innerException)
         { }
     }

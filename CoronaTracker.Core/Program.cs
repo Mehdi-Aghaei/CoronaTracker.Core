@@ -12,9 +12,7 @@ namespace CoronaTracker.Core
         {
             return Host.CreateDefaultBuilder(args)
                .ConfigureWebHostDefaults(webBuilder =>
-               {
-                   webBuilder.UseStartup<Startup>();
-               });
+                   webBuilder.UseStartup<Startup>());
         }
     }
 }

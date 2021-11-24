@@ -20,6 +20,7 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.Countries
         private readonly Mock<IDateTimeBroker> dateTimeBrokerMock;
         private readonly Mock<ILoggingBroker> loggingBrokerMock;
         private readonly ICountryService countryService;
+
         public CountryServiceTests()
         {
             this.storageBrokerMock = new Mock<IStorageBroker>();
@@ -65,7 +66,7 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.Countries
         private static DateTimeOffset GetRandomDateTimeOffset() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
-        private static Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)
+        private static Expression<Func<Xeption, bool>> SameExceptionAs(Xeption expectedException)
         {
 
             return actualException =>

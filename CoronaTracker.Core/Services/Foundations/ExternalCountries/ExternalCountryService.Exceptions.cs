@@ -14,7 +14,8 @@ namespace CoronaTracker.Core.Services.Foundations.ExternalCountries
     {
         private delegate ValueTask<List<ExternalCountry>> ReturningExternalCountriesFunction();
 
-        private async ValueTask<List<ExternalCountry>> TryCatch(ReturningExternalCountriesFunction returningExternalCountriesFunction)
+        private async ValueTask<List<ExternalCountry>>
+        TryCatch(ReturningExternalCountriesFunction returningExternalCountriesFunction)
         {
             try
             {
@@ -36,10 +37,10 @@ namespace CoronaTracker.Core.Services.Foundations.ExternalCountries
             }
             catch (HttpResponseUnauthorizedException httpResponseUnauthorizedException)
             {
-                var failedExternalCountryDependencyExcpetion =
+                var failedExternalCountryDependencyException =
                     new FailedExternalCountryDependencyException(httpResponseUnauthorizedException);
 
-                throw CreateAndLogCriticalDependencyException(failedExternalCountryDependencyExcpetion);
+                throw CreateAndLogCriticalDependencyException(failedExternalCountryDependencyException);
             }
             catch (HttpResponseInternalServerErrorException httpResponseInternalServerErrorException)
             {
@@ -85,7 +86,7 @@ namespace CoronaTracker.Core.Services.Foundations.ExternalCountries
             return externalCountryDependencyException;
         }
 
-        private ExternalCountryServiceException CreateAndLogServiceException(Exception exception)
+        private ExternalCountryServiceException CreateAndLogServiceException(Xeption exception)
         {
             var externalCountryServiceException =
                 new ExternalCountryServiceException(exception);

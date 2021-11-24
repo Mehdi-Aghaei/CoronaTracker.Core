@@ -21,7 +21,6 @@ namespace CoronaTracker.Core.Services.Foundations.Countries
             }
             catch (NullCountryException nullCountryException)
             {
-
                 throw CreateAndLogValidationException(nullCountryException);
             }
             catch (InvalidCountryException invalidCountryInputException)
@@ -71,19 +70,19 @@ namespace CoronaTracker.Core.Services.Foundations.Countries
 
         private CountryDependencyException CreateAndLogCriticalDependencyException(Xeption exception)
         {
-            var countryDependencyExceptin = new CountryDependencyException(exception);
+            var countryDependencyException = new CountryDependencyException(exception);
 
-            this.loggingBroker.LogCritical(countryDependencyExceptin);
+            this.loggingBroker.LogCritical(countryDependencyException);
 
-            return countryDependencyExceptin;
+            return countryDependencyException;
         }
         private CountryDependencyException CreateAndLogDependencyException(Xeption exception)
         {
-            var countryDependencyExceptin = new CountryDependencyException(exception);
+            var countryDependencyException = new CountryDependencyException(exception);
 
-            this.loggingBroker.LogError(countryDependencyExceptin);
+            this.loggingBroker.LogError(countryDependencyException);
 
-            return countryDependencyExceptin;
+            return countryDependencyException;
         }
 
         private CountryValidationException CreateAndLogValidationException(Xeption exception)
@@ -95,10 +94,11 @@ namespace CoronaTracker.Core.Services.Foundations.Countries
 
             return countryValidationException;
         }
-        private CountryServiceException CreateAndLogServiceException(Exception exception)
+        private CountryServiceException CreateAndLogServiceException(Xeption exception)
         {
             var countryServiceException =
                 new CountryServiceException(exception);
+
             this.loggingBroker.LogError(countryServiceException);
 
             return countryServiceException;
