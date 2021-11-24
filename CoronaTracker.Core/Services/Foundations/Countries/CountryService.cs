@@ -31,7 +31,7 @@ namespace CoronaTracker.Core.Services.Foundations.Countries
 
         public IQueryable<Country> RetrieveAllCountries()
         {
-            throw new System.NotImplementedException();
+            return this.storageBroker.SelectAllCountries();
         }
     }
 }
