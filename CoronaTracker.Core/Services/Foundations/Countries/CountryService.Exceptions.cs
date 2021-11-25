@@ -12,8 +12,8 @@ namespace CoronaTracker.Core.Services.Foundations.Countries
 {
     public partial class CountryService
     {
-        private delegate ValueTask<Country> ReturningCountryFunction();
         private delegate IQueryable<Country> ReturningCountriesFunction();
+        private delegate ValueTask<Country> ReturningCountryFunction();
 
         private async ValueTask<Country> TryCatch(ReturningCountryFunction returningCountryFunction)
         {
@@ -70,6 +70,13 @@ namespace CoronaTracker.Core.Services.Foundations.Countries
                 var failedCountryStorageException =
                     new FailedCountryStorageException(sqlException);
                 throw CreateAndLogCriticalDependencyException(failedCountryStorageException);
+            }
+            catch (Exception exception)
+            {
+                var failedCountryServiceException =
+                   new FailedCountryServiceException(exception);
+
+                throw CreateAndLogServiceException(failedCountryServiceException);
             }
         }
 

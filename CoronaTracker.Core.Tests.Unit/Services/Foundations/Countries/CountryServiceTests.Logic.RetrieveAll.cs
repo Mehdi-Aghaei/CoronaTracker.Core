@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using CoronaTracker.Core.Models.Countries;
 using FluentAssertions;
 using Force.DeepCloner;
@@ -32,7 +28,7 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.Countries
             // then
             actualCountries.Should().BeEquivalentTo(expectedCounries);
 
-            this.storageBrokerMock.Verify(broker => 
+            this.storageBrokerMock.Verify(broker =>
                 broker.SelectAllCountries(),
                     Times.Once);
 
