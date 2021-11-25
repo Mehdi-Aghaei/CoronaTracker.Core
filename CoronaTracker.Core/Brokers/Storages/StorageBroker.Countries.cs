@@ -30,5 +30,18 @@ namespace CoronaTracker.Core.Brokers.Storages
 
             return broker.Countries;
         }
+
+        public async ValueTask<Country> UpdateCountryAsync(Country country)
+        {
+            using var broker =
+                new StorageBroker(this.counfiguration);
+
+            EntityEntry<Country> countryEntityEntry =
+                broker.Countries.Update(country);
+
+            await broker.SaveChangesAsync();
+
+            return countryEntityEntry.Entity;
+        }
     }
 }

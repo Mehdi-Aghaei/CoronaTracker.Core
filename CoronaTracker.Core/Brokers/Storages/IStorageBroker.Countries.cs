@@ -8,5 +8,6 @@ namespace CoronaTracker.Core.Brokers.Storages
     {
         ValueTask<Country> InsertCountryAsync(Country country);
         IQueryable<Country> SelectAllCountries();
+        ValueTask<Country> UpdateCountryAsync(Country country);
     }
 }
