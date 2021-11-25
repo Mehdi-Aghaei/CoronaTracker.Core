@@ -25,7 +25,7 @@ namespace CoronaTracker.Core.Brokers.Storages
 
         public IQueryable<Country> SelectAllCountries()
         {
-            using var broker = 
+            using var broker =
                 new StorageBroker(this.counfiguration);
 
             return broker.Countries;

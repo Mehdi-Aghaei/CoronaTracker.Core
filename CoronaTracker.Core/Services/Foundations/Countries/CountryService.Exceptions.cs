@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using CoronaTracker.Core.Models.Countries;
 using CoronaTracker.Core.Models.Countries.Exceptions;
@@ -11,6 +12,7 @@ namespace CoronaTracker.Core.Services.Foundations.Countries
 {
     public partial class CountryService
     {
+        private delegate IQueryable<Country> ReturningCountriesFunction();
         private delegate ValueTask<Country> ReturningCountryFunction();
 
         private async ValueTask<Country> TryCatch(ReturningCountryFunction returningCountryFunction)
@@ -52,6 +54,27 @@ namespace CoronaTracker.Core.Services.Foundations.Countries
             {
                 var failedCountryServiceException =
                     new FailedCountryServiceException(exception);
+
+                throw CreateAndLogServiceException(failedCountryServiceException);
+            }
+        }
+
+        private IQueryable<Country> TryCatch(ReturningCountriesFunction returningCountriesFunction)
+        {
+            try
+            {
+                return returningCountriesFunction();
+            }
+            catch (SqlException sqlException)
+            {
+                var failedCountryStorageException =
+                    new FailedCountryStorageException(sqlException);
+                throw CreateAndLogCriticalDependencyException(failedCountryStorageException);
+            }
+            catch (Exception exception)
+            {
+                var failedCountryServiceException =
+                   new FailedCountryServiceException(exception);
 
                 throw CreateAndLogServiceException(failedCountryServiceException);
             }

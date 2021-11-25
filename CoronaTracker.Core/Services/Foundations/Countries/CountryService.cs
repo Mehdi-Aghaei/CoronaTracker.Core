@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using CoronaTracker.Core.Brokers.DateTimes;
 using CoronaTracker.Core.Brokers.Loggings;
 using CoronaTracker.Core.Brokers.Storages;
@@ -27,5 +28,8 @@ namespace CoronaTracker.Core.Services.Foundations.Countries
 
             return await this.storageBroker.InsertCountryAsync(country);
         });
+
+        public IQueryable<Country> RetrieveAllCountries() =>
+        TryCatch(() => this.storageBroker.SelectAllCountries());
     }
 }
