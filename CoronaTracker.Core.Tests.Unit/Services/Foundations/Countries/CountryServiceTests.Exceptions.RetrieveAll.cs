@@ -49,5 +49,45 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.Countries
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public void ShouldThrowServiceExceptionOnRetrieveAllIfServiceErrorOccursAndLogIt()
+        {
+            // given
+            string exceptionMessage = GetRandomMessage();
+
+            var serviceException = new Exception(exceptionMessage);
+
+            var failedCountryServiceException =
+                new FailedCountryServiceException(serviceException);
+
+            var expectedCountryServiceException =
+                new CountryServiceException(failedCountryServiceException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectAllCountries())
+                    .Throws(serviceException);
+
+            // when
+            Action retrieveAllCountriesAction = () =>
+                this.countryService.RetrieveAllCountries();
+
+            // then
+            Assert.Throws<CountryServiceException>(
+                retrieveAllCountriesAction);
+
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectAllCountries(),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedCountryServiceException))),
+                        Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
