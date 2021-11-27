@@ -36,6 +36,10 @@ namespace CoronaTracker.Core.Services.Foundations.Countries
 
                 throw CreateAndLogCriticalDependencyException(failedCountryStorageException);
             }
+            catch (NotFoundCountryException notFoundCountryException)
+            {
+                throw CreateAndLogValidationException(notFoundCountryException);
+            }
             catch (DuplicateKeyException duplicateKeyException)
             {
                 var alreadyExistsCountryException =
