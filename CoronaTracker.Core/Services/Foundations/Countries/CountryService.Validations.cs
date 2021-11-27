@@ -29,6 +29,11 @@ namespace CoronaTracker.Core.Services.Foundations.Countries
             );
         }
 
+        private void ValidateCountryOnModify(Country country)
+        {
+            ValidateCountryIsNotNull(country);
+        }
+
         private void ValidateCountryId(Guid countryId) =>
             Validate((Rule: IsInvalid(countryId), Parameter: nameof(Country.Id)));
 
