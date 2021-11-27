@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using CoronaTracker.Core.Models.Countries;
 using Microsoft.EntityFrameworkCore;
@@ -29,6 +30,14 @@ namespace CoronaTracker.Core.Brokers.Storages
                 new StorageBroker(this.counfiguration);
 
             return broker.Countries;
+        }
+
+        public async ValueTask<Country> SelectCountryByIdAsync(Guid countryId)
+        {
+            using var broker =
+                new StorageBroker(this.counfiguration);
+
+            return await broker.Countries.FindAsync(countryId);
         }
 
         public async ValueTask<Country> UpdateCountryAsync(Country country)
