@@ -33,9 +33,7 @@ namespace CoronaTracker.Core.Services.Foundations.Countries
         public IQueryable<Country> RetrieveAllCountries() =>
         TryCatch(() => this.storageBroker.SelectAllCountries());
 
-        public ValueTask<Country> RetrieveCountryByIdAsync(Guid countryId)
-        {
-            throw new NotImplementedException();
-        }
+        public ValueTask<Country> RetrieveCountryByIdAsync(Guid countryId) =>
+            this.storageBroker.SelectCountryByIdAsync(countryId);
     }
 }
