@@ -1,4 +1,9 @@
-﻿using System;
+﻿// ---------------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
+// FREE TO USE TO CONNECT THE WORLD
+// ---------------------------------------------------------------
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -47,6 +52,45 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.Countries
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
+        
+        [Fact]
+        public async Task ShouldThrowNotFoundExceptionOnRetrieveByIdIfCountryIsNotFoundAndLogItAsyn()
+        {
+            // given
+            Guid someCountryId = Guid.NewGuid();
+            Country noCountry = null;
+
+            var notFoundCountryException =
+                new NotFoundCountryException(someCountryId);
+
+            var expectedCountryValidationException =
+                new CountryValidationException(notFoundCountryException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectCountryByIdAsync(someCountryId))
+                    .ReturnsAsync(noCountry);
+
+            // when
+            ValueTask<Country> retrieveByIdCountryTask =
+                this.countryService.RetrieveCountryByIdAsync(someCountryId);
+
+            // then
+            await Assert.ThrowsAsync<CountryValidationException>(() =>
+                retrieveByIdCountryTask.AsTask());
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectCountryByIdAsync(someCountryId),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedCountryValidationException))),
+                        Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
     }
