@@ -17,18 +17,12 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.Countries
         public async Task ShouldModifyCountryAsync()
         {
             // given
-            DateTimeOffset randomDate = GetRandomDateTimeOffset();
-            Country randomCountry = CreateRandomCountry(randomDate);
+            Country randomCountry = CreateRandomCountry();
             Country inputCountry = randomCountry;
             Country storageCountry = inputCountry.DeepClone();
-            storageCountry.UpdatedDate = randomCountry.CreatedDate;
             Country updatedCountry = inputCountry;
             Country expectedCountry = updatedCountry.DeepClone();
             Guid countryId = inputCountry.Id;
-
-            this.dateTimeBrokerMock.Setup(broker =>
-               broker.GetCurrentDateTimeOffset())
-                   .Returns(randomDate);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectCountryByIdAsync(countryId))
@@ -45,14 +39,10 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.Countries
             // then
             actualCountry.Should().BeEquivalentTo(expectedCountry);
 
-            this.dateTimeBrokerMock.Verify(broker =>
-                broker.GetCurrentDateTimeOffset(),
-                    Times.Once);
-            
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectCountryByIdAsync(countryId),
                     Times.Once);
-
+            
             this.storageBrokerMock.Verify(broker =>
                 broker.UpdateCountryAsync(inputCountry),
                     Times.Once);
