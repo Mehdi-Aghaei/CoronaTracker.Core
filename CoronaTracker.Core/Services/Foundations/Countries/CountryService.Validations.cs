@@ -32,9 +32,9 @@ namespace CoronaTracker.Core.Services.Foundations.Countries
         private void ValidateCountryId(Guid countryId) =>
             Validate((Rule: IsInvalid(countryId), Parameter: nameof(Country.Id)));
 
-        private static void ValidateStorageCountry(Country maybeCountry,Guid countryId)
+        private static void ValidateStorageCountry(Country maybeCountry, Guid countryId)
         {
-            if( maybeCountry is null)
+            if (maybeCountry is null)
             {
                 throw new NotFoundCountryException(countryId);
             }
@@ -47,7 +47,7 @@ namespace CoronaTracker.Core.Services.Foundations.Countries
                 throw new NullCountryException();
             }
         }
-   
+
         private static dynamic IsInvalid(Guid id) => new
         {
             Condition = id == Guid.Empty,

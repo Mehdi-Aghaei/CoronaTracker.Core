@@ -36,7 +36,7 @@ namespace CoronaTracker.Core.Services.Foundations.Countries
 
                 throw CreateAndLogCriticalDependencyException(failedCountryStorageException);
             }
-            catch(NotFoundCountryException notFoundCountryException)
+            catch (NotFoundCountryException notFoundCountryException)
             {
                 throw CreateAndLogValidationException(notFoundCountryException);
             }

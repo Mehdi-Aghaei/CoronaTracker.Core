@@ -4,9 +4,6 @@
 // ---------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using CoronaTracker.Core.Models.Countries;
 using CoronaTracker.Core.Models.Countries.Exceptions;
@@ -18,7 +15,7 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.Countries
     public partial class CountryServiceTests
     {
         [Fact]
-        public async Task ShouldThrowValidationExceptionOnRetrieveByIdIfIdIsInvalidAndLogItAsync() 
+        public async Task ShouldThrowValidationExceptionOnRetrieveByIdIfIdIsInvalidAndLogItAsync()
         {
             // given
             Guid invalidCountryId = Guid.Empty;
@@ -54,7 +51,7 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.Countries
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
-        
+
         [Fact]
         public async Task ShouldThrowNotFoundExceptionOnRetrieveByIdIfCountryIsNotFoundAndLogItAsyn()
         {

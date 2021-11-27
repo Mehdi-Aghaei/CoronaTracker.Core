@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using CoronaTracker.Core.Models.Countries;
 using FluentAssertions;
@@ -34,7 +31,7 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.Countries
             actualCountry.Should().BeEquivalentTo(expectedCountry);
 
             this.storageBrokerMock.Verify(brokers =>
-                brokers.SelectCountryByIdAsync(inputCountryId), 
+                brokers.SelectCountryByIdAsync(inputCountryId),
                     Times.Once);
 
             this.storageBrokerMock.VerifyNoOtherCalls();
