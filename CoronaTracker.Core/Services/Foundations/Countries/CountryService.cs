@@ -46,9 +46,12 @@ namespace CoronaTracker.Core.Services.Foundations.Countries
             return maybeCountry;
         });
 
-        public ValueTask<Country> ModifyCountryAsync(Country country)
+        public async ValueTask<Country> ModifyCountryAsync(Country country)
         {
-            throw new NotImplementedException();
+            Country maybeCountry = await this.storageBroker
+                .SelectCountryByIdAsync(country.Id);
+
+            return await this.storageBroker.UpdateCountryAsync(country);
         }
     }
 }
