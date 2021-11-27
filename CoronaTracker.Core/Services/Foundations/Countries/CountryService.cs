@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using CoronaTracker.Core.Brokers.DateTimes;
 using CoronaTracker.Core.Brokers.Loggings;
@@ -31,5 +32,10 @@ namespace CoronaTracker.Core.Services.Foundations.Countries
 
         public IQueryable<Country> RetrieveAllCountries() =>
         TryCatch(() => this.storageBroker.SelectAllCountries());
+
+        public ValueTask<Country> RetrieveCountryByIdAsync(Guid countryId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
