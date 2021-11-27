@@ -10,5 +10,6 @@ namespace CoronaTracker.Core.Services.Foundations.Countries
         ValueTask<Country> AddCountryAsync(Country country);
         ValueTask<Country> RetrieveCountryByIdAsync(Guid countryId);
         IQueryable<Country> RetrieveAllCountries();
+        ValueTask<Country> ModifyCountryAsync(Country country);
     }
 }

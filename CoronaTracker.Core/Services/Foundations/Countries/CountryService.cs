@@ -45,5 +45,10 @@ namespace CoronaTracker.Core.Services.Foundations.Countries
 
             return maybeCountry;
         });
+
+        public ValueTask<Country> ModifyCountryAsync(Country country)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
