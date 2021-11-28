@@ -54,6 +54,8 @@ namespace CoronaTracker.Core.Services.Foundations.Countries
             Country maybeCountry = await this.storageBroker
                 .SelectCountryByIdAsync(country.Id);
 
+            ValidateStorageCountry(maybeCountry,country.Id);
+
             return await this.storageBroker.UpdateCountryAsync(country);
         });
     }
