@@ -1,4 +1,9 @@
-﻿using Newtonsoft.Json;
+﻿// ---------------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
+// FREE TO USE TO CONNECT THE WORLD
+// ---------------------------------------------------------------
+
+using Newtonsoft.Json;
 
 namespace CoronaTracker.Core.Models.ExternalCountries
 {

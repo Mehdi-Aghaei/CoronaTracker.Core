@@ -9,7 +9,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoronaTracker.Core.Infrastr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoronaTracker.Core.Tests.Unit", "CoronaTracker.Core.Tests.Unit\CoronaTracker.Core.Tests.Unit.csproj", "{4F2A2A6C-E491-4891-88AF-5BF6AEC1F25C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoronaTracker.Core.Tests.Acceptance", "CoronaTracker.Core.Tests.Acceptance\CoronaTracker.Core.Tests.Acceptance.csproj", "{3CAE7911-E6EE-43FB-BC95-ABF5127FE183}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoronaTracker.Core.Tests.Acceptance", "CoronaTracker.Core.Tests.Acceptance\CoronaTracker.Core.Tests.Acceptance.csproj", "{3CAE7911-E6EE-43FB-BC95-ABF5127FE183}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B2C9782F-A1C2-41C9-8AC9-95E2D1CD130F}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
