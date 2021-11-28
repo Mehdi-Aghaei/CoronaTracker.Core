@@ -210,5 +210,57 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.Countries
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async Task ShouldThrowValidationExceptionOnModifyIfCountryDoesNotExistAndLogItAsync()
+        {
+            // given
+            int randomNegativeMinutes = GetRandomNegativeNumber();
+            DateTimeOffset dateTime = GetRandomDateTimeOffset();
+            Country randomCountry = CreateRandomCountry(dateTime);
+            Country nonExistCountry = randomCountry;
+            nonExistCountry.CreatedDate = dateTime.AddMinutes(randomNegativeMinutes);
+            Country nullCountry = null;
+
+            var notFoundCountryException =
+                new NotFoundCountryException(nonExistCountry.Id);
+
+            var expectedCountryValidationException =
+                new CountryValidationException(notFoundCountryException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectCountryByIdAsync(nonExistCountry.Id))
+                .ReturnsAsync(nullCountry);
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTimeOffset())
+                .Returns(dateTime);
+
+            // when 
+            ValueTask<Country> modifyCountryTask =
+                this.countryService.ModifyCountryAsync(nonExistCountry);
+
+            // then
+            await Assert.ThrowsAsync<CountryValidationException>(() =>
+                modifyCountryTask.AsTask());
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectCountryByIdAsync(nonExistCountry.Id),
+                    Times.Once);
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTimeOffset(),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedCountryValidationException))),
+                        Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+        }
+
     }
 }
