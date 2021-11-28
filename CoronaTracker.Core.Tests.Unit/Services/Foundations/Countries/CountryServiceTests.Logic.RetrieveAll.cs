@@ -1,4 +1,9 @@
-﻿using System.Linq;
+﻿// ---------------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
+// FREE TO USE TO CONNECT THE WORLD
+// ---------------------------------------------------------------
+
+using System.Linq;
 using CoronaTracker.Core.Models.Countries;
 using FluentAssertions;
 using Force.DeepCloner;
