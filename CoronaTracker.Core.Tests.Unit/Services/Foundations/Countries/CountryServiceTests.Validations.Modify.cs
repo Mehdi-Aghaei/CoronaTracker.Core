@@ -85,7 +85,7 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.Countries
                 key: nameof(Country.UpdatedDate),
                 values: new[] {
                     "Date is required",
-                    $"Date is the same as {nameof(Country.CreatedDate)}" 
+                    $"Date is the same as {nameof(Country.CreatedDate)}"
                 });
 
             var expectedCountryValidationException =
@@ -114,7 +114,7 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.Countries
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls(); 
+            this.storageBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
@@ -306,7 +306,7 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.Countries
                     Times.Once);
 
             this.dateTimeBrokerMock.Verify(broker =>
-                broker.GetCurrentDateTimeOffset(), 
+                broker.GetCurrentDateTimeOffset(),
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>

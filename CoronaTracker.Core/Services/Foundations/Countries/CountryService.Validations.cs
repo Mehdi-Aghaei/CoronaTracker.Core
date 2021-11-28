@@ -10,8 +10,7 @@ namespace CoronaTracker.Core.Services.Foundations.Countries
         {
             ValidateCountryIsNotNull(country);
 
-            Validate
-            (
+            Validate(
                 (Rule: IsInvalid(country.Id), Parameter: nameof(country.Id)),
                 (Rule: IsInvalid(country.Name), Parameter: nameof(country.Name)),
                 (Rule: IsInvalid(country.Iso3), Parameter: nameof(country.Iso3)),
@@ -20,38 +19,36 @@ namespace CoronaTracker.Core.Services.Foundations.Countries
                 (Rule: IsInvalid(country.UpdatedDate), Parameter: nameof(country.UpdatedDate)),
 
                 (Rule: IsNotSame(
-                    firstDate: country.CreatedDate,
-                    secondDate: country.UpdatedDate,
+                    firstDate: country.UpdatedDate,
+                    secondDate: country.CreatedDate,
                     secondDateName: nameof(country.CreatedDate)),
                 Parameter: nameof(country.UpdatedDate)),
 
-                (Rule: IsNotRecent(country.CreatedDate), Parameter: nameof(country.CreatedDate))
-            );
+                (Rule: IsNotRecent(country.CreatedDate), Parameter: nameof(country.CreatedDate)));
         }
 
         private void ValidateCountryOnModify(Country country)
         {
             ValidateCountryIsNotNull(country);
 
-            Validate
-            (
+            Validate(
                 (Rule: IsInvalid(country.Id), Parameter: nameof(country.Id)),
                 (Rule: IsInvalid(country.Name), Parameter: nameof(country.Name)),
                 (Rule: IsInvalid(country.Iso3), Parameter: nameof(country.Iso3)),
                 (Rule: IsInvalid(country.Continent), Parameter: nameof(country.Continent)),
                 (Rule: IsInvalid(country.CreatedDate), Parameter: nameof(country.CreatedDate)),
                 (Rule: IsInvalid(country.UpdatedDate), Parameter: nameof(country.UpdatedDate)),
-                (Rule: IsNotRecent(country.UpdatedDate), Parameter: nameof(country.UpdatedDate)),
 
                 (Rule: IsSame(
                     firstDate: country.UpdatedDate,
-                    secondDate:country.CreatedDate,
-                    secondDateName:nameof(country.CreatedDate)),
-                Parameter: nameof(country.UpdatedDate))
-            );
+                    secondDate: country.CreatedDate,
+                    secondDateName: nameof(country.CreatedDate)),
+                Parameter: nameof(country.UpdatedDate)),
+
+                (Rule: IsNotRecent(country.UpdatedDate), Parameter: nameof(country.UpdatedDate)));
         }
 
-        private void ValidateCountryId(Guid countryId) =>
+        public void ValidateCountryId(Guid countryId) =>
             Validate((Rule: IsInvalid(countryId), Parameter: nameof(Country.Id)));
 
         private static void ValidateStorageCountry(Country maybeCountry, Guid countryId)
@@ -62,7 +59,7 @@ namespace CoronaTracker.Core.Services.Foundations.Countries
             }
         }
 
-        private void ValidateCountryIsNotNull(Country country)
+        private static void ValidateCountryIsNotNull(Country country)
         {
             if (country is null)
             {
@@ -78,33 +75,9 @@ namespace CoronaTracker.Core.Services.Foundations.Countries
 
         private static dynamic IsInvalid(string text) => new
         {
-            Condition = string.IsNullOrWhiteSpace(text),
+            Condition = String.IsNullOrWhiteSpace(text),
             Message = "Text is required"
         };
-
-        private static dynamic IsInvalid(DateTimeOffset date) => new
-        {
-            Condition = date == default,
-            Message = "Date is required"
-        };
-
-        private dynamic IsNotRecent(
-            DateTimeOffset date) => new
-            {
-                Condition = IsDateNotRecent(date),
-                Message = $"Date is not recent"
-            };
-
-        private bool IsDateNotRecent(DateTimeOffset date)
-        {
-            DateTimeOffset currentDateTime =
-                this.dateTimeBroker.GetCurrentDateTimeOffset();
-
-            TimeSpan timeDiffrence = currentDateTime.Subtract(date);
-            TimeSpan oneMinute = TimeSpan.FromMinutes(1);
-
-            return timeDiffrence.Duration() > oneMinute;
-        }
 
         private static dynamic IsNotSame(
             DateTimeOffset firstDate,
@@ -116,13 +89,52 @@ namespace CoronaTracker.Core.Services.Foundations.Countries
             };
 
         private static dynamic IsSame(
-           DateTimeOffset firstDate,
-           DateTimeOffset secondDate,
-           string secondDateName) => new
-           {
-               Condition = firstDate == secondDate,
-               Message = $"Date is the same as {secondDateName}"
-           };
+            DateTimeOffset firstDate,
+            DateTimeOffset secondDate,
+            string secondDateName) => new
+            {
+                Condition = firstDate == secondDate,
+                Message = $"Date is the same as {secondDateName}"
+            };
+
+        private dynamic IsNotRecent(DateTimeOffset date) => new
+        {
+            Condition = IsDateNotRecent(date),
+            Message = "Date is not recent"
+        };
+
+        private bool IsDateNotRecent(DateTimeOffset date)
+        {
+            DateTimeOffset currentDateTime =
+                this.dateTimeBroker.GetCurrentDateTimeOffset();
+
+            TimeSpan timeDifference = currentDateTime.Subtract(date);
+            TimeSpan oneMinute = TimeSpan.FromMinutes(1);
+
+            return timeDifference.Duration() > oneMinute;
+        }
+
+        private static dynamic IsInvalid(DateTimeOffset date) => new
+        {
+            Condition = date == default,
+            Message = "Date is required"
+        };
+
+        private static void ValidateAginstStorageCountryOnModify(Country inputCountry, Country storageCountry)
+        {
+            Validate(
+                (Rule: IsNotSame(
+                    firstDate: inputCountry.CreatedDate,
+                    secondDate: storageCountry.CreatedDate,
+                    secondDateName: nameof(Country.CreatedDate)),
+                Parameter: nameof(Country.CreatedDate)),
+
+                (Rule: IsSame(
+                    firstDate: inputCountry.UpdatedDate,
+                    secondDate: storageCountry.UpdatedDate,
+                    secondDateName: nameof(Country.UpdatedDate)),
+                Parameter: nameof(Country.UpdatedDate)));
+        }
 
         private static void Validate(params (dynamic Rule, string Parameter)[] validations)
         {
@@ -137,6 +149,7 @@ namespace CoronaTracker.Core.Services.Foundations.Countries
                         value: rule.Message);
                 }
             }
+
             invalidCountryException.ThrowIfContainsErrors();
         }
     }
