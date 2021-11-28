@@ -318,5 +318,59 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.Countries
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async Task ShouldThrowValidationExceptionOnModifyIfStorageUpdatedDateSameAsUpdatedDateAndLogItAsync()
+        {
+            // given
+            DateTimeOffset randomDateTime = GetRandomDateTimeOffset();
+            Country randomCountry = CreateRandomModifyCountry(randomDateTime);
+            Country invalidCountry = randomCountry;
+
+            Country storageCountry = randomCountry.DeepClone();
+            invalidCountry.UpdatedDate = storageCountry.UpdatedDate;
+
+            var invalidCountryException = new InvalidCountryException();
+
+            invalidCountryException.AddData(
+                key: nameof(Country.UpdatedDate),
+                values: $"Date is the same as {nameof(Country.UpdatedDate)}");
+
+            var expectedCountryValidationException =
+                new CountryValidationException(invalidCountryException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectCountryByIdAsync(invalidCountry.Id))
+                .ReturnsAsync(storageCountry);
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTimeOffset())
+                    .Returns(randomDateTime);
+
+            // when
+            ValueTask<Country> modifyCountryTask =
+                this.countryService.ModifyCountryAsync(invalidCountry);
+
+            // then
+            await Assert.ThrowsAsync<CountryValidationException>(() =>
+                modifyCountryTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTimeOffset(),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedCountryValidationException))),
+                        Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectCountryByIdAsync(invalidCountry.Id),
+                    Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
