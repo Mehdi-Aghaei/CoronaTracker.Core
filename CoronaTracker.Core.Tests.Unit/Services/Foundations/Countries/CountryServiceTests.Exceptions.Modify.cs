@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using CoronaTracker.Core.Models.Countries;
 using CoronaTracker.Core.Models.Countries.Exceptions;
 using Microsoft.Data.SqlClient;
@@ -147,6 +148,57 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.Countries
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async Task ShouldThrowServiceExceptionOnModifyIfServiceErrorOccursAndLogItAsync()
+        {
+            // given
+            int minuteInPast = GetRandomNegativeNumber();
+            DateTimeOffset randomDateTime = GetRandomDateTimeOffset();
+            Country randomCountry = CreateRandomCountry(randomDateTime);
+            Country someCountry = randomCountry;
+            someCountry.CreatedDate = randomDateTime.AddMinutes(minuteInPast);
+            var serviceException = new Exception();
+
+            var failedCountryException =
+                new FailedCountryServiceException(serviceException);
+
+            var expectedCountryServiceException =
+                new CountryServiceException(failedCountryException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectCountryByIdAsync(someCountry.Id))
+                    .ThrowsAsync(serviceException);
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTimeOffset())
+                    .Returns(randomDateTime);
+
+            // when
+            ValueTask<Country> modifyCountryTask =
+                this.countryService.ModifyCountryAsync(someCountry);
+
+            // then
+            await Assert.ThrowsAsync<CountryServiceException>(() =>
+                modifyCountryTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTimeOffset(),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectCountryByIdAsync(someCountry.Id),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedCountryServiceException))),
+                        Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
         }
     }
