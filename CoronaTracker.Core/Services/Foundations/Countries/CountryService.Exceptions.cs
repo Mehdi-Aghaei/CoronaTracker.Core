@@ -47,6 +47,12 @@ namespace CoronaTracker.Core.Services.Foundations.Countries
 
                 throw CreateAndLogDependencyValidationException(alreadyExistsCountryException);
             }
+            catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
+            {
+                var lockedCountryException = new LockedCountryException(dbUpdateConcurrencyException);
+
+                throw CreateAndLogDependencyValidationException(lockedCountryException);
+            }
             catch (DbUpdateException databaseUpdateException)
             {
                 var failedCountryStorageException =

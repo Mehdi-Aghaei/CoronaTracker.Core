@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Runtime.Serialization;
@@ -49,6 +50,17 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.Countries
         private static Country CreateRandomCountry() =>
             CreateCountryFiller(dates: GetRandomDateTimeOffset()).Create();
 
+        private static Country CreateRandomModifyCountry(DateTimeOffset dates)
+        {
+            int randomDaysInPast = GetRandomNegativeNumber();
+            Country randomCountry = CreateRandomCountry(dates);
+
+            randomCountry.CreatedDate =
+                randomCountry.CreatedDate.AddDays(randomDaysInPast);
+
+            return randomCountry;
+        }
+
         private static IQueryable<Country> CreateRandomCountries() =>
             CreateCountryFiller(dates: GetRandomDateTimeOffset())
                 .Create(count: GetRandomNumber()).AsQueryable();
@@ -78,6 +90,18 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.Countries
                 actualException.Message == expectedException.Message
                 && actualException.InnerException.Message == expectedException.InnerException.Message
                 && (actualException.InnerException as Xeption).DataEquals(expectedException.InnerException.Data);
+        }
+
+        public static IEnumerable<object[]> InvalidMinuteCases()
+        {
+            int randomMoreThanMinuteFromNow = GetRandomNumber();
+            int randomMoreThanMinuteBeforeNow = GetRandomNegativeNumber();
+
+            return new List<object[]>
+            {
+                new object[] { randomMoreThanMinuteFromNow },
+                new object[] { randomMoreThanMinuteBeforeNow }
+            };
         }
 
         private static Filler<Country> CreateCountryFiller(DateTimeOffset dates)
