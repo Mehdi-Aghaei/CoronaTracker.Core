@@ -47,15 +47,15 @@ namespace CoronaTracker.Core.Services.Foundations.Countries
         });
 
         public ValueTask<Country> ModifyCountryAsync(Country country) =>
-        TryCatch(async () => 
+        TryCatch(async () =>
         {
             ValidateCountryOnModify(country);
 
             Country maybeCountry = await this.storageBroker
                 .SelectCountryByIdAsync(country.Id);
 
-            ValidateStorageCountry(maybeCountry,country.Id);
-            ValidateAginstStorageCountryOnModify(inputCountry:country,storageCountry:maybeCountry);
+            ValidateStorageCountry(maybeCountry, country.Id);
+            ValidateAginstStorageCountryOnModify(inputCountry: country, storageCountry: maybeCountry);
 
             return await this.storageBroker.UpdateCountryAsync(country);
         });
