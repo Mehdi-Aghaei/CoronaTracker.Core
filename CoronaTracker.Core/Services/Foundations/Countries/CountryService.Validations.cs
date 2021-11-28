@@ -127,7 +127,13 @@ namespace CoronaTracker.Core.Services.Foundations.Countries
                     firstDate: inputCountry.CreatedDate,
                     secondDate: storageCountry.CreatedDate,
                     secondDateName: nameof(Country.CreatedDate)),
-                Parameter: nameof(Country.CreatedDate)));
+                Parameter: nameof(Country.CreatedDate)),
+
+                (Rule: IsSame(
+                    firstDate: inputCountry.UpdatedDate,
+                    secondDate: storageCountry.UpdatedDate,
+                    secondDateName: nameof(Country.UpdatedDate)),
+                Parameter: nameof(Country.UpdatedDate)));
         }
 
         private static void Validate(params (dynamic Rule, string Parameter)[] validations)
