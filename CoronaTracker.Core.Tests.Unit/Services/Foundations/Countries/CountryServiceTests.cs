@@ -92,6 +92,18 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.Countries
                 && (actualException.InnerException as Xeption).DataEquals(expectedException.InnerException.Data);
         }
 
+        public static IEnumerable<object[]> InvalidMinuteCases()
+        {
+            int randomMoreThanMinuteFromNow = GetRandomNumber();
+            int randomMoreThanMinuteBeforeNow = GetRandomNegativeNumber();
+
+            return new List<object[]>
+            {
+                new object[] { randomMoreThanMinuteFromNow },
+                new object[] { randomMoreThanMinuteBeforeNow }
+            };
+        }
+
         private static Filler<Country> CreateCountryFiller(DateTimeOffset dates)
         {
             var filler = new Filler<Country>();
