@@ -23,9 +23,11 @@ namespace CoronaTracker.Core.Services.Processings.Countries
             this.loggingBroker = loggingBroker;
         }
 
-        public ValueTask<Country> UpsertCountryAsync(Country country)
+        public async ValueTask<Country> UpsertCountryAsync(Country country)
         {
-            throw new System.NotImplementedException();
+            this.countryService.RetrieveAllCountries();
+
+            return await this.countryService.AddCountryAsync(country);
         }
     }
 }
