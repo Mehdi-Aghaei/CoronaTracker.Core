@@ -3,7 +3,9 @@
 // FREE TO USE TO CONNECT THE WORLD
 // ---------------------------------------------------------------
 
+using System;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using CoronaTracker.Core.Brokers.Loggings;
 using CoronaTracker.Core.Models.Countries;
@@ -26,17 +28,24 @@ namespace CoronaTracker.Core.Services.Processings.Countries
 
         public async ValueTask<Country> UpsertCountryAsync(Country country)
         {
+            Country maybeCountry = RetrieveMatchingCountry(country);
+
+            return maybeCountry switch
+            {
+                null => await this.countryService.AddCountryAsync(country),
+                _ => await this.countryService.ModifyCountryAsync(country)
+            };
+        }
+
+        private Country RetrieveMatchingCountry(Country country)
+        {
             IQueryable<Country> countries =
                 this.countryService.RetrieveAllCountries();
-            Country maybeCountry = countries.FirstOrDefault(
-                retrievedCountry => retrievedCountry.Id == country.Id);
 
-            if(maybeCountry != null)
-            {
-                return await this.countryService.ModifyCountryAsync(country);
-            }
-
-            return await this.countryService.AddCountryAsync(country);
+            return countries.FirstOrDefault(SameCountryAs(country));
         }
+
+        private static Expression<Func<Country, bool>> SameCountryAs(Country country) =>
+            retrievedCountry => retrievedCountry.Id == country.Id;
     }
 }
