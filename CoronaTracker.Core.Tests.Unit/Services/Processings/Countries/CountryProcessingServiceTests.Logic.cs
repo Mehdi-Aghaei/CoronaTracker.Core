@@ -53,6 +53,56 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Processings.Countries
                 service.AddCountryAsync(inputCountry),
                     Times.Once);
 
+            this.countryServiceMock.Verify(service =>
+                service.ModifyCountryAsync(It.IsAny<Country>()),
+                    Times.Never);
+
+            this.countryServiceMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async Task ShouldModifyCountryIfCountryExistAsync()
+        {
+            // given
+            Country randomCountry = CreateRandomCountry();
+            Country inputCountry = randomCountry;
+            Country modifiedCountry = inputCountry;
+            Country expectedCountry = modifiedCountry.DeepClone();
+
+            IQueryable<Country> randomCountries =
+                CreateRandomCountries(inputCountry);
+
+            IQueryable<Country> retrievedCountries =
+                randomCountries;
+
+            this.countryServiceMock.Setup(service =>
+                service.RetrieveAllCountries())
+                    .Returns(retrievedCountries);
+
+            this.countryServiceMock.Setup(service =>
+                service.ModifyCountryAsync(inputCountry))
+                    .ReturnsAsync(modifiedCountry);
+
+            // when
+            Country actualCountry = await this.countryProcessingService
+                .UpsertCountryAsync(inputCountry);
+            
+            // then
+            actualCountry.Should().BeEquivalentTo(expectedCountry);
+
+            this.countryServiceMock.Verify(service =>
+                service.RetrieveAllCountries(),
+                    Times.Once);
+
+            this.countryServiceMock.Verify(service =>
+                service.ModifyCountryAsync(inputCountry),
+                    Times.Once);
+
+            this.countryServiceMock.Verify(service =>
+                service.AddCountryAsync(It.IsAny<Country>()),
+                    Times.Never);
+
             this.countryServiceMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
         }

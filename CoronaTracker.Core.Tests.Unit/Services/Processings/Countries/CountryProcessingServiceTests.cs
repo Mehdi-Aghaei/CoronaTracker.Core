@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using CoronaTracker.Core.Brokers.Loggings;
 using CoronaTracker.Core.Models.Countries;
@@ -35,6 +36,16 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Processings.Countries
 
         private static IQueryable<Country> CreateRandomCountries() =>
             CreateCountryFiller().Create(count: GetRandomNumber()).AsQueryable();
+
+        private static IQueryable<Country> CreateRandomCountries(Country country)
+        {
+            List<Country> randomCountries =
+                CreateRandomCountries().ToList();
+
+            randomCountries.Add(country);
+
+            return randomCountries.AsQueryable();
+        }
 
         private static int GetRandomNumber() =>
             new IntRange(min: 2, max: 10).GetValue();
