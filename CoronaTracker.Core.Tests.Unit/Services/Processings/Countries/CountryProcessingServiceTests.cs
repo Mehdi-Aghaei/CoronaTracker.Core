@@ -6,12 +6,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using CoronaTracker.Core.Brokers.Loggings;
 using CoronaTracker.Core.Models.Countries;
 using CoronaTracker.Core.Services.Foundations.Countries;
 using CoronaTracker.Core.Services.Processings.Countries;
 using Moq;
 using Tynamix.ObjectFiller;
+using Xeptions;
 
 namespace CoronaTracker.Core.Tests.Unit.Services.Processings.Countries
 {
@@ -45,6 +47,14 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Processings.Countries
             randomCountries.Add(country);
 
             return randomCountries.AsQueryable();
+        }
+
+        private static Expression<Func<Xeption, bool>> SameExceptionAs(Xeption expectedException)
+        {
+            return actualException =>
+                actualException.Message == expectedException.Message
+                && actualException.InnerException.Message == expectedException.InnerException.Message
+                && (actualException.InnerException as Xeption).DataEquals(expectedException.Data);
         }
 
         private static int GetRandomNumber() =>

@@ -87,7 +87,7 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Processings.Countries
             // when
             Country actualCountry = await this.countryProcessingService
                 .UpsertCountryAsync(inputCountry);
-            
+
             // then
             actualCountry.Should().BeEquivalentTo(expectedCountry);
 

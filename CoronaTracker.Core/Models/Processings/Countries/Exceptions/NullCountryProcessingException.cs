@@ -3,13 +3,13 @@
 // FREE TO USE TO CONNECT THE WORLD
 // ---------------------------------------------------------------
 
-using System.Threading.Tasks;
-using CoronaTracker.Core.Models.Countries;
+using Xeptions;
 
-namespace CoronaTracker.Core.Services.Processings.Countries
+namespace CoronaTracker.Core.Models.Processings.Countries.Exceptions
 {
-    public interface ICountryProcessingService
+    public class NullCountryProcessingException : Xeption
     {
-        ValueTask<Country> UpsertCountryAsync(Country country);
+        public NullCountryProcessingException()
+            : base(message: "Country is null.") { }
     }
 }

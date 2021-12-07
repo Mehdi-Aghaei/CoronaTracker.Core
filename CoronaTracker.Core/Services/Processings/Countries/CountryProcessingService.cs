@@ -19,7 +19,7 @@ namespace CoronaTracker.Core.Services.Processings.Countries
         private readonly ILoggingBroker loggingBroker;
 
         public CountryProcessingService(
-            ICountryService countryService, 
+            ICountryService countryService,
             ILoggingBroker loggingBroker)
         {
             this.countryService = countryService;
