@@ -13,7 +13,7 @@ using CoronaTracker.Core.Services.Foundations.Countries;
 
 namespace CoronaTracker.Core.Services.Processings.Countries
 {
-    public class CountryProcessingService : ICountryProcessingService
+    public partial class CountryProcessingService : ICountryProcessingService
     {
         private readonly ICountryService countryService;
         private readonly ILoggingBroker loggingBroker;
@@ -26,8 +26,10 @@ namespace CoronaTracker.Core.Services.Processings.Countries
             this.loggingBroker = loggingBroker;
         }
 
-        public async ValueTask<Country> UpsertCountryAsync(Country country)
+        public ValueTask<Country> UpsertCountryAsync(Country country) =>
+        TryCatch( async () => 
         {
+            ValidateCountry(country);
             Country maybeCountry = RetrieveMatchingCountry(country);
 
             return maybeCountry switch
@@ -35,7 +37,7 @@ namespace CoronaTracker.Core.Services.Processings.Countries
                 null => await this.countryService.AddCountryAsync(country),
                 _ => await this.countryService.ModifyCountryAsync(country)
             };
-        }
+        });
 
         private Country RetrieveMatchingCountry(Country country)
         {
