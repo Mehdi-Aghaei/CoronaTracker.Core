@@ -27,7 +27,7 @@ namespace CoronaTracker.Core.Services.Processings.Countries
         }
 
         public ValueTask<Country> UpsertCountryAsync(Country country) =>
-        TryCatch( async () => 
+        TryCatch(async () =>
         {
             ValidateCountry(country);
             Country maybeCountry = RetrieveMatchingCountry(country);

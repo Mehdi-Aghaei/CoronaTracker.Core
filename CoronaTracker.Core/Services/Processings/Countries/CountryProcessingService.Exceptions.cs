@@ -3,7 +3,6 @@
 // FREE TO USE TO CONNECT THE WORLD
 // ---------------------------------------------------------------
 
-using System;
 using System.Threading.Tasks;
 using CoronaTracker.Core.Models.Countries;
 using CoronaTracker.Core.Models.Processings.Countries.Exceptions;
@@ -25,11 +24,16 @@ namespace CoronaTracker.Core.Services.Processings.Countries
             {
                 throw CreateAndLogValidationException(nullCountryProcessingException);
             }
+            catch (InvalidCountryProcessingException invalidCountryProcessingException)
+            {
+                throw CreateAndLogValidationException(invalidCountryProcessingException);
+            }
         }
 
-        private CountryProcessingValidationException CreateAndLogValidationException(Xeption exception)
+        private CountryProcessingValidationException CreateAndLogValidationException(
+            Xeption exception)
         {
-            var countryProcessingValidationException = 
+            var countryProcessingValidationException =
                 new CountryProcessingValidationException(exception);
 
             this.loggingBroker.LogError(countryProcessingValidationException);
