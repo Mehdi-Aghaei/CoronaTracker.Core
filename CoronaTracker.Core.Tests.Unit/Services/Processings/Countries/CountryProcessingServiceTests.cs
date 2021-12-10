@@ -9,11 +9,13 @@ using System.Linq;
 using System.Linq.Expressions;
 using CoronaTracker.Core.Brokers.Loggings;
 using CoronaTracker.Core.Models.Countries;
+using CoronaTracker.Core.Models.Countries.Exceptions;
 using CoronaTracker.Core.Services.Foundations.Countries;
 using CoronaTracker.Core.Services.Processings.Countries;
 using Moq;
 using Tynamix.ObjectFiller;
 using Xeptions;
+using Xunit;
 
 namespace CoronaTracker.Core.Tests.Unit.Services.Processings.Countries
 {
@@ -35,6 +37,19 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Processings.Countries
 
         private static Country CreateRandomCountry() =>
             CreateCountryFiller().Create();
+
+        public static TheoryData DependencyValidationExceptions()
+        {
+            string randomMessage = GetrandomString();
+            string exceptionMessage = randomMessage;
+            var innerException = new Xeption(exceptionMessage);
+
+            return new TheoryData<Xeption>
+            {
+                new CountryValidationException(innerException),
+                new CountryDependencyValidationException(innerException)
+            };
+        }
 
         private static IQueryable<Country> CreateRandomCountries() =>
             CreateCountryFiller().Create(count: GetRandomNumber()).AsQueryable();
@@ -59,6 +74,9 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Processings.Countries
 
         private static int GetRandomNumber() =>
             new IntRange(min: 2, max: 10).GetValue();
+
+        private static string GetrandomString() =>
+            new MnemonicString(wordCount: GetRandomNumber()).GetValue();
 
         private static DateTimeOffset GetRandomDateTimeOffset() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
