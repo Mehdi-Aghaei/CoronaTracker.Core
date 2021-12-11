@@ -104,5 +104,53 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Processings.Countries
             this.countryServiceMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async Task ShouldThrowServiceExceptionOnUpsertIfServiceErrorOccursAndLogItAsync()
+        {
+            // given
+            var someCountry = CreateRandomCountry();
+
+            var serviceException = new Exception();
+
+            var failedCountryProcessingServiceException =
+                new FailedCountryProcessingSeviceException(serviceException);
+
+            var expectedCountryProcessingServiveException =
+                new CountryProcessingServiceException(
+                    failedCountryProcessingServiceException.InnerException as Xeption);
+
+            this.countryServiceMock.Setup(service =>
+                service.RetrieveAllCountries())
+                    .Throws(serviceException);
+
+            // when
+            ValueTask<Country> upsertCountryTask =
+                this.countryProcessingService.UpsertCountryAsync(someCountry);
+
+            // then
+            await Assert.ThrowsAsync<CountryProcessingServiceException>(() =>
+               upsertCountryTask.AsTask());
+
+            this.countryServiceMock.Verify(service =>
+                service.RetrieveAllCountries(),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedCountryProcessingServiveException))),
+                        Times.Once);
+
+            this.countryServiceMock.Verify(service =>
+                service.AddCountryAsync(It.IsAny<Country>()),
+                    Times.Never);
+
+            this.countryServiceMock.Verify(service =>
+                service.ModifyCountryAsync(It.IsAny<Country>()),
+                    Times.Never);
+
+            this.countryServiceMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
