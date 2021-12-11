@@ -51,6 +51,19 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Processings.Countries
             };
         }
 
+        public static TheoryData DependencyExceptions()
+        {
+            string randomMessage = GetrandomString();
+            string exceptionMessage = randomMessage;
+            var innerException = new Xeption(exceptionMessage);
+
+            return new TheoryData<Xeption>
+            {
+                new CountryDependencyException(innerException),
+                new CountryServiceException(innerException)
+            };
+        }
+
         private static IQueryable<Country> CreateRandomCountries() =>
             CreateCountryFiller().Create(count: GetRandomNumber()).AsQueryable();
 

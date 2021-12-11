@@ -59,5 +59,50 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Processings.Countries
             this.countryServiceMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Theory]
+        [MemberData(nameof(DependencyExceptions))]
+        public async Task ShouldThrowDependencyExceptionOnUpsertIfDependencyValidationErrorOccursAndLogItAsync(
+           Xeption dependencyException)
+        {
+            // given
+            var someCountry = CreateRandomCountry();
+
+            var expectedCountryProcessingDependencyException =
+                new CountryProcessingDependencyException(
+                    dependencyException.InnerException as Xeption);
+
+            this.countryServiceMock.Setup(service =>
+                service.RetrieveAllCountries())
+                    .Throws(dependencyException);
+
+            // when
+            ValueTask<Country> upsertCountryTask =
+                this.countryProcessingService.UpsertCountryAsync(someCountry);
+
+            // then
+            await Assert.ThrowsAsync<CountryProcessingDependencyException>(() =>
+               upsertCountryTask.AsTask());
+
+            this.countryServiceMock.Verify(service =>
+                service.RetrieveAllCountries(),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedCountryProcessingDependencyException))),
+                        Times.Once);
+
+            this.countryServiceMock.Verify(service =>
+                service.AddCountryAsync(It.IsAny<Country>()),
+                    Times.Never);
+
+            this.countryServiceMock.Verify(service =>
+                service.ModifyCountryAsync(It.IsAny<Country>()),
+                    Times.Never);
+
+            this.countryServiceMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
