@@ -114,11 +114,11 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Processings.Countries
             var serviceException = new Exception();
 
             var failedCountryProcessingServiceException =
-                new FailedCountryProcessingSeviceException(serviceException);
+                new FailedCountryProcessingServiceException(serviceException);
 
             var expectedCountryProcessingServiveException =
                 new CountryProcessingServiceException(
-                    failedCountryProcessingServiceException.InnerException as Xeption);
+                    failedCountryProcessingServiceException);
 
             this.countryServiceMock.Setup(service =>
                 service.RetrieveAllCountries())

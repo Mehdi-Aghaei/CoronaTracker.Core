@@ -8,9 +8,9 @@ using Xeptions;
 
 namespace CoronaTracker.Core.Models.Processings.Countries.Exceptions
 {
-    public class FailedCountryProcessingSeviceException : Xeption
+    public class FailedCountryProcessingServiceException : Xeption
     {
-        public FailedCountryProcessingSeviceException(Exception innerException)
+        public FailedCountryProcessingServiceException(Exception innerException)
             : base("Failed country processing service occurred, please contact support", innerException)
         { }
     }

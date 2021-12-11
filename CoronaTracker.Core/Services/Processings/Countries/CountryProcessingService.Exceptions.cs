@@ -46,6 +46,23 @@ namespace CoronaTracker.Core.Services.Processings.Countries
             {
                throw CreateAndLogDependencyException(countryServiceException);
             }
+            catch( Exception exception)
+            {
+                var failedCountryProcessingServiceException =
+                    new FailedCountryProcessingServiceException(exception);
+
+                throw CreateAndLogServiceException(failedCountryProcessingServiceException);
+            }
+        }
+
+        private CountryProcessingServiceException CreateAndLogServiceException(Xeption exception)
+        {
+            var countryProcessingServiceException = new
+                CountryProcessingServiceException(exception);
+
+            this.loggingBroker.LogError(countryProcessingServiceException);
+
+            return countryProcessingServiceException;
         }
 
         private CountryProcessingDependencyValidationException CreateAndLogDependencyValidationException(Xeption exception)
