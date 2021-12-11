@@ -30,23 +30,23 @@ namespace CoronaTracker.Core.Services.Processings.Countries
             {
                 throw CreateAndLogValidationException(invalidCountryProcessingException);
             }
-            catch( CountryValidationException countryValidationException)
+            catch (CountryValidationException countryValidationException)
             {
                 throw CreateAndLogDependencyValidationException(countryValidationException);
             }
-            catch(CountryDependencyValidationException countryDependencyValidationException)
+            catch (CountryDependencyValidationException countryDependencyValidationException)
             {
                 throw CreateAndLogDependencyValidationException(countryDependencyValidationException);
             }
-            catch(CountryDependencyException countryDependencyException)
+            catch (CountryDependencyException countryDependencyException)
             {
                 throw CreateAndLogDependencyException(countryDependencyException);
             }
-            catch(CountryServiceException countryServiceException)
+            catch (CountryServiceException countryServiceException)
             {
-               throw CreateAndLogDependencyException(countryServiceException);
+                throw CreateAndLogDependencyException(countryServiceException);
             }
-            catch( Exception exception)
+            catch (Exception exception)
             {
                 var failedCountryProcessingServiceException =
                     new FailedCountryProcessingServiceException(exception);
@@ -70,18 +70,18 @@ namespace CoronaTracker.Core.Services.Processings.Countries
             var countryProcessingDependencyValidationException =
                 new CountryProcessingDependencyValidationException(
                     exception.InnerException as Xeption);
-            
+
             this.loggingBroker.LogError(countryProcessingDependencyValidationException);
 
             return countryProcessingDependencyValidationException;
-        }  
-        
+        }
+
         private CountryProcessingDependencyException CreateAndLogDependencyException(Xeption exception)
         {
             var countryProcessingDependencyException =
                 new CountryProcessingDependencyException(
                     exception.InnerException as Xeption);
-            
+
             this.loggingBroker.LogError(countryProcessingDependencyException);
 
             return countryProcessingDependencyException;

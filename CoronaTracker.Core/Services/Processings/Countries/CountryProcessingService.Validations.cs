@@ -41,7 +41,7 @@ namespace CoronaTracker.Core.Services.Processings.Countries
 
             foreach ((dynamic rule, string parameter) in validations)
             {
-                if(rule.Condition)
+                if (rule.Condition)
                 {
                     invalidCountryProcessingException.UpsertDataList(
                         key: parameter,

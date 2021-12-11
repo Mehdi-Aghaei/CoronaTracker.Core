@@ -71,7 +71,7 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Processings.Countries
                 key: nameof(Country.Id),
                 values: "Id is required");
 
-            var expectedCountryProcessingValidationException=
+            var expectedCountryProcessingValidationException =
                 new CountryProcessingValidationException(invalidCountryProcessingException);
 
             // when
