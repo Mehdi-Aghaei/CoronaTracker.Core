@@ -62,7 +62,7 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Processings.Countries
 
         [Theory]
         [MemberData(nameof(DependencyExceptions))]
-        public async Task ShouldThrowDependencyExceptionOnUpsertIfDependencyValidationErrorOccursAndLogItAsync(
+        public async Task ShouldThrowDependencyExceptionOnUpsertIfDependencyErrorOccursAndLogItAsync(
            Xeption dependencyException)
         {
             // given

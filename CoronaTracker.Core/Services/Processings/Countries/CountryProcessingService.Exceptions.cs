@@ -38,6 +38,14 @@ namespace CoronaTracker.Core.Services.Processings.Countries
             {
                 throw CreateAndLogDependencyValidationException(countryDependencyValidationException);
             }
+            catch(CountryDependencyException countryDependencyException)
+            {
+                throw CreateAndLogDependencyException(countryDependencyException);
+            }
+            catch(CountryServiceException countryServiceException)
+            {
+               throw CreateAndLogDependencyException(countryServiceException);
+            }
         }
 
         private CountryProcessingDependencyValidationException CreateAndLogDependencyValidationException(Xeption exception)
@@ -49,6 +57,17 @@ namespace CoronaTracker.Core.Services.Processings.Countries
             this.loggingBroker.LogError(countryProcessingDependencyValidationException);
 
             return countryProcessingDependencyValidationException;
+        }  
+        
+        private CountryProcessingDependencyException CreateAndLogDependencyException(Xeption exception)
+        {
+            var countryProcessingDependencyException =
+                new CountryProcessingDependencyException(
+                    exception.InnerException as Xeption);
+            
+            this.loggingBroker.LogError(countryProcessingDependencyException);
+
+            return countryProcessingDependencyException;
         }
 
         private CountryProcessingValidationException CreateAndLogValidationException(
