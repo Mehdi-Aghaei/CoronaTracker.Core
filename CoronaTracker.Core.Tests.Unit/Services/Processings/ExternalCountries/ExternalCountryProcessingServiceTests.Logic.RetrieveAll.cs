@@ -3,15 +3,9 @@
 // FREE TO USE TO CONNECT THE WORLD
 // ---------------------------------------------------------------
 
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using CoronaTracker.Core.Brokers.Loggings;
 using CoronaTracker.Core.Models.ExternalCountries;
-using CoronaTracker.Core.Services.Foundations.ExternalCountries;
-using CoronaTracker.Core.Services.Processings.ExternalCountries;
 using FluentAssertions;
 using Force.DeepCloner;
 using Moq;
@@ -22,7 +16,7 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Processings.ExternalCountries
     public partial class ExternalCountryProcessingServiceTests
     {
         [Fact]
-        public async Task ShouldRetrieveAllExternalCountriesAsync() 
+        public async Task ShouldRetrieveAllExternalCountriesAsync()
         {
             // given
             List<ExternalCountry> randomCountries = CreateRandomExternalCountries();
@@ -40,7 +34,7 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Processings.ExternalCountries
             retrievedCountries.Should().BeEquivalentTo(expectedExternalCountries);
 
             this.externalCountryServiceMock.Verify(service =>
-                service.RetrieveAllExternalCountriesAsync(), 
+                service.RetrieveAllExternalCountriesAsync(),
                     Times.Once());
 
             this.externalCountryServiceMock.VerifyNoOtherCalls();
