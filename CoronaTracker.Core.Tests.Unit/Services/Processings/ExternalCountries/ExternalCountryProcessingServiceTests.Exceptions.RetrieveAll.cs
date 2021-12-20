@@ -32,7 +32,7 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Processings.ExternalCountries
 
             // when
             ValueTask<List<ExternalCountry>> retrievedCountriesTask =
-                this.externalCountryProcessingService.RetrieveAllExternalCountriesAsync();
+                this.externalCountryProcessingService.RetrieveAllExternalCountriesProcessingAsync();
 
             // then
             await Assert.ThrowsAsync<ExternalCountryProcessingDependencyException>(() =>

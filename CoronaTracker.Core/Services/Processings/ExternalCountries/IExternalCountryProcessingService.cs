@@ -11,6 +11,6 @@ namespace CoronaTracker.Core.Services.Processings.ExternalCountries
 {
     public interface IExternalCountryProcessingService
     {
-        ValueTask<List<ExternalCountry>> RetrieveAllExternalCountriesAsync();
+        ValueTask<List<ExternalCountry>> RetrieveAllExternalCountriesProcessingAsync();
     }
 }
