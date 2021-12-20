@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using CoronaTracker.Core.Models.ExternalCountries;
 using CoronaTracker.Core.Models.ExternalCountries.Exceptions;
 using CoronaTracker.Core.Models.Processings.ExternalCountries;
+using CoronaTracker.Core.Models.Processings.ExternalCountries.Exceptions;
 using Xeptions;
 
 namespace CoronaTracker.Core.Services.Processings.ExternalCountries
@@ -34,7 +35,23 @@ namespace CoronaTracker.Core.Services.Processings.ExternalCountries
             {
 
                 throw CreateAndLogDependencyException(externalCountryServiceException);
+            }catch(Exception exception)
+            {
+                var failedExternalCountryProcessingServiceException =
+                    new FailedExternalCountryProcessingServiceException(exception);
+
+                throw CreateAndLogServiceException(failedExternalCountryProcessingServiceException);
             }
+        }
+
+        private ExternalCountryProcessingServiceException CreateAndLogServiceException(Xeption exception)
+        {
+            var externalCountryProcessingServiceException =
+                new ExternalCountryProcessingServiceException(exception);
+
+            this.loggingBroker.LogError(externalCountryProcessingServiceException);
+
+            return externalCountryProcessingServiceException;
         }
 
         private ExternalCountryProcessingDependencyException CreateAndLogDependencyException(Xeption exception)
