@@ -28,7 +28,7 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Processings.ExternalCountries
 
             // when
             List<ExternalCountry> retrievedCountries =
-                await this.externalCountryProcessingService.RetrieveAllExternalCountriesProcessingAsync();
+                await this.externalCountryProcessingService.RetrieveAllExternalCountriesAsync();
 
             // then
             retrievedCountries.Should().BeEquivalentTo(expectedExternalCountries);

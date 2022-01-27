@@ -24,7 +24,7 @@ namespace CoronaTracker.Core.Services.Processings.ExternalCountries
             this.loggingBroker = loggingBroker;
         }
 
-        public ValueTask<List<ExternalCountry>> RetrieveAllExternalCountriesProcessingAsync() =>
+        public ValueTask<List<ExternalCountry>> RetrieveAllExternalCountriesAsync() =>
         TryCatch(async () => 
         {
             return await this.externalCountryService.RetrieveAllExternalCountriesAsync();

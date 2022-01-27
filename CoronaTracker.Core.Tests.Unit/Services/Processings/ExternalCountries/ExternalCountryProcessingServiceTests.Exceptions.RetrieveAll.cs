@@ -25,8 +25,9 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Processings.ExternalCountries
             // given 
             var someCountries = CreateRandomExternalCountries();
 
-            var ExpectedExternalCountryProcessingDependencyException =
-                new ExternalCountryProcessingDependencyException(dependencyException);
+            var expectedExternalCountryProcessingDependencyException =
+                new ExternalCountryProcessingDependencyException(
+                    dependencyException.InnerException as Xeption);
 
             this.externalCountryServiceMock.Setup(service =>
                 service.RetrieveAllExternalCountriesAsync())
@@ -34,7 +35,7 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Processings.ExternalCountries
 
             // when
             ValueTask<List<ExternalCountry>> retrievedCountriesTask =
-                this.externalCountryProcessingService.RetrieveAllExternalCountriesProcessingAsync();
+                this.externalCountryProcessingService.RetrieveAllExternalCountriesAsync();
 
             // then
             await Assert.ThrowsAsync<ExternalCountryProcessingDependencyException>(() =>
@@ -46,7 +47,7 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Processings.ExternalCountries
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(
-                    ExpectedExternalCountryProcessingDependencyException))),
+                    expectedExternalCountryProcessingDependencyException))),
                         Times.Once);
 
             this.externalCountryServiceMock.VerifyNoOtherCalls();
@@ -73,7 +74,7 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Processings.ExternalCountries
 
             // when
             ValueTask<List<ExternalCountry>> upsertCountryTask =
-                this.externalCountryProcessingService.RetrieveAllExternalCountriesProcessingAsync();
+                this.externalCountryProcessingService.RetrieveAllExternalCountriesAsync();
 
             // then
             await Assert.ThrowsAsync<ExternalCountryProcessingServiceException>(() =>
