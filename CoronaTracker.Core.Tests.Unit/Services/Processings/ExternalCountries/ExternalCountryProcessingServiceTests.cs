@@ -49,6 +49,7 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Processings.ExternalCountries
 
         private static string GetRandomMessage() =>
             new MnemonicString(wordCount: GetRandomNumber()).GetValue();
+
         private List<ExternalCountry> CreateRandomExternalCountries() =>
             CreateExternalCountryFiller().Create(count: GetRandomNumber()).ToList();
 
@@ -60,8 +61,7 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Processings.ExternalCountries
                 && (actualException.InnerException as Xeption).DataEquals(expectedException.Data);
         }
 
-        private static int GetRandomNumber() =>
-            new IntRange(min: 2, max: 10).GetValue();
+        private static int GetRandomNumber() => new IntRange(min: 2, max: 10).GetValue();
 
         private static Filler<ExternalCountry> CreateExternalCountryFiller()
         {

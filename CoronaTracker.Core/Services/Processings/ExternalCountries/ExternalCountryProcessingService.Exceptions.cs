@@ -30,12 +30,13 @@ namespace CoronaTracker.Core.Services.Processings.ExternalCountries
             {
 
                 throw CreateAndLogDependencyException(externalCountryDependencyException);
-            }     
+            }
             catch (ExternalCountryServiceException externalCountryServiceException)
             {
 
                 throw CreateAndLogDependencyException(externalCountryServiceException);
-            }catch(Exception exception)
+            }
+            catch (Exception exception)
             {
                 var failedExternalCountryProcessingServiceException =
                     new FailedExternalCountryProcessingServiceException(exception);
