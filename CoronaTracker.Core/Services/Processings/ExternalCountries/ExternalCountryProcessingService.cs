@@ -25,10 +25,6 @@ namespace CoronaTracker.Core.Services.Processings.ExternalCountries
         }
 
         public ValueTask<List<ExternalCountry>> RetrieveAllExternalCountriesAsync() =>
-        TryCatch(async () => 
-        {
-            return await this.externalCountryService.RetrieveAllExternalCountriesAsync();
-        });    
-
+        TryCatch(async () => await this.externalCountryService.RetrieveAllExternalCountriesAsync());    
     }
 }

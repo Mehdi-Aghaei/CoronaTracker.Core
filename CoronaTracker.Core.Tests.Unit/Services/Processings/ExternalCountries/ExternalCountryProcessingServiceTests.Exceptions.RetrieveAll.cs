@@ -23,7 +23,7 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Processings.ExternalCountries
             Xeption dependencyException)
         {
             // given 
-            var someCountries = CreateRandomExternalCountries();
+            var randomCountries = CreateRandomExternalCountries();
 
             var expectedExternalCountryProcessingDependencyException =
                 new ExternalCountryProcessingDependencyException(
@@ -31,7 +31,7 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Processings.ExternalCountries
 
             this.externalCountryServiceMock.Setup(service =>
                 service.RetrieveAllExternalCountriesAsync())
-                .ThrowsAsync(dependencyException);
+                    .ThrowsAsync(dependencyException);
 
             // when
             ValueTask<List<ExternalCountry>> retrievedCountriesTask =
@@ -53,6 +53,7 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Processings.ExternalCountries
             this.externalCountryServiceMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
         }
+
         [Fact]
         public async Task ShouldThrowServiceExceptionOnRetrieveAllIfServiceErrorOccursAndLogItAsync()
         {
@@ -64,7 +65,7 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Processings.ExternalCountries
             var failedExternalCountryProcessingServiceException =
                 new FailedExternalCountryProcessingServiceException(serviceException);
 
-            var expectedCountryProcessingServiveException =
+            var expectedExternalCountryProcessingServiceException =
                 new ExternalCountryProcessingServiceException(
                     failedExternalCountryProcessingServiceException);
 
@@ -73,12 +74,12 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Processings.ExternalCountries
                     .Throws(serviceException);
 
             // when
-            ValueTask<List<ExternalCountry>> upsertCountryTask =
+            ValueTask<List<ExternalCountry>> retrieveAllExternalCountryTask =
                 this.externalCountryProcessingService.RetrieveAllExternalCountriesAsync();
 
             // then
             await Assert.ThrowsAsync<ExternalCountryProcessingServiceException>(() =>
-               upsertCountryTask.AsTask());
+               retrieveAllExternalCountryTask.AsTask());
 
             this.externalCountryServiceMock.Verify(service =>
                 service.RetrieveAllExternalCountriesAsync(),
@@ -86,7 +87,7 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Processings.ExternalCountries
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(
-                    expectedCountryProcessingServiveException))),
+                     expectedExternalCountryProcessingServiceException))),
                         Times.Once);
 
             this.externalCountryServiceMock.VerifyNoOtherCalls();

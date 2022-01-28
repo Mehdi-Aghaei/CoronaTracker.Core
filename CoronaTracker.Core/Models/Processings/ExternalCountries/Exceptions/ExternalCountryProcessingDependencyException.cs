@@ -5,7 +5,7 @@
 
 using Xeptions;
 
-namespace CoronaTracker.Core.Models.Processings.ExternalCountries
+namespace CoronaTracker.Core.Models.Processings.ExternalCountries.Exceptions
 {
     public class ExternalCountryProcessingDependencyException : Xeption
     {

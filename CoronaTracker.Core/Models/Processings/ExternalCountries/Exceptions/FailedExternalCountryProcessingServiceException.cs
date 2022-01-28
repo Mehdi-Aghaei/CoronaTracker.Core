@@ -3,14 +3,15 @@
 // FREE TO USE TO CONNECT THE WORLD
 // ---------------------------------------------------------------
 
+using System;
 using Xeptions;
 
 namespace CoronaTracker.Core.Models.Processings.ExternalCountries.Exceptions
 {
-    public class ExternalCountryProcessingServiceException : Xeption
+    public class FailedExternalCountryProcessingServiceException : Xeption
     {
-        public ExternalCountryProcessingServiceException(Xeption innerException)
-            : base("External country processing service error occurred, please contact support", innerException)
+        public FailedExternalCountryProcessingServiceException(Exception innerException)
+            : base(message:"Failed external country processing service occurred, please contact support", innerException)
         { }
     }
 }

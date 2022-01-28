@@ -45,16 +45,6 @@ namespace CoronaTracker.Core.Services.Processings.ExternalCountries
             }
         }
 
-        private ExternalCountryProcessingServiceException CreateAndLogServiceException(Xeption exception)
-        {
-            var externalCountryProcessingServiceException =
-                new ExternalCountryProcessingServiceException(exception);
-
-            this.loggingBroker.LogError(externalCountryProcessingServiceException);
-
-            return externalCountryProcessingServiceException;
-        }
-
         private ExternalCountryProcessingDependencyException CreateAndLogDependencyException(Xeption exception)
         {
             var externalCountryProcessingDependencyException =
@@ -64,6 +54,16 @@ namespace CoronaTracker.Core.Services.Processings.ExternalCountries
             this.loggingBroker.LogError(externalCountryProcessingDependencyException);
 
             return externalCountryProcessingDependencyException;
+        }
+
+        private ExternalCountryProcessingServiceException CreateAndLogServiceException(Xeption exception)
+        {
+            var externalCountryProcessingServiceException =
+                new ExternalCountryProcessingServiceException(exception);
+
+            this.loggingBroker.LogError(externalCountryProcessingServiceException);
+
+            return externalCountryProcessingServiceException;
         }
     }
 }
