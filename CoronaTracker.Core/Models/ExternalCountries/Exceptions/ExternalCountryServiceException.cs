@@ -5,7 +5,7 @@
 
 using Xeptions;
 
-namespace CoronaTracker.Core.Models.ExternalCountries.Exceptions
+namespace CoronaTrackerHungary.Web.Api.Models.Countries.Exceptions
 {
     public class ExternalCountryServiceException : Xeption
     {
