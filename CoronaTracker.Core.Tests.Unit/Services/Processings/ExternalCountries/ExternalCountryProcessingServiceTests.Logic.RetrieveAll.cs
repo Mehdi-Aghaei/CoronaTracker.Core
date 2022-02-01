@@ -22,9 +22,10 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Processings.ExternalCountries
             List<ExternalCountry> randomCountries = CreateRandomExternalCountries();
             List<ExternalCountry> externalCountries = randomCountries;
             List<ExternalCountry> expectedExternalCountries = externalCountries.DeepClone();
+
             this.externalCountryServiceMock.Setup(service =>
                 service.RetrieveAllExternalCountriesAsync())
-                .ReturnsAsync(externalCountries);
+                    .ReturnsAsync(externalCountries);
 
             // when
             List<ExternalCountry> retrievedCountries =

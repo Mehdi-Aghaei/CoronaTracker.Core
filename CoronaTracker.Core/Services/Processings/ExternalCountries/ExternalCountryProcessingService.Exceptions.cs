@@ -24,16 +24,13 @@ namespace CoronaTracker.Core.Services.Processings.ExternalCountries
             try
             {
                 return await returningExternalCountriesFunction();
-
             }
             catch (ExternalCountryDependencyException externalCountryDependencyException)
             {
-
                 throw CreateAndLogDependencyException(externalCountryDependencyException);
             }
             catch (ExternalCountryServiceException externalCountryServiceException)
             {
-
                 throw CreateAndLogDependencyException(externalCountryServiceException);
             }
             catch (Exception exception)

@@ -29,6 +29,7 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Processings.ExternalCountries
         {
             this.externalCountryServiceMock = new Mock<IExternalCountryService>();
             this.loggingBrokerMock = new Mock<ILoggingBroker>();
+
             this.externalCountryProcessingService = new ExternalCountryProcessingService(
                 externalCountryService: this.externalCountryServiceMock.Object,
                 loggingBroker: this.loggingBrokerMock.Object);
@@ -63,11 +64,6 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Processings.ExternalCountries
 
         private static int GetRandomNumber() => new IntRange(min: 2, max: 10).GetValue();
 
-        private static Filler<ExternalCountry> CreateExternalCountryFiller()
-        {
-            var filler = new Filler<ExternalCountry>();
-
-            return filler;
-        }
+        private static Filler<ExternalCountry> CreateExternalCountryFiller() => new Filler<ExternalCountry>();
     }
 }
