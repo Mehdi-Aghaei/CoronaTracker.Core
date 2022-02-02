@@ -63,7 +63,6 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Processings.ExternalCountries
         }
 
         private static int GetRandomNumber() => new IntRange(min: 2, max: 10).GetValue();
-
         private static Filler<ExternalCountry> CreateExternalCountryFiller() => new Filler<ExternalCountry>();
     }
 }

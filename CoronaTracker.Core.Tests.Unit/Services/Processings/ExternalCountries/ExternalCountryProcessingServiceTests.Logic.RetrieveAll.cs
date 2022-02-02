@@ -19,8 +19,8 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Processings.ExternalCountries
         public async Task ShouldRetrieveAllExternalCountriesAsync()
         {
             // given
-            List<ExternalCountry> randomCountries = CreateRandomExternalCountries();
-            List<ExternalCountry> externalCountries = randomCountries;
+            List<ExternalCountry> randomExternalCountries = CreateRandomExternalCountries();
+            List<ExternalCountry> externalCountries = randomExternalCountries;
             List<ExternalCountry> expectedExternalCountries = externalCountries.DeepClone();
 
             this.externalCountryServiceMock.Setup(service =>
@@ -28,11 +28,11 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Processings.ExternalCountries
                     .ReturnsAsync(externalCountries);
 
             // when
-            List<ExternalCountry> retrievedCountries =
+            List<ExternalCountry> retrievedExternalCountries =
                 await this.externalCountryProcessingService.RetrieveAllExternalCountriesAsync();
 
             // then
-            retrievedCountries.Should().BeEquivalentTo(expectedExternalCountries);
+            retrievedExternalCountries.Should().BeEquivalentTo(expectedExternalCountries);
 
             this.externalCountryServiceMock.Verify(service =>
                 service.RetrieveAllExternalCountriesAsync(),

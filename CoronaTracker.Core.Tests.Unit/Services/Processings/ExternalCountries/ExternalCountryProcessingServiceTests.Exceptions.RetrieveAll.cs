@@ -23,7 +23,7 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Processings.ExternalCountries
             Xeption dependencyException)
         {
             // given 
-            var randomCountries = CreateRandomExternalCountries();
+            var randomExternalCountries = CreateRandomExternalCountries();
 
             var expectedExternalCountryProcessingDependencyException =
                 new ExternalCountryProcessingDependencyException(
@@ -58,7 +58,7 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Processings.ExternalCountries
         public async Task ShouldThrowServiceExceptionOnRetrieveAllIfServiceErrorOccursAndLogItAsync()
         {
             // given
-            var someCountries = CreateRandomExternalCountries();
+            var someExternalCountries = CreateRandomExternalCountries();
 
             var serviceException = new Exception();
 
