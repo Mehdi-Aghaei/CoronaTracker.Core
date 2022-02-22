@@ -59,7 +59,6 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Processings.ExternalCountries
         {
             // given
             var someExternalCountries = CreateRandomExternalCountries();
-
             var serviceException = new Exception();
 
             var failedExternalCountryProcessingServiceException =
