@@ -9,7 +9,6 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using CoronaTracker.Core.Models.ExternalCountries;
 using CoronaTracker.Core.Models.ExternalCountries.Exceptions;
-using CoronaTrackerHungary.Web.Api.Models.Countries.Exceptions;
 using RESTFulSense.Exceptions;
 using Xeptions;
 

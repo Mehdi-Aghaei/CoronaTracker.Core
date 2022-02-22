@@ -10,7 +10,7 @@ namespace CoronaTracker.Core.Models.Processings.Countries.Exceptions
     public class CountryProcessingServiceException : Xeption
     {
         public CountryProcessingServiceException(Xeption innerException)
-            : base("country processing service error occurred, please contact support", innerException)
+            : base(message:"Country service error occurred, please contact support", innerException)
         { }
     }
 }
