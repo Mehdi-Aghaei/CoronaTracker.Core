@@ -9,6 +9,8 @@ using CoronaTracker.Core.Brokers.Loggings;
 using CoronaTracker.Core.Brokers.Storages;
 using CoronaTracker.Core.Services.Foundations.Countries;
 using CoronaTracker.Core.Services.Foundations.ExternalCountries;
+using CoronaTracker.Core.Services.Processings.Countries;
+using CoronaTracker.Core.Services.Processings.ExternalCountries;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -82,6 +84,8 @@ namespace CoronaTracker.Core
         {
             services.AddTransient<IExternalCountryService, ExternalCountryService>();
             services.AddTransient<ICountryService, CountryService>();
+            services.AddTransient<ICountryProcessingService, CountryProcessingService>();
+            services.AddTransient<IExternalCountryProcessingService, ExternalCountryProcessingService>();
         }
     }
 }
