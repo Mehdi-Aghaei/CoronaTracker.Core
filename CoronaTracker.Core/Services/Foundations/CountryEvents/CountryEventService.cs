@@ -3,10 +3,14 @@
 // FREE TO USE TO CONNECT THE WORLD
 // ---------------------------------------------------------------
 
+using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using CoronaTracker.Core.Brokers.Loggings;
 using CoronaTracker.Core.Brokers.Queues;
 using CoronaTracker.Core.Models.CountryEvents;
+using Microsoft.Azure.ServiceBus;
 
 namespace CoronaTracker.Core.Services.Foundations.CountryEvents
 {
@@ -20,7 +24,23 @@ namespace CoronaTracker.Core.Services.Foundations.CountryEvents
             this.queueBroker = queueBroker;
             this.loggingBroker = loggingBroker;
         }
-        public ValueTask<CountryEvent> AddCountryEventAsync(CountryEvent countryEvent) =>
-            throw new System.NotImplementedException();
+        public async ValueTask<CountryEvent> AddCountryEventAsync(CountryEvent countryEvent)
+        {
+            Message message = MapToMessage(countryEvent);
+
+            await this.queueBroker.EnqueueCountryMessageAsync(message);
+
+            return countryEvent;
+        }
+
+        private static Message MapToMessage(CountryEvent countryEvent)
+        {
+            string serializedCountryEvent = JsonSerializer.Serialize(countryEvent);
+
+            return new Message
+            {
+                Body = Encoding.UTF8.GetBytes(serializedCountryEvent)
+            };
+        }
     }
 }

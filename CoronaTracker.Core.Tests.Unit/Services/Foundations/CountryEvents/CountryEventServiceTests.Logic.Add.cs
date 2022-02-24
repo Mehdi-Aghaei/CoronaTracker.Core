@@ -3,9 +3,6 @@
 // FREE TO USE TO CONNECT THE WORLD
 // ---------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -40,15 +37,17 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.CountryEvents
                 .EnqueueCountryMessageAsync(expectedCountryEventMessage));
 
             // when
-            var actualCountryEvent = await this.countryEventService.AddCountryEventAsync(inputCountryEvent);
+            var actualCountryEvent =
+                await this.countryEventService.AddCountryEventAsync(inputCountryEvent);
 
             // then
             actualCountryEvent.Should().BeEquivalentTo(expectedCountryEvent);
 
             this.queueBrokerMock.Verify(broker =>
                 broker.EnqueueCountryMessageAsync(
-                    expectedCountryEventMessage),
-                        Times.Once);
+                    It.Is(SameMessageAs(
+                        expectedCountryEventMessage))),
+                            Times.Once);
 
             this.queueBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
