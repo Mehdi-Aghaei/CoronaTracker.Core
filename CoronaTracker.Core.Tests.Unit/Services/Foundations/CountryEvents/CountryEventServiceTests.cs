@@ -11,8 +11,12 @@ using CoronaTracker.Core.Models.CountryEvents;
 using CoronaTracker.Core.Services.Foundations.CountryEvents;
 using KellermanSoftware.CompareNetObjects;
 using Microsoft.Azure.ServiceBus;
+using Messaging = Microsoft.ServiceBus.Messaging;
 using Moq;
 using Tynamix.ObjectFiller;
+using Xunit;
+using Microsoft.ServiceBus.Messaging;
+using Xeptions;
 
 namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.CountryEvents;
 
@@ -35,17 +39,40 @@ public partial class CountryEventServiceTests
 
     }
 
+    public static TheoryData DependencyMessageQueueExceptions()
+    {
+        string randomString = GetRandomString();
+        string exceptionMessage = randomString;
+
+        return new TheoryData<Exception>{
+            new MessagingException(message: exceptionMessage),
+            new Messaging.ServerBusyException(message: exceptionMessage),
+            new MessagingCommunicationException(communicationPath: randomString)
+        };
+    }
+
     private static CountryEvent CreateRandomCountryEvent() =>
         CreateCountryEventFiller(dates: GetRandomDateTime()).Create();
 
     private static DateTimeOffset GetRandomDateTime() =>
         new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
+    private static string GetRandomString() =>
+        new MnemonicString().GetValue();
+
     private Expression<Func<Message, bool>> SameMessageAs(Message expectedMessage)
     {
         return actualMessage =>
             this.compareLogic.Compare(expectedMessage, actualMessage).AreEqual;
             
+    }
+
+    private static Expression<Func<Xeption, bool>> SameExceptionAs(Xeption expectedException)
+    {
+        return actualException =>
+            actualException.Message == expectedException.Message
+            && actualException.InnerException.Message == expectedException.InnerException.Message
+            && (actualException.InnerException as Xeption).DataEquals(expectedException.InnerException.Data);
     }
 
     private static Filler<CountryEvent> CreateCountryEventFiller(DateTimeOffset dates)
