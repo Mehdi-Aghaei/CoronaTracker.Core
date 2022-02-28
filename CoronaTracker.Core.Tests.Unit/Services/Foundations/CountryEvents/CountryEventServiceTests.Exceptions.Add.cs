@@ -93,5 +93,39 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.CountryEvents
             this.queueBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
         } 
+
+        [Fact]
+        public async Task ShouldThrowServiceExceptionOnAddIfServiceErrorOccursAndLogItAsync()
+        {
+            // given
+            CountryEvent someCountryEvent = CreateRandomCountryEvent();
+            var serviceException = new Exception();
+
+            var failedCountryEventServiceException =
+                new FailedCountryEventServiceException(serviceException);
+
+            var expectedCountryEventServiceException =
+                new CountryEventServiceException(failedCountryEventServiceException);
+
+            // when
+            ValueTask<CountryEvent> addCountryEventTask =
+                this.countryEventService.AddCountryEventAsync(someCountryEvent);
+
+            // then
+            await Assert.ThrowsAsync<CountryEventServiceException>(() =>
+                addCountryEventTask.AsTask());
+
+            this.queueBrokerMock.Verify(broker =>
+                broker.EnqueueCountryMessageAsync(It.IsAny<Message>()),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedCountryEventServiceException))),
+                        Times.Once);
+
+            this.queueBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
