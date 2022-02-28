@@ -29,39 +29,46 @@ namespace CoronaTracker.Core.Services.Foundations.CountryEvents
                 var failedCountryEventException =
                     new FailedCountryEventDependencyException(unauthorizedAccessException);
 
-                throw CreateAndLogCriticalCountryEventDependencyException(failedCountryEventException);
+                throw CreateAndLogCriticalDependencyException(failedCountryEventException);
             }
             catch (MessagingEntityDisabledException messagingEntityDisabledException)
             {
                 var failedCountryEventException =
                     new FailedCountryEventDependencyException(messagingEntityDisabledException);
 
-                throw CreateAndLogCriticalCountryEventDependencyException(failedCountryEventException);
+                throw CreateAndLogCriticalDependencyException(failedCountryEventException);
             }
             catch (ServerBusyException serverBusyException )
             {
                 var failedCountryEventException =
                     new FailedCountryEventDependencyException(serverBusyException);
 
-                throw CreateAndLogCountryEventDependencyException(failedCountryEventException);
+                throw CreateAndLogDependencyException(failedCountryEventException);
             }
             catch (MessagingCommunicationException messagingCommunicationException )
             {
                 var failedCountryEventException =
                     new FailedCountryEventDependencyException(messagingCommunicationException);
 
-                throw CreateAndLogCountryEventDependencyException(failedCountryEventException);
+                throw CreateAndLogDependencyException(failedCountryEventException);
             }
             catch (MessagingException messagingException )
             {
                 var failedCountryEventException =
                     new FailedCountryEventDependencyException(messagingException);
 
-                throw CreateAndLogCountryEventDependencyException(failedCountryEventException);
+                throw CreateAndLogDependencyException(failedCountryEventException);
             }   
+            catch(Exception exception)
+            {
+                var failedCountryEventServiceException =
+                    new FailedCountryEventServiceException(exception);
+
+                throw CreateAndLogServiceException(failedCountryEventServiceException);
+            }
         }
 
-        private CountryEventDependencyException CreateAndLogCriticalCountryEventDependencyException(Xeption exception)
+        private CountryEventDependencyException CreateAndLogCriticalDependencyException(Xeption exception)
         {
             var countryEventDependencyException =
                 new CountryEventDependencyException(exception);
@@ -71,7 +78,7 @@ namespace CoronaTracker.Core.Services.Foundations.CountryEvents
             return countryEventDependencyException;
         }
 
-        private CountryEventDependencyException CreateAndLogCountryEventDependencyException(Xeption exception)
+        private CountryEventDependencyException CreateAndLogDependencyException(Xeption exception)
         {
             var countryEventDependencyException = 
                 new CountryEventDependencyException(exception);
@@ -79,6 +86,16 @@ namespace CoronaTracker.Core.Services.Foundations.CountryEvents
             this.loggingBroker.LogError(countryEventDependencyException);
 
             return countryEventDependencyException;
+        }
+
+        private CountryEventServiceException CreateAndLogServiceException(Xeption exception)
+        {
+            var countryEventServiceException = 
+                new CountryEventServiceException(exception);
+            
+            this.loggingBroker.LogError(countryEventServiceException);
+
+            return countryEventServiceException;
         }
     }
 }

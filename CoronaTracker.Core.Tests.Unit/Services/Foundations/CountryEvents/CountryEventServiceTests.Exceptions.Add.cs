@@ -107,6 +107,10 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.CountryEvents
             var expectedCountryEventServiceException =
                 new CountryEventServiceException(failedCountryEventServiceException);
 
+            this.queueBrokerMock.Setup(broker =>
+                broker.EnqueueCountryMessageAsync(It.IsAny<Message>()))
+                    .Throws(serviceException);
+
             // when
             ValueTask<CountryEvent> addCountryEventTask =
                 this.countryEventService.AddCountryEventAsync(someCountryEvent);
