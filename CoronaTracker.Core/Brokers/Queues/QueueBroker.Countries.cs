@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using System.Threading.Tasks;
+using CoronaTracker.Core.Models.CountryEvents;
 using Microsoft.Azure.ServiceBus;
 
 namespace CoronaTracker.Core.Brokers.Queues

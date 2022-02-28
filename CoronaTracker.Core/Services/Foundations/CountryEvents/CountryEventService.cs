@@ -14,7 +14,7 @@ using Microsoft.Azure.ServiceBus;
 
 namespace CoronaTracker.Core.Services.Foundations.CountryEvents
 {
-    public class CountryEventService : ICountryEventService
+    public partial class CountryEventService : ICountryEventService
     {
         private readonly IQueueBroker queueBroker;
         private readonly ILoggingBroker loggingBroker;
@@ -24,14 +24,14 @@ namespace CoronaTracker.Core.Services.Foundations.CountryEvents
             this.queueBroker = queueBroker;
             this.loggingBroker = loggingBroker;
         }
-        public async ValueTask<CountryEvent> AddCountryEventAsync(CountryEvent countryEvent)
+        public ValueTask<CountryEvent> AddCountryEventAsync(CountryEvent countryEvent) =>
+        TryCatch(async () => 
         {
             Message message = MapToMessage(countryEvent);
-
             await this.queueBroker.EnqueueCountryMessageAsync(message);
 
             return countryEvent;
-        }
+        });
 
         private static Message MapToMessage(CountryEvent countryEvent)
         {
