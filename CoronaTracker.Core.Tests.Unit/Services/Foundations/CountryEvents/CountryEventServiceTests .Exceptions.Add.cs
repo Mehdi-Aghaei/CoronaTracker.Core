@@ -16,6 +16,44 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.CountryEvents
     public partial class CountryEventServiceTests
     {
         [Theory]
+        [MemberData(nameof(CriticalDependencyMessageQueueExceptions))]
+        public async Task ShouldThrowCriticalDependencyExceptionOnAddIfDependencyErrorOccursAndLogItAsync(
+            Exception criticalDependencyMessageQueueException)
+        {
+            // given
+            CountryEvent someCountryEvent = CreateRandomCountryEvent();
+
+            var failedCountryEventDependencyException =
+                new FailedCountryEventDependencyException(criticalDependencyMessageQueueException);
+
+            var expectedCountryEventDependencyException =
+                new CountryEventDependencyException(failedCountryEventDependencyException);
+
+            this.queueBrokerMock.Setup(broker =>
+                broker.EnqueueCountryMessageAsync(It.IsAny<Message>()))
+                    .Throws(criticalDependencyMessageQueueException);
+            // when
+            ValueTask<CountryEvent> countryEventTask =
+                this.countryEventService.AddCountryEventAsync(someCountryEvent);
+
+            // then
+            await Assert.ThrowsAsync<CountryEventDependencyException>(() =>
+                countryEventTask.AsTask());
+
+            this.queueBrokerMock.Verify(broker =>
+                broker.EnqueueCountryMessageAsync(It.IsAny<Message>()),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogCritical(It.Is(SameExceptionAs(
+                    expectedCountryEventDependencyException))),
+                        Times.Once);
+
+            this.queueBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Theory]
         [MemberData(nameof(DependencyMessageQueueExceptions))]
         public async Task ShouldThrowDependencyExceptionOnAddIfDependencyErrorOccursAndLogItAsync(
             Exception dependencyMessageQueueException)
@@ -54,6 +92,6 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.CountryEvents
 
             this.queueBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
-        }
+        } 
     }
 }

@@ -17,6 +17,7 @@ using Tynamix.ObjectFiller;
 using Xunit;
 using Microsoft.ServiceBus.Messaging;
 using Xeptions;
+using MessagingEntityDisabledException = Microsoft.Azure.ServiceBus.MessagingEntityDisabledException;
 
 namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.CountryEvents;
 
@@ -48,6 +49,18 @@ public partial class CountryEventServiceTests
             new MessagingException(message: exceptionMessage),
             new Messaging.ServerBusyException(message: exceptionMessage),
             new MessagingCommunicationException(communicationPath: randomString)
+        };
+    }
+
+    public static TheoryData CriticalDependencyMessageQueueExceptions()
+    {
+        string randomString = GetRandomString();
+        string exceptionMessage = randomString;
+
+        return new TheoryData<Exception>
+        {
+            new UnauthorizedAccessException(),
+            new MessagingEntityDisabledException(exceptionMessage)
         };
     }
 
