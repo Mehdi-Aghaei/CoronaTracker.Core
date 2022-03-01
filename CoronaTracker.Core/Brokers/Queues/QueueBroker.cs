@@ -3,7 +3,6 @@
 // FREE TO USE TO CONNECT THE WORLD
 // ---------------------------------------------------------------
 
-using System;
 using Microsoft.Azure.ServiceBus;
 using Microsoft.Extensions.Configuration;
 
