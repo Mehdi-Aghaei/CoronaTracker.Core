@@ -6,5 +6,5 @@
 namespace CoronaTracker.Core.Brokers.Queues
 {
     public partial interface IQueueBroker
-    {}
+    { }
 }

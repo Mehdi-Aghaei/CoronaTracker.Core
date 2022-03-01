@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 using CoronaTracker.Core.Brokers.Apis;
+using CoronaTracker.Core.Brokers.Configurations;
 using CoronaTracker.Core.Brokers.DateTimes;
 using CoronaTracker.Core.Brokers.Loggings;
 using CoronaTracker.Core.Brokers.Storages;
@@ -78,6 +79,7 @@ namespace CoronaTracker.Core
             services.AddTransient<IStorageBroker, StorageBroker>();
             services.AddTransient<ILoggingBroker, LoggingBroker>();
             services.AddTransient<IDateTimeBroker, DateTimeBroker>();
+            services.AddTransient<IConfigurationBroker, ConfigurationBroker>();
         }
 
         private static void AddServices(IServiceCollection services)

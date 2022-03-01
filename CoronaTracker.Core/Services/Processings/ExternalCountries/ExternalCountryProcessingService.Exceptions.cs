@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using CoronaTracker.Core.Models.ExternalCountries;
 using CoronaTracker.Core.Models.ExternalCountries.Exceptions;
-using CoronaTracker.Core.Models.Processings.ExternalCountries;
 using CoronaTracker.Core.Models.Processings.ExternalCountries.Exceptions;
 using Xeptions;
 
