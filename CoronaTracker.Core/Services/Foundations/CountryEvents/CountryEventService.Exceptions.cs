@@ -24,6 +24,10 @@ namespace CoronaTracker.Core.Services.Foundations.CountryEvents
             {
                 return await returningCountryEventFunction();
             }
+            catch(NullCountryEventException nullCountryEventException)
+            {
+                throw CreateAndLogValidationException(nullCountryEventException);
+            }
             catch (UnauthorizedAccessException unauthorizedAccessException)
             {
                 var failedCountryEventException =
@@ -66,6 +70,16 @@ namespace CoronaTracker.Core.Services.Foundations.CountryEvents
 
                 throw CreateAndLogServiceException(failedCountryEventServiceException);
             }
+        }
+
+        private CountryEventValidationException CreateAndLogValidationException(Xeption exception)
+        {
+            var countryEventValidationException =
+                new CountryEventValidationException(exception);
+
+            this.loggingBroker.LogError(countryEventValidationException);
+
+            return countryEventValidationException;
         }
 
         private CountryEventDependencyException CreateAndLogCriticalDependencyException(Xeption exception)

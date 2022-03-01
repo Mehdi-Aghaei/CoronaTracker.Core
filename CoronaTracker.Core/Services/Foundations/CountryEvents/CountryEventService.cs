@@ -27,6 +27,8 @@ namespace CoronaTracker.Core.Services.Foundations.CountryEvents
         public ValueTask<CountryEvent> AddCountryEventAsync(CountryEvent countryEvent) =>
         TryCatch(async () => 
         {
+            ValidateCountryEventIsNotNull(countryEvent);
+
             Message message = MapToMessage(countryEvent);
             await this.queueBroker.EnqueueCountryMessageAsync(message);
 
