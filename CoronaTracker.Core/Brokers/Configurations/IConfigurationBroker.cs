@@ -3,13 +3,12 @@
 // FREE TO USE TO CONNECT THE WORLD
 // ---------------------------------------------------------------
 
-using System.Threading.Tasks;
-using Microsoft.Azure.ServiceBus;
+using System;
 
-namespace CoronaTracker.Core.Brokers.Queues
+namespace CoronaTracker.Core.Brokers.Configurations
 {
-    public partial interface IQueueBroker
+    public interface IConfigurationBroker
     {
-        ValueTask EnqueueCountryMessageAsync(Message message);
+        Guid GetTrustedSourceId();
     }
 }
