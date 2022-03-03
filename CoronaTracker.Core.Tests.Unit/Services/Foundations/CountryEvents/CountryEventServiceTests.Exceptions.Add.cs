@@ -55,8 +55,8 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.CountryEvents
                     Times.Never);
 
             this.configuratinBrokerMock.VerifyNoOtherCalls();
-            this.queueBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.queueBrokerMock.VerifyNoOtherCalls();
         }
 
         [Theory]
@@ -101,8 +101,8 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.CountryEvents
                     Times.Never);
 
             this.configuratinBrokerMock.VerifyNoOtherCalls();
-            this.queueBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.queueBrokerMock.VerifyNoOtherCalls();
         } 
 
         [Fact]
@@ -117,9 +117,9 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.CountryEvents
 
             var expectedCountryEventServiceException =
                 new CountryEventServiceException(failedCountryEventServiceException);
-
-            this.queueBrokerMock.Setup(broker =>
-                broker.EnqueueCountryMessageAsync(It.IsAny<Message>()))
+            
+            this.configuratinBrokerMock.Setup(broker =>
+                broker.GetTrustedSourceId())
                     .Throws(serviceException);
 
             // when
@@ -130,8 +130,8 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.CountryEvents
             await Assert.ThrowsAsync<CountryEventServiceException>(() =>
                 addCountryEventTask.AsTask());
 
-            this.queueBrokerMock.Verify(broker =>
-                broker.EnqueueCountryMessageAsync(It.IsAny<Message>()),
+            this.configuratinBrokerMock.Verify(broker =>
+                broker.GetTrustedSourceId(),
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
@@ -139,9 +139,13 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.CountryEvents
                     expectedCountryEventServiceException))),
                         Times.Once);
 
+            this.queueBrokerMock.Verify(broker =>
+                broker.EnqueueCountryMessageAsync(It.IsAny<Message>()),
+                    Times.Never);
+
             this.configuratinBrokerMock.VerifyNoOtherCalls();
-            this.queueBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.queueBrokerMock.VerifyNoOtherCalls();
         }
     }
 }
