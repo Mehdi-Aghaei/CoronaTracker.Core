@@ -39,6 +39,7 @@ public partial class CountryEventServiceTests
 
         this.countryEventService = new CountryEventService(
             queueBroker: this.queueBrokerMock.Object,
+            configurationBroker: this.configuratinBrokerMock.Object,
             loggingBroker: this.loggingBrokerMock.Object);
 
     }
