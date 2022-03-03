@@ -18,12 +18,14 @@ using Xunit;
 using Microsoft.ServiceBus.Messaging;
 using Xeptions;
 using MessagingEntityDisabledException = Microsoft.Azure.ServiceBus.MessagingEntityDisabledException;
+using CoronaTracker.Core.Brokers.Configurations;
 
 namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.CountryEvents;
 
 public partial class CountryEventServiceTests
 {
     private readonly Mock<IQueueBroker> queueBrokerMock;
+    private readonly Mock<IConfigurationBroker> configuratinBrokerMock;
     private readonly Mock<ILoggingBroker> loggingBrokerMock;
     private readonly ICompareLogic compareLogic;
     private readonly ICountryEventService countryEventService;
@@ -31,6 +33,7 @@ public partial class CountryEventServiceTests
     public CountryEventServiceTests()
     {
         this.queueBrokerMock = new Mock<IQueueBroker>();
+        this.configuratinBrokerMock = new Mock<IConfigurationBroker>();
         this.loggingBrokerMock = new Mock<ILoggingBroker>();
         this.compareLogic = new CompareLogic();
 

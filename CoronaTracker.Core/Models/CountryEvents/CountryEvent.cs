@@ -10,7 +10,7 @@ namespace CoronaTracker.Core.Models.CountryEvents
 {
     public class CountryEvent
     {
-        public Guid TrustedId { get; set; }
+        public Guid TrustedSourceId { get; set; }
         public Country Country { get; set; }
     }
 }

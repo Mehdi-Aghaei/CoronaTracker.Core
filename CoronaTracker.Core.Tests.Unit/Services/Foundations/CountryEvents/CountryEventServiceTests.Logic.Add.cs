@@ -3,6 +3,7 @@
 // FREE TO USE TO CONNECT THE WORLD
 // ---------------------------------------------------------------
 
+using System;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -24,6 +25,9 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.CountryEvents
             CountryEvent randomCountryEvent = CreateRandomCountryEvent();
             CountryEvent inputCountryEvent = randomCountryEvent;
             CountryEvent expectedCountryEvent = inputCountryEvent.DeepClone();
+            Guid randomTrustedSourceId = Guid.NewGuid();
+            Guid givenTrustedSourceId = randomTrustedSourceId;
+            expectedCountryEvent.TrustedSourceId = givenTrustedSourceId;
             
             string serializedCountryEvent =
                 JsonSerializer.Serialize(expectedCountryEvent);
@@ -33,8 +37,8 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.CountryEvents
                 Body = Encoding.UTF8.GetBytes(serializedCountryEvent)
             };
 
-            this.queueBrokerMock.Setup(broker => broker
-                .EnqueueCountryMessageAsync(expectedCountryEventMessage));
+            this.configuratinBrokerMock.Setup(broker =>
+                broker.GetTrustedSourceId()).Returns(givenTrustedSourceId);
 
             // when
             var actualCountryEvent =
@@ -43,6 +47,10 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.CountryEvents
             // then
             actualCountryEvent.Should().BeEquivalentTo(expectedCountryEvent);
 
+            this.configuratinBrokerMock.Verify(broker =>
+                broker.GetTrustedSourceId(),
+                    Times.Once);
+
             this.queueBrokerMock.Verify(broker =>
                 broker.EnqueueCountryMessageAsync(
                     It.Is(SameMessageAs(
@@ -50,6 +58,7 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.CountryEvents
                             Times.Once);
 
             this.queueBrokerMock.VerifyNoOtherCalls();
+            this.configuratinBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
         }
     }
