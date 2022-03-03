@@ -21,7 +21,10 @@ namespace CoronaTracker.Core.Services.Foundations.CountryEvents
         private readonly IConfigurationBroker configurationBroker;        
         private readonly ILoggingBroker loggingBroker;
 
-        public CountryEventService(IQueueBroker queueBroker,ILoggingBroker loggingBroker,IConfigurationBroker configurationBroker)
+        public CountryEventService(
+            IQueueBroker queueBroker,
+            ILoggingBroker loggingBroker,
+            IConfigurationBroker configurationBroker)
         {
             this.queueBroker = queueBroker;
             this.configurationBroker = configurationBroker;
