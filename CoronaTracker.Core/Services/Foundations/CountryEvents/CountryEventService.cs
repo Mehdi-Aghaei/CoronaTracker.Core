@@ -5,7 +5,6 @@
 
 using System.Text;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using CoronaTracker.Core.Brokers.Configurations;
 using CoronaTracker.Core.Brokers.Loggings;
@@ -18,7 +17,7 @@ namespace CoronaTracker.Core.Services.Foundations.CountryEvents
     public partial class CountryEventService : ICountryEventService
     {
         private readonly IQueueBroker queueBroker;
-        private readonly IConfigurationBroker configurationBroker;        
+        private readonly IConfigurationBroker configurationBroker;
         private readonly ILoggingBroker loggingBroker;
 
         public CountryEventService(
@@ -31,7 +30,7 @@ namespace CoronaTracker.Core.Services.Foundations.CountryEvents
             this.loggingBroker = loggingBroker;
         }
         public ValueTask<CountryEvent> AddCountryEventAsync(CountryEvent countryEvent) =>
-        TryCatch(async () => 
+        TryCatch(async () =>
         {
             ValidateCountryEventIsNotNull(countryEvent);
 
@@ -44,7 +43,7 @@ namespace CoronaTracker.Core.Services.Foundations.CountryEvents
         private Message MapToMessage(CountryEvent countryEvent)
         {
             countryEvent.TrustedSourceId = this.configurationBroker.GetTrustedSourceId();
-            
+
             string serializedCountryEvent = JsonSerializer.Serialize(countryEvent);
 
             return new Message

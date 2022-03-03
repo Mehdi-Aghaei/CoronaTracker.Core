@@ -28,7 +28,7 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.CountryEvents
             Guid randomTrustedSourceId = Guid.NewGuid();
             Guid givenTrustedSourceId = randomTrustedSourceId;
             expectedCountryEvent.TrustedSourceId = givenTrustedSourceId;
-            
+
             string serializedCountryEvent =
                 JsonSerializer.Serialize(expectedCountryEvent);
 

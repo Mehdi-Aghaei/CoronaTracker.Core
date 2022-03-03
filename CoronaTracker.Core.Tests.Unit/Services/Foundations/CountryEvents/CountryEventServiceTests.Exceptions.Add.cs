@@ -41,7 +41,7 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.CountryEvents
             await Assert.ThrowsAsync<CountryEventDependencyException>(() =>
                 countryEventTask.AsTask());
 
-            this.configuratinBrokerMock.Verify(broker => 
+            this.configuratinBrokerMock.Verify(broker =>
                 broker.GetTrustedSourceId(),
                     Times.Once);
 
@@ -103,7 +103,7 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.CountryEvents
             this.configuratinBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.queueBrokerMock.VerifyNoOtherCalls();
-        } 
+        }
 
         [Fact]
         public async Task ShouldThrowServiceExceptionOnAddIfServiceErrorOccursAndLogItAsync()
@@ -117,7 +117,7 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.CountryEvents
 
             var expectedCountryEventServiceException =
                 new CountryEventServiceException(failedCountryEventServiceException);
-            
+
             this.configuratinBrokerMock.Setup(broker =>
                 broker.GetTrustedSourceId())
                     .Throws(serviceException);

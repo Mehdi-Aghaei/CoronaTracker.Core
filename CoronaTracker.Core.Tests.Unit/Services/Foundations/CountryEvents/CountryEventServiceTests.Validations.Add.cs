@@ -3,7 +3,6 @@
 // FREE TO USE TO CONNECT THE WORLD
 // ---------------------------------------------------------------
 
-using System;
 using System.Threading.Tasks;
 using CoronaTracker.Core.Models.CountryEvents;
 using CoronaTracker.Core.Models.CountryEvents.Exceptions;
@@ -47,6 +46,6 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.CountryEvents
             this.queueBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
         }
-          
+
     }
 }

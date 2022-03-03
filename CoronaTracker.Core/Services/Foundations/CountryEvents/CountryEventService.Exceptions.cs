@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 using CoronaTracker.Core.Models.CountryEvents;
 using CoronaTracker.Core.Models.CountryEvents.Exceptions;
 using Microsoft.ServiceBus.Messaging;
-using MessagingEntityDisabledException = Microsoft.Azure.ServiceBus.MessagingEntityDisabledException;
 using Xeptions;
+using MessagingEntityDisabledException = Microsoft.Azure.ServiceBus.MessagingEntityDisabledException;
 
 
 namespace CoronaTracker.Core.Services.Foundations.CountryEvents
@@ -24,7 +24,7 @@ namespace CoronaTracker.Core.Services.Foundations.CountryEvents
             {
                 return await returningCountryEventFunction();
             }
-            catch(NullCountryEventException nullCountryEventException)
+            catch (NullCountryEventException nullCountryEventException)
             {
                 throw CreateAndLogValidationException(nullCountryEventException);
             }
@@ -42,28 +42,28 @@ namespace CoronaTracker.Core.Services.Foundations.CountryEvents
 
                 throw CreateAndLogCriticalDependencyException(failedCountryEventException);
             }
-            catch (ServerBusyException serverBusyException )
+            catch (ServerBusyException serverBusyException)
             {
                 var failedCountryEventException =
                     new FailedCountryEventDependencyException(serverBusyException);
 
                 throw CreateAndLogDependencyException(failedCountryEventException);
             }
-            catch (MessagingCommunicationException messagingCommunicationException )
+            catch (MessagingCommunicationException messagingCommunicationException)
             {
                 var failedCountryEventException =
                     new FailedCountryEventDependencyException(messagingCommunicationException);
 
                 throw CreateAndLogDependencyException(failedCountryEventException);
             }
-            catch (MessagingException messagingException )
+            catch (MessagingException messagingException)
             {
                 var failedCountryEventException =
                     new FailedCountryEventDependencyException(messagingException);
 
                 throw CreateAndLogDependencyException(failedCountryEventException);
-            }   
-            catch(Exception exception)
+            }
+            catch (Exception exception)
             {
                 var failedCountryEventServiceException =
                     new FailedCountryEventServiceException(exception);
@@ -94,7 +94,7 @@ namespace CoronaTracker.Core.Services.Foundations.CountryEvents
 
         private CountryEventDependencyException CreateAndLogDependencyException(Xeption exception)
         {
-            var countryEventDependencyException = 
+            var countryEventDependencyException =
                 new CountryEventDependencyException(exception);
 
             this.loggingBroker.LogError(countryEventDependencyException);
@@ -104,9 +104,9 @@ namespace CoronaTracker.Core.Services.Foundations.CountryEvents
 
         private CountryEventServiceException CreateAndLogServiceException(Xeption exception)
         {
-            var countryEventServiceException = 
+            var countryEventServiceException =
                 new CountryEventServiceException(exception);
-            
+
             this.loggingBroker.LogError(countryEventServiceException);
 
             return countryEventServiceException;

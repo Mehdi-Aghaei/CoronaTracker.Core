@@ -5,20 +5,20 @@
 
 using System;
 using System.Linq.Expressions;
+using CoronaTracker.Core.Brokers.Configurations;
 using CoronaTracker.Core.Brokers.Loggings;
 using CoronaTracker.Core.Brokers.Queues;
 using CoronaTracker.Core.Models.CountryEvents;
 using CoronaTracker.Core.Services.Foundations.CountryEvents;
 using KellermanSoftware.CompareNetObjects;
 using Microsoft.Azure.ServiceBus;
-using Messaging = Microsoft.ServiceBus.Messaging;
+using Microsoft.ServiceBus.Messaging;
 using Moq;
 using Tynamix.ObjectFiller;
-using Xunit;
-using Microsoft.ServiceBus.Messaging;
 using Xeptions;
+using Xunit;
+using Messaging = Microsoft.ServiceBus.Messaging;
 using MessagingEntityDisabledException = Microsoft.Azure.ServiceBus.MessagingEntityDisabledException;
-using CoronaTracker.Core.Brokers.Configurations;
 
 namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.CountryEvents;
 
@@ -81,7 +81,7 @@ public partial class CountryEventServiceTests
     {
         return actualMessage =>
             this.compareLogic.Compare(expectedMessage, actualMessage).AreEqual;
-            
+
     }
 
     private static Expression<Func<Xeption, bool>> SameExceptionAs(Xeption expectedException)
