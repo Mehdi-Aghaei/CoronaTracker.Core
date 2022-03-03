@@ -100,8 +100,8 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.CountryEvents
                 broker.EnqueueCountryMessageAsync(It.IsAny<Message>()),
                     Times.Never);
 
-            this.queueBrokerMock.VerifyNoOtherCalls();
             this.configuratinBrokerMock.VerifyNoOtherCalls();
+            this.queueBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
         } 
 
@@ -139,6 +139,7 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.CountryEvents
                     expectedCountryEventServiceException))),
                         Times.Once);
 
+            this.configuratinBrokerMock.VerifyNoOtherCalls();
             this.queueBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
         }
