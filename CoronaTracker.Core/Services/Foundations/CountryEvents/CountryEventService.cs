@@ -29,12 +29,13 @@ namespace CoronaTracker.Core.Services.Foundations.CountryEvents
             this.configurationBroker = configurationBroker;
             this.loggingBroker = loggingBroker;
         }
+
         public ValueTask<CountryEvent> AddCountryEventAsync(CountryEvent countryEvent) =>
         TryCatch(async () =>
         {
             ValidateCountryEventIsNotNull(countryEvent);
-
             Message message = MapToMessage(countryEvent);
+
             await this.queueBroker.EnqueueCountryMessageAsync(message);
 
             return countryEvent;
@@ -42,9 +43,11 @@ namespace CoronaTracker.Core.Services.Foundations.CountryEvents
 
         private Message MapToMessage(CountryEvent countryEvent)
         {
-            countryEvent.TrustedSourceId = this.configurationBroker.GetTrustedSourceId();
+            countryEvent.TrustedSourceId =
+                this.configurationBroker.GetTrustedSourceId();
 
-            string serializedCountryEvent = JsonSerializer.Serialize(countryEvent);
+            string serializedCountryEvent =
+                JsonSerializer.Serialize(countryEvent);
 
             return new Message
             {
