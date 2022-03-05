@@ -41,7 +41,7 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Processings.CountryEvents
 
             this.countryEventServiceMock.Verify(service =>
                 service.AddCountryEventAsync(It.IsAny<CountryEvent>()),
-                    Times.Once);
+                    Times.Never);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.countryEventServiceMock.VerifyNoOtherCalls();

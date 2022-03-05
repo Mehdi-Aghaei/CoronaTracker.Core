@@ -11,7 +11,7 @@ using CoronaTracker.Core.Services.Foundations.CountryEvents;
 
 namespace CoronaTracker.Core.Services.Processings.CountryEvents
 {
-    public class CountryEventProcessingService : ICountryEventProcessingService
+    public partial class CountryEventProcessingService : ICountryEventProcessingService
     {
         private readonly ICountryEventService countryEventService;
         private readonly ILoggingBroker loggingBroker;
@@ -22,7 +22,11 @@ namespace CoronaTracker.Core.Services.Processings.CountryEvents
             this.loggingBroker = loggingBroker;
         }
 
-        public async ValueTask<CountryEvent> AddCountryEventAsync(CountryEvent countryEvent) =>
-            await this.countryEventService.AddCountryEventAsync(countryEvent);
+        public ValueTask<CountryEvent> AddCountryEventAsync(CountryEvent countryEvent) =>
+        TryCatch(async () =>
+        {
+            ValidateCountryEventIsNotNull(countryEvent);
+            return await this.countryEventService.AddCountryEventAsync(countryEvent);
+        });
     }
 }
