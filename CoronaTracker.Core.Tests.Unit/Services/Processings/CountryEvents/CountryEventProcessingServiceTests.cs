@@ -4,12 +4,14 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Linq.Expressions;
 using CoronaTracker.Core.Brokers.Loggings;
 using CoronaTracker.Core.Models.CountryEvents;
 using CoronaTracker.Core.Services.Foundations.CountryEvents;
 using CoronaTracker.Core.Services.Processings.CountryEvents;
 using Moq;
 using Tynamix.ObjectFiller;
+using Xeptions;
 
 namespace CoronaTracker.Core.Tests.Unit.Services.Processings.CountryEvents
 {
@@ -35,6 +37,14 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Processings.CountryEvents
 
         private static CountryEvent CreateRandomCountryEvent() =>
             CreateCountryEventFiller().Create();
+
+        private Expression<Func<Xeption, bool>> SameExceptionAs(Xeption expectedException)
+        {
+            return actualException =>
+                actualException.Message == expectedException.Message
+                && actualException.InnerException.Message == expectedException.InnerException.Message
+                && (actualException.InnerException as Xeption).DataEquals(expectedException.InnerException.Data);
+        }
 
         private static Filler<CountryEvent> CreateCountryEventFiller()
         {

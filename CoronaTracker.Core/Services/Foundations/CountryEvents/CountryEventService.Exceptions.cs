@@ -7,6 +7,7 @@ using System;
 using System.Threading.Tasks;
 using CoronaTracker.Core.Models.CountryEvents;
 using CoronaTracker.Core.Models.CountryEvents.Exceptions;
+using CoronaTracker.Core.Models.Processings.CountryEvents;
 using Microsoft.ServiceBus.Messaging;
 using Xeptions;
 using MessagingEntityDisabledException = Microsoft.Azure.ServiceBus.MessagingEntityDisabledException;
