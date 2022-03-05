@@ -23,6 +23,6 @@ namespace CoronaTracker.Core.Services.Processings.CountryEvents
         }
 
         public async ValueTask<CountryEvent> AddCountryEventAsync(CountryEvent countryEvent) =>
-            throw new NotImplementedException();
+            await this.countryEventService.AddCountryEventAsync(countryEvent);
     }
 }

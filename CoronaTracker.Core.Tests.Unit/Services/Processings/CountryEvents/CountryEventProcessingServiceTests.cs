@@ -4,10 +4,6 @@
 // ---------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using CoronaTracker.Core.Brokers.Loggings;
 using CoronaTracker.Core.Models.CountryEvents;
 using CoronaTracker.Core.Services.Foundations.CountryEvents;
@@ -34,10 +30,20 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Processings.CountryEvents
 
         }
 
+        private static DateTimeOffset GetRandomDateTime() =>
+            new DateTimeRange(earliestDate: new DateTime()).GetValue();
+
         private static CountryEvent CreateRandomCountryEvent() =>
             CreateCountryEventFiller().Create();
 
-        private static Filler<CountryEvent> CreateCountryEventFiller() =>
-            new Filler<CountryEvent>();
+        private static Filler<CountryEvent> CreateCountryEventFiller()
+        {
+            var filler = new Filler<CountryEvent>();
+
+            filler.Setup().OnType<DateTimeOffset>()
+                .Use(GetRandomDateTime());
+        
+            return filler;
+        }
     }
 }
