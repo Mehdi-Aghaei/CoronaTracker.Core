@@ -6,6 +6,7 @@
 using System;
 using System.Threading.Tasks;
 using CoronaTracker.Core.Models.CountryEvents;
+using CoronaTracker.Core.Models.CountryEvents.Exceptions;
 using CoronaTracker.Core.Models.Processings.CountryEvents;
 using Xeptions;
 
@@ -23,13 +24,31 @@ namespace CoronaTracker.Core.Services.Processings.CountryEvents
             }
             catch (NullCountryEventProcessingException nullCountryEventProcessingException)
             {
-
-                throw CreateAndLogCountryEventValidationException(
+                throw CreateAndLogValidationException(
                     nullCountryEventProcessingException);
+            }
+            catch (CountryEventDependencyException countryEventDependencyException)
+            {
+                throw CreateAndLogDependencyException(countryEventDependencyException);
+            }
+            catch(CountryEventServiceException countryEventServiceException)
+            {
+                throw CreateAndLogDependencyException(countryEventServiceException);
             }
         }
 
-        private CountryEventProcessingValidationException CreateAndLogCountryEventValidationException(Xeption exception)
+        private CountryEventProcessingDependencyException CreateAndLogDependencyException(Xeption exception)
+        {
+            var countryEventProcessingDependencyException =
+                new CountryEventProcessingDependencyException(
+                    exception.InnerException as Xeption);
+
+            this.loggingBroker.LogError(countryEventProcessingDependencyException);
+
+            return countryEventProcessingDependencyException;
+        }
+
+        private CountryEventProcessingValidationException CreateAndLogValidationException(Xeption exception)
         {
             var countryEventProcessingValidationException = 
                 new CountryEventProcessingValidationException(exception);
