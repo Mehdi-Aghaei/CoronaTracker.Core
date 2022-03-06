@@ -7,11 +7,13 @@ using System;
 using System.Linq.Expressions;
 using CoronaTracker.Core.Brokers.Loggings;
 using CoronaTracker.Core.Models.CountryEvents;
+using CoronaTracker.Core.Models.CountryEvents.Exceptions;
 using CoronaTracker.Core.Services.Foundations.CountryEvents;
 using CoronaTracker.Core.Services.Processings.CountryEvents;
 using Moq;
 using Tynamix.ObjectFiller;
 using Xeptions;
+using Xunit;
 
 namespace CoronaTracker.Core.Tests.Unit.Services.Processings.CountryEvents
 {
@@ -31,6 +33,25 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Processings.CountryEvents
                 loggingBroker: loggingBrokerMock.Object);
 
         }
+        
+        public static TheoryData DependencyExceptions()
+        {
+            string randomString = GetRandomString();
+            string exceptionMessage = randomString;
+            var innerException = new Xeption(exceptionMessage);
+
+            return new TheoryData<Xeption>
+            {
+                new CountryEventDependencyException(innerException),
+                new CountryEventServiceException(innerException)
+            };
+        }
+
+        private static int GetRandomNumber() =>
+            new IntRange(min: 2, max: 10).GetValue();
+
+        private static string GetRandomString() =>
+            new MnemonicString(wordCount:GetRandomNumber()).GetValue();
 
         private static DateTimeOffset GetRandomDateTime() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();

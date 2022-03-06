@@ -32,7 +32,7 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.CountryEvents
                 this.countryEventService.AddCountryEventAsync(nullCountry);
 
             // then
-            await Assert.ThrowsAsync<CountryEventProcessingValidationException>(() =>
+            await Assert.ThrowsAsync<CountryEventValidationException>(() =>
                 countryEventTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
@@ -47,6 +47,5 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.CountryEvents
             this.queueBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
         }
-
     }
 }
