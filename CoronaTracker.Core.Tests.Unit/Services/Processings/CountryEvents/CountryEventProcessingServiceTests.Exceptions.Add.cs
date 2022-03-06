@@ -3,6 +3,7 @@
 // FREE TO USE TO CONNECT THE WORLD
 // ---------------------------------------------------------------
 
+using System;
 using System.Threading.Tasks;
 using CoronaTracker.Core.Models.CountryEvents;
 using CoronaTracker.Core.Models.Processings.CountryEvents;
@@ -30,7 +31,7 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Processings.CountryEvents
 
             this.countryEventServiceMock.Setup(service =>
                 service.AddCountryEventAsync(someCountryEvent))
-                    .Throws(dependencyException);
+                    .ThrowsAsync(dependencyException);
 
             // when
             ValueTask<CountryEvent> addcountryEventTask =
@@ -51,6 +52,47 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Processings.CountryEvents
 
             this.countryEventServiceMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
-        } 
+        }
+        
+        [Fact]
+        public async Task ShouldThrowServiceExceptionOnAddIfServiceErrorOccursAndLogItAsync()
+        {
+            // given
+            CountryEvent someCountryEvent = CreateRandomCountryEvent();
+
+            var serviceException = new Exception();
+
+            var failedCountryEventProccesingServiceException =
+                new FailedCountryEventProccesingServiceException(serviceException);
+
+            var expectedCountryEventProccesingServiceException =
+                new CountryEventProccesingServiceException(
+                    failedCountryEventProccesingServiceException);
+
+            this.countryEventServiceMock.Setup(service =>
+                service.AddCountryEventAsync(someCountryEvent))
+                    .ThrowsAsync(serviceException);
+
+            // when
+            ValueTask<CountryEvent> addCountryEventTask =
+                this.countryEventProcessingService.AddCountryEventAsync(someCountryEvent);
+
+            // then
+            await Assert.ThrowsAsync<CountryEventProccesingServiceException>(() =>
+                addCountryEventTask.AsTask());
+
+            this.countryEventServiceMock.Verify(service =>
+                service.AddCountryEventAsync(someCountryEvent),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedCountryEventProccesingServiceException))), 
+                        Times.Once);
+
+            this.countryEventServiceMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+        }
     }
+
 }
