@@ -15,7 +15,7 @@ namespace CoronaTracker.Core.Services.Processings.CountryEvents
     public partial class CountryEventProcessingService
     {
         private delegate ValueTask<CountryEvent> ReturningCountryEventFunction();
-        
+
         private async ValueTask<CountryEvent> TryCatch(ReturningCountryEventFunction returningCountryEventFunction)
         {
             try
@@ -31,10 +31,27 @@ namespace CoronaTracker.Core.Services.Processings.CountryEvents
             {
                 throw CreateAndLogDependencyException(countryEventDependencyException);
             }
-            catch(CountryEventServiceException countryEventServiceException)
+            catch (CountryEventServiceException countryEventServiceException)
             {
                 throw CreateAndLogDependencyException(countryEventServiceException);
             }
+            catch (Exception exception)
+            {
+                var failedCountryEventProcessingServiceException =
+               new FailedCountryEventProcessingServiceException(exception);
+
+                throw CreateAndLogServiceException(failedCountryEventProcessingServiceException);
+            }
+        }
+
+        private CountryEventProcessingValidationException CreateAndLogValidationException(Xeption exception)
+        {
+            var countryEventProcessingValidationException =
+                new CountryEventProcessingValidationException(exception);
+
+            this.loggingBroker.LogError(countryEventProcessingValidationException);
+
+            return countryEventProcessingValidationException;
         }
 
         private CountryEventProcessingDependencyException CreateAndLogDependencyException(Xeption exception)
@@ -48,14 +65,14 @@ namespace CoronaTracker.Core.Services.Processings.CountryEvents
             return countryEventProcessingDependencyException;
         }
 
-        private CountryEventProcessingValidationException CreateAndLogValidationException(Xeption exception)
+        private CountryEventProccesingServiceException CreateAndLogServiceException(Xeption exception)
         {
-            var countryEventProcessingValidationException = 
-                new CountryEventProcessingValidationException(exception);
+            var countryEventProccesingServiceException =
+                new CountryEventProccesingServiceException(exception);
 
-            this.loggingBroker.LogError(countryEventProcessingValidationException);
+            this.loggingBroker.LogError(countryEventProccesingServiceException);
 
-            return countryEventProcessingValidationException;
+            return countryEventProccesingServiceException;
         }
     }
 }

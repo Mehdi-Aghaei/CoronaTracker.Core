@@ -12,7 +12,7 @@ namespace CoronaTracker.Core.Services.Processings.CountryEvents
     {
         private static void ValidateCountryEventIsNotNull(CountryEvent countryEvent)
         {
-            if(countryEvent is null)
+            if (countryEvent is null)
             {
                 throw new NullCountryEventProcessingException();
             }

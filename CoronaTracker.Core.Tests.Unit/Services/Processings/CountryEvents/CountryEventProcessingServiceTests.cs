@@ -33,7 +33,7 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Processings.CountryEvents
                 loggingBroker: loggingBrokerMock.Object);
 
         }
-        
+
         public static TheoryData DependencyExceptions()
         {
             string randomString = GetRandomString();
@@ -51,7 +51,7 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Processings.CountryEvents
             new IntRange(min: 2, max: 10).GetValue();
 
         private static string GetRandomString() =>
-            new MnemonicString(wordCount:GetRandomNumber()).GetValue();
+            new MnemonicString(wordCount: GetRandomNumber()).GetValue();
 
         private static DateTimeOffset GetRandomDateTime() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
@@ -73,7 +73,7 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Processings.CountryEvents
 
             filler.Setup().OnType<DateTimeOffset>()
                 .Use(GetRandomDateTime());
-        
+
             return filler;
         }
     }

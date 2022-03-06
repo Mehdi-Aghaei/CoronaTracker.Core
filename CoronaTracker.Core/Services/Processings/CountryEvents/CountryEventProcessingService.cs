@@ -3,7 +3,6 @@
 // FREE TO USE TO CONNECT THE WORLD
 // ---------------------------------------------------------------
 
-using System;
 using System.Threading.Tasks;
 using CoronaTracker.Core.Brokers.Loggings;
 using CoronaTracker.Core.Models.CountryEvents;

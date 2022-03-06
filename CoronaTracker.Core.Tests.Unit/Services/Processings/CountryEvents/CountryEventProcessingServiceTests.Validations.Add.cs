@@ -6,8 +6,6 @@
 using System.Threading.Tasks;
 using CoronaTracker.Core.Models.CountryEvents;
 using CoronaTracker.Core.Models.Processings.CountryEvents;
-using FluentAssertions;
-using Force.DeepCloner;
 using Moq;
 using Xunit;
 

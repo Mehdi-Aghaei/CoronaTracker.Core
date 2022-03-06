@@ -7,8 +7,6 @@ using System;
 using System.Threading.Tasks;
 using CoronaTracker.Core.Models.CountryEvents;
 using CoronaTracker.Core.Models.Processings.CountryEvents;
-using FluentAssertions;
-using Force.DeepCloner;
 using Moq;
 using Xeptions;
 using Xunit;
@@ -36,7 +34,7 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Processings.CountryEvents
             // when
             ValueTask<CountryEvent> addcountryEventTask =
                 this.countryEventProcessingService.AddCountryEventAsync(someCountryEvent);
-                
+
             // then
             await Assert.ThrowsAsync<CountryEventProcessingDependencyException>(() =>
                 addcountryEventTask.AsTask());
@@ -47,13 +45,13 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Processings.CountryEvents
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(
-                    expectedCountryEventProcessingDependencyException))), 
+                    expectedCountryEventProcessingDependencyException))),
                         Times.Once);
 
             this.countryEventServiceMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
         }
-        
+
         [Fact]
         public async Task ShouldThrowServiceExceptionOnAddIfServiceErrorOccursAndLogItAsync()
         {
@@ -63,7 +61,7 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Processings.CountryEvents
             var serviceException = new Exception();
 
             var failedCountryEventProccesingServiceException =
-                new FailedCountryEventProccesingServiceException(serviceException);
+                new FailedCountryEventProcessingServiceException(serviceException);
 
             var expectedCountryEventProccesingServiceException =
                 new CountryEventProccesingServiceException(
@@ -87,7 +85,7 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Processings.CountryEvents
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(
-                    expectedCountryEventProccesingServiceException))), 
+                    expectedCountryEventProccesingServiceException))),
                         Times.Once);
 
             this.countryEventServiceMock.VerifyNoOtherCalls();
