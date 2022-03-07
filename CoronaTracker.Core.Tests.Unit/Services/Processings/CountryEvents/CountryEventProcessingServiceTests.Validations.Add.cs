@@ -5,46 +5,44 @@
 
 using System.Threading.Tasks;
 using CoronaTracker.Core.Models.CountryEvents;
-using CoronaTracker.Core.Models.CountryEvents.Exceptions;
-using Microsoft.Azure.ServiceBus;
+using CoronaTracker.Core.Models.Processings.CountryEvents;
 using Moq;
 using Xunit;
 
-namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.CountryEvents
+namespace CoronaTracker.Core.Tests.Unit.Services.Processings.CountryEvents
 {
-    public partial class CountryEventServiceTests
+    public partial class CountryEventProcessingServiceTests
     {
         [Fact]
         public async Task ShouldThrowValidationExceptionOnAddIfCountryEventIsNullAndLogItAsync()
         {
             // given
-            CountryEvent nullCountry = null;
-
+            CountryEvent nullCountryEvent = null;
             var nullCountryEventException =
-                new NullCountryEventException();
+                new NullCountryEventProcessingException();
 
             var expectedCountryEventValidationException =
-                new CountryEventValidationException(nullCountryEventException);
+                new CountryEventProcessingValidationException(nullCountryEventException);
 
             // when
-            ValueTask<CountryEvent> countryEventTask =
-                this.countryEventService.AddCountryEventAsync(nullCountry);
+            ValueTask<CountryEvent> addCountryEventTask =
+                this.countryEventProcessingService.AddCountryEventAsync(nullCountryEvent);
 
             // then
-            await Assert.ThrowsAsync<CountryEventValidationException>(() =>
-                countryEventTask.AsTask());
+            await Assert.ThrowsAsync<CountryEventProcessingValidationException>(() =>
+               addCountryEventTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(
                     expectedCountryEventValidationException))),
                         Times.Once);
 
-            this.queueBrokerMock.Verify(broker =>
-                broker.EnqueueCountryMessageAsync(It.IsAny<Message>()),
+            this.countryEventServiceMock.Verify(service =>
+                service.AddCountryEventAsync(It.IsAny<CountryEvent>()),
                     Times.Never);
 
-            this.queueBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.countryEventServiceMock.VerifyNoOtherCalls();
         }
     }
 }
