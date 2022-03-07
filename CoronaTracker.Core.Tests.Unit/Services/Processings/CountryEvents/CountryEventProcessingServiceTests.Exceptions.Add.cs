@@ -92,5 +92,4 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Processings.CountryEvents
             this.loggingBrokerMock.VerifyNoOtherCalls();
         }
     }
-
 }

@@ -38,7 +38,7 @@ namespace CoronaTracker.Core.Services.Processings.CountryEvents
             catch (Exception exception)
             {
                 var failedCountryEventProcessingServiceException =
-               new FailedCountryEventProcessingServiceException(exception);
+                    new FailedCountryEventProcessingServiceException(exception);
 
                 throw CreateAndLogServiceException(failedCountryEventProcessingServiceException);
             }

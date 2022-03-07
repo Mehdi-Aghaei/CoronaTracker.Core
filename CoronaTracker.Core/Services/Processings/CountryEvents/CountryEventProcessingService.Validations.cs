@@ -17,6 +17,5 @@ namespace CoronaTracker.Core.Services.Processings.CountryEvents
                 throw new NullCountryEventProcessingException();
             }
         }
-
     }
 }
