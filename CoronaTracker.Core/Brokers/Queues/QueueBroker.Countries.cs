@@ -30,9 +30,9 @@ namespace CoronaTracker.Core.Brokers.Queues
         private Func<Message,CancellationToken,Task> CompleteCountriesQueueMessageAsync(
             Func<Message, CancellationToken, Task> handler)
         {
-            return async (message, toke) =>
+            return async (message, token) =>
             {
-                await handler(message, toke);
+                await handler(message, token);
                 await this.CountriesQueue.CompleteAsync(message.SystemProperties.LockToken);
             };
         }
