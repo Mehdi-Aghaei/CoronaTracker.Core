@@ -7,45 +7,45 @@ using System;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
-using CoronaTracker.Core.Models.CountryEvents;
+using CoronaTracker.Core.Models.ExternalCountryEvents;
 using FluentAssertions;
 using Force.DeepCloner;
 using Microsoft.Azure.ServiceBus;
 using Moq;
 using Xunit;
 
-namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.CountryEvents
+namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.ExternalCountryEvents
 {
-    public partial class CountryEventServiceTests
+    public partial class ExternalCountryEventServiceTests
     {
         [Fact]
-        public async Task ShouldAddCountryEventAsync()
+        public async Task ShouldAddExternalCountryEventAsync()
         {
             // given
-            CountryEvent randomCountryEvent = CreateRandomCountryEvent();
-            CountryEvent inputCountryEvent = randomCountryEvent;
-            CountryEvent expectedCountryEvent = inputCountryEvent.DeepClone();
+            ExternalCountryEvent randomExternalCountryEvent = CreateRandomExternalCountryEvent();
+            ExternalCountryEvent inputExternalCountryEvent = randomExternalCountryEvent;
+            ExternalCountryEvent expectedExternalCountryEvent = inputExternalCountryEvent.DeepClone();
             Guid randomTrustedSourceId = Guid.NewGuid();
             Guid givenTrustedSourceId = randomTrustedSourceId;
-            expectedCountryEvent.TrustedSourceId = givenTrustedSourceId;
+            expectedExternalCountryEvent.TrustedSourceId = givenTrustedSourceId;
 
-            string serializedCountryEvent =
-                JsonSerializer.Serialize(expectedCountryEvent);
+            string serializedExternalCountryEvent =
+                JsonSerializer.Serialize(expectedExternalCountryEvent);
 
-            var expectedCountryEventMessage = new Message
+            var expectedExternalCountryEventMessage = new Message
             {
-                Body = Encoding.UTF8.GetBytes(serializedCountryEvent)
+                Body = Encoding.UTF8.GetBytes(serializedExternalCountryEvent)
             };
 
             this.configuratinBrokerMock.Setup(broker =>
                 broker.GetTrustedSourceId()).Returns(givenTrustedSourceId);
 
             // when
-            var actualCountryEvent =
-                await this.countryEventService.AddCountryEventAsync(inputCountryEvent);
+            var actualExternalCountryEvent =
+                await this.externalCountryEventService.AddExternalCountryEventAsync(inputExternalCountryEvent);
 
             // then
-            actualCountryEvent.Should().BeEquivalentTo(expectedCountryEvent);
+            actualExternalCountryEvent.Should().BeEquivalentTo(expectedExternalCountryEvent);
 
             this.configuratinBrokerMock.Verify(broker =>
                 broker.GetTrustedSourceId(),
@@ -54,7 +54,7 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.CountryEvents
             this.queueBrokerMock.Verify(broker =>
                 broker.EnqueueCountryMessageAsync(
                     It.Is(SameMessageAs(
-                        expectedCountryEventMessage))),
+                        expectedExternalCountryEventMessage))),
                             Times.Once);
 
             this.queueBrokerMock.VerifyNoOtherCalls();

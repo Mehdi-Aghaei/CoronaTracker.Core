@@ -6,11 +6,11 @@
 using System;
 using Xeptions;
 
-namespace CoronaTracker.Core.Models.Processings.CountryEvents
+namespace CoronaTracker.Core.Models.Processings.ExternalCountryEvents.Exceptions
 {
-    public class FailedCountryEventProcessingServiceException : Xeption
+    public class FailedExternalCountryEventProcessingServiceException : Xeption
     {
-        public FailedCountryEventProcessingServiceException(Exception innerException)
+        public FailedExternalCountryEventProcessingServiceException(Exception innerException)
             : base(message: "Failed country event service occurred, please contact support.", innerException)
         { }
     }

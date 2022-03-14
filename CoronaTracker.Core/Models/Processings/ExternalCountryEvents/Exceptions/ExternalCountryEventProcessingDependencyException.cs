@@ -5,11 +5,11 @@
 
 using Xeptions;
 
-namespace CoronaTracker.Core.Models.Processings.CountryEvents
+namespace CoronaTracker.Core.Models.Processings.ExternalCountryEvents.Exceptions
 {
-    public class CountryEventProcessingDependencyException : Xeption
+    public class ExternalCountryEventProcessingDependencyException : Xeption
     {
-        public CountryEventProcessingDependencyException(Xeption innerException)
+        public ExternalCountryEventProcessingDependencyException(Xeption innerException)
             : base(message: "Country event dependency exception occurred, Please try again.", innerException)
         { }
     }

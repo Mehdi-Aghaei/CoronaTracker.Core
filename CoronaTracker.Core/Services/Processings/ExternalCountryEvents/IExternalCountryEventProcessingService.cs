@@ -4,12 +4,12 @@
 // ---------------------------------------------------------------
 
 using System.Threading.Tasks;
-using CoronaTracker.Core.Models.CountryEvents;
+using CoronaTracker.Core.Models.ExternalCountryEvents;
 
 namespace CoronaTracker.Core.Services.Processings.CountryEvents
 {
-    public interface ICountryEventProcessingService
+    public interface IExternalCountryEventProcessingService
     {
-        ValueTask<CountryEvent> AddCountryEventAsync(CountryEvent countryEvent);
+        ValueTask<ExternalCountryEvent> AddExternalCountryEventAsync(ExternalCountryEvent externalCountryEvent);
     }
 }

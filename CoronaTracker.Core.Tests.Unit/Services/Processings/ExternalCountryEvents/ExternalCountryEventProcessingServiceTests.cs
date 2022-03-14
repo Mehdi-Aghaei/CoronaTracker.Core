@@ -6,30 +6,30 @@
 using System;
 using System.Linq.Expressions;
 using CoronaTracker.Core.Brokers.Loggings;
-using CoronaTracker.Core.Models.CountryEvents;
-using CoronaTracker.Core.Models.CountryEvents.Exceptions;
-using CoronaTracker.Core.Services.Foundations.CountryEvents;
+using CoronaTracker.Core.Models.ExternalCountryEvents;
+using CoronaTracker.Core.Models.ExternalCountryEvents.Exceptions;
+using CoronaTracker.Core.Services.Foundations.ExternalCountryEvents;
 using CoronaTracker.Core.Services.Processings.CountryEvents;
 using Moq;
 using Tynamix.ObjectFiller;
 using Xeptions;
 using Xunit;
 
-namespace CoronaTracker.Core.Tests.Unit.Services.Processings.CountryEvents
+namespace CoronaTracker.Core.Tests.Unit.Services.Processings.ExternalCountryEvents
 {
-    public partial class CountryEventProcessingServiceTests
+    public partial class ExternalCountryEventProcessingServiceTests
     {
-        private readonly Mock<ICountryEventService> countryEventServiceMock;
+        private readonly Mock<IExternalCountryEventService> externalCountryEventServiceMock;
         private readonly Mock<ILoggingBroker> loggingBrokerMock;
-        private readonly ICountryEventProcessingService countryEventProcessingService;
+        private readonly IExternalCountryEventProcessingService externalCountryEventProcessingService;
 
-        public CountryEventProcessingServiceTests()
+        public ExternalCountryEventProcessingServiceTests()
         {
-            this.countryEventServiceMock = new Mock<ICountryEventService>();
+            this.externalCountryEventServiceMock = new Mock<IExternalCountryEventService>();
             this.loggingBrokerMock = new Mock<ILoggingBroker>();
 
-            this.countryEventProcessingService = new CountryEventProcessingService(
-                countryEventService: countryEventServiceMock.Object,
+            this.externalCountryEventProcessingService = new ExternalCountryEventProcessingService(
+                countryEventService: externalCountryEventServiceMock.Object,
                 loggingBroker: loggingBrokerMock.Object);
 
         }
@@ -42,8 +42,8 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Processings.CountryEvents
 
             return new TheoryData<Xeption>
             {
-                new CountryEventDependencyException(innerException),
-                new CountryEventServiceException(innerException)
+                new ExternalCountryEventDependencyException(innerException),
+                new ExternalCountryEventServiceException(innerException)
             };
         }
 
@@ -56,8 +56,8 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Processings.CountryEvents
         private static DateTimeOffset GetRandomDateTime() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
-        private static CountryEvent CreateRandomCountryEvent() =>
-            CreateCountryEventFiller().Create();
+        private static ExternalCountryEvent CreateRandomExternalCountryEvent() =>
+            CreateExternalCountryEventFiller().Create();
 
         private Expression<Func<Xeption, bool>> SameExceptionAs(Xeption expectedException)
         {
@@ -67,9 +67,9 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Processings.CountryEvents
                 && (actualException.InnerException as Xeption).DataEquals(expectedException.InnerException.Data);
         }
 
-        private static Filler<CountryEvent> CreateCountryEventFiller()
+        private static Filler<ExternalCountryEvent> CreateExternalCountryEventFiller()
         {
-            var filler = new Filler<CountryEvent>();
+            var filler = new Filler<ExternalCountryEvent>();
 
             filler.Setup().OnType<DateTimeOffset>()
                 .Use(GetRandomDateTime());

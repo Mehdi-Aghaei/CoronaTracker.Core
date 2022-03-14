@@ -5,11 +5,11 @@
 
 using Xeptions;
 
-namespace CoronaTracker.Core.Models.Processings.CountryEvents
+namespace CoronaTracker.Core.Models.Processings.ExternalCountryEvents.Exceptions
 {
-    public class CountryEventProcessingValidationException : Xeption
+    public class ExternalCountryEventProcessingValidationException : Xeption
     {
-        public CountryEventProcessingValidationException(Xeption innerException)
+        public ExternalCountryEventProcessingValidationException(Xeption innerException)
             : base(message: "Country event validation exception occurred, Please try again.", innerException)
         { }
     }

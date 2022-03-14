@@ -9,18 +9,18 @@ using System.Threading.Tasks;
 using CoronaTracker.Core.Brokers.Configurations;
 using CoronaTracker.Core.Brokers.Loggings;
 using CoronaTracker.Core.Brokers.Queues;
-using CoronaTracker.Core.Models.CountryEvents;
+using CoronaTracker.Core.Models.ExternalCountryEvents;
 using Microsoft.Azure.ServiceBus;
 
-namespace CoronaTracker.Core.Services.Foundations.CountryEvents
+namespace CoronaTracker.Core.Services.Foundations.ExternalCountryEvents
 {
-    public partial class CountryEventService : ICountryEventService
+    public partial class ExternalCountryEventService : IExternalCountryEventService
     {
         private readonly IQueueBroker queueBroker;
         private readonly IConfigurationBroker configurationBroker;
         private readonly ILoggingBroker loggingBroker;
 
-        public CountryEventService(
+        public ExternalCountryEventService(
             IQueueBroker queueBroker,
             ILoggingBroker loggingBroker,
             IConfigurationBroker configurationBroker)
@@ -30,18 +30,18 @@ namespace CoronaTracker.Core.Services.Foundations.CountryEvents
             this.loggingBroker = loggingBroker;
         }
 
-        public ValueTask<CountryEvent> AddCountryEventAsync(CountryEvent countryEvent) =>
+        public ValueTask<ExternalCountryEvent> AddExternalCountryEventAsync(ExternalCountryEvent externalCountryEvent) =>
         TryCatch(async () =>
         {
-            ValidateCountryEventIsNotNull(countryEvent);
-            Message message = MapToMessage(countryEvent);
+            ValidateExternalCountryEventIsNotNull(externalCountryEvent);
+            Message message = MapToMessage(externalCountryEvent);
 
             await this.queueBroker.EnqueueCountryMessageAsync(message);
 
-            return countryEvent;
+            return externalCountryEvent;
         });
 
-        private Message MapToMessage(CountryEvent countryEvent)
+        private Message MapToMessage(ExternalCountryEvent countryEvent)
         {
             countryEvent.TrustedSourceId =
                 this.configurationBroker.GetTrustedSourceId();

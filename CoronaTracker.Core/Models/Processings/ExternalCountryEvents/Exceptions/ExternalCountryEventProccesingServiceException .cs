@@ -5,11 +5,11 @@
 
 using Xeptions;
 
-namespace CoronaTracker.Core.Models.Processings.CountryEvents
+namespace CoronaTracker.Core.Models.Processings.ExternalCountryEvents.Exceptions
 {
-    public class CountryEventProccesingServiceException : Xeption
+    public class ExternalCountryEventProccesingServiceException : Xeption
     {
-        public CountryEventProccesingServiceException(Xeption innerException)
+        public ExternalCountryEventProccesingServiceException(Xeption innerException)
             : base(message: "Country event service error occurred, please contact support", innerException)
         { }
     }
