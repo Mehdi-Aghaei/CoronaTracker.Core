@@ -3,8 +3,12 @@
 // FREE TO USE TO CONNECT THE WORLD
 // ---------------------------------------------------------------
 
+using System.Threading.Tasks;
+using Microsoft.Azure.ServiceBus;
+
 namespace CoronaTracker.Core.Brokers.Queues
 {
     public partial interface IQueueBroker
-    { }
+    { 
+    }
 }

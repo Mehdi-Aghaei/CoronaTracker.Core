@@ -3,12 +3,14 @@
 // FREE TO USE TO CONNECT THE WORLD
 // ---------------------------------------------------------------
 
+using System;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using CoronaTracker.Core.Brokers.Configurations;
 using CoronaTracker.Core.Brokers.Loggings;
 using CoronaTracker.Core.Brokers.Queues;
+using CoronaTracker.Core.Models.ExternalCountries;
 using CoronaTracker.Core.Models.ExternalCountryEvents;
 using Microsoft.Azure.ServiceBus;
 
@@ -40,6 +42,11 @@ namespace CoronaTracker.Core.Services.Foundations.ExternalCountryEvents
 
             return externalCountryEvent;
         });
+
+        public void ListenToExternalCountriesEvent(Func<ExternalCountry, ValueTask> externalCountryEventHandler)
+        {
+            throw new NotImplementedException();
+        }
 
         private Message MapToMessage(ExternalCountryEvent externalCountryEvent)
         {
