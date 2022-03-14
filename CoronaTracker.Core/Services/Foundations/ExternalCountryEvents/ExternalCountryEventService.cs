@@ -45,7 +45,20 @@ namespace CoronaTracker.Core.Services.Foundations.ExternalCountryEvents
 
         public void ListenToExternalCountriesEvent(Func<ExternalCountry, ValueTask> externalCountryEventHandler)
         {
-            throw new NotImplementedException();
+            this.queueBroker.ListenToExternalCountriesQueue(async (message, token) =>
+            {
+                ExternalCountry incomingExternalCountry = MapToExternalCountry(message);
+                await externalCountryEventHandler(incomingExternalCountry);
+            });
+        }
+
+        private ExternalCountry MapToExternalCountry(Message message)
+        {
+            string serializedExternalCountry =
+                Encoding.UTF8.GetString(message.Body);
+
+            return JsonSerializer.Deserialize<ExternalCountry>(serializedExternalCountry);
+            //return Newtonsoft.Json.JsonConvert.DeserializeObject<ExternalCountry>(serializedExternalCountry);
         }
 
         private Message MapToMessage(ExternalCountryEvent externalCountryEvent)

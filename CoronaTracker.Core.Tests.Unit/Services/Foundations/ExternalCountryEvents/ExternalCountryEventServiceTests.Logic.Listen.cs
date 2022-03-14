@@ -9,9 +9,6 @@ using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using CoronaTracker.Core.Models.ExternalCountries;
-using CoronaTracker.Core.Models.ExternalCountryEvents;
-using FluentAssertions;
-using Force.DeepCloner;
 using Microsoft.Azure.ServiceBus;
 using Moq;
 using Xunit;
@@ -48,12 +45,12 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.ExternalCountryEven
             externalCountryEventHandlerMock.Verify(handler =>
                 handler.Invoke(It.Is(
                     SameExternalCountryAs(incomingExternalCountry))),
-                        Times.Once());
+                        Times.Once);
 
             this.queueBrokerMock.Verify(broker =>
                broker.ListenToExternalCountriesQueue(
                    It.IsAny<Func<Message, CancellationToken, Task>>()),
-                       Times.Once());
+                       Times.Once);
 
             this.queueBrokerMock.VerifyNoOtherCalls();
         }
