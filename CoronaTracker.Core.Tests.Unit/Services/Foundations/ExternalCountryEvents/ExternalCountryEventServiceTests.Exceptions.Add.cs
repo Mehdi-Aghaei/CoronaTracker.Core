@@ -16,7 +16,7 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.ExternalCountryEven
     public partial class ExternalCountryEventServiceTests
     {
         [Theory]
-        [MemberData(nameof(DependencyMessageQueueExceptions))]
+        [MemberData(nameof(CriticalDependencyMessageQueueExceptions))]
         public async Task ShouldThrowCriticalDependencyExceptionOnAddIfDependencyErrorOccursAndLogItAsync(
             Exception criticalDependencyMessageQueueException)
         {

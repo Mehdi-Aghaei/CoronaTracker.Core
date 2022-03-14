@@ -41,13 +41,13 @@ namespace CoronaTracker.Core.Services.Foundations.ExternalCountryEvents
             return externalCountryEvent;
         });
 
-        private Message MapToMessage(ExternalCountryEvent countryEvent)
+        private Message MapToMessage(ExternalCountryEvent externalCountryEvent)
         {
-            countryEvent.TrustedSourceId =
+            externalCountryEvent.TrustedSourceId =
                 this.configurationBroker.GetTrustedSourceId();
 
             string serializedCountryEvent =
-                JsonSerializer.Serialize(countryEvent);
+                JsonSerializer.Serialize(externalCountryEvent);
 
             return new Message
             {
