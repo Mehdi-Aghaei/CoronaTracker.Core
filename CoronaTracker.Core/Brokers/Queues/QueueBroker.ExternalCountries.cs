@@ -14,7 +14,7 @@ namespace CoronaTracker.Core.Brokers.Queues
     {
         public IQueueClient ExternalCountriesQueue { get; set; }
 
-        public async ValueTask EnqueueCountryMessageAsync(Message message) =>
+        public async ValueTask EnqueueExternalCountryMessageAsync(Message message) =>
             await this.ExternalCountriesQueue.SendAsync(message);
 
         public void ListenToExternalCountriesQueue(Func<Message, CancellationToken, Task> eventHandler)
@@ -36,7 +36,5 @@ namespace CoronaTracker.Core.Brokers.Queues
                 await this.ExternalCountriesQueue.CompleteAsync(message.SystemProperties.LockToken);
             };
         }
-        public async ValueTask EnqueueExternalCountryMessageAsync(Message message) =>
-            await this.ExternalCountriesQueue.SendAsync(message);
     }
 }
