@@ -51,7 +51,7 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.ExternalCountryEven
                         Times.Once);
 
             this.queueBrokerMock.Verify(broker =>
-                broker.EnqueueCountryMessageAsync(It.IsAny<Message>()),
+                broker.EnqueueExternalCountryMessageAsync(It.IsAny<Message>()),
                     Times.Never);
 
             this.configuratinBrokerMock.VerifyNoOtherCalls();
@@ -97,7 +97,7 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.ExternalCountryEven
                         Times.Once);
 
             this.queueBrokerMock.Verify(broker =>
-                broker.EnqueueCountryMessageAsync(It.IsAny<Message>()),
+                broker.EnqueueExternalCountryMessageAsync(It.IsAny<Message>()),
                     Times.Never);
 
             this.configuratinBrokerMock.VerifyNoOtherCalls();
@@ -140,7 +140,7 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.ExternalCountryEven
                         Times.Once);
 
             this.queueBrokerMock.Verify(broker =>
-                broker.EnqueueCountryMessageAsync(It.IsAny<Message>()),
+                broker.EnqueueExternalCountryMessageAsync(It.IsAny<Message>()),
                     Times.Never);
 
             this.configuratinBrokerMock.VerifyNoOtherCalls();

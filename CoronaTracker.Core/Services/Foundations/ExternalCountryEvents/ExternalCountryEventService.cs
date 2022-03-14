@@ -36,7 +36,7 @@ namespace CoronaTracker.Core.Services.Foundations.ExternalCountryEvents
             ValidateExternalCountryEventIsNotNull(externalCountryEvent);
             Message message = MapToMessage(externalCountryEvent);
 
-            await this.queueBroker.EnqueueCountryMessageAsync(message);
+            await this.queueBroker.EnqueueExternalCountryMessageAsync(message);
 
             return externalCountryEvent;
         });

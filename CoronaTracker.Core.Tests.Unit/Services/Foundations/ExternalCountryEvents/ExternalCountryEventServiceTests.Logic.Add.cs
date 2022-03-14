@@ -52,7 +52,7 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.ExternalCountryEven
                     Times.Once);
 
             this.queueBrokerMock.Verify(broker =>
-                broker.EnqueueCountryMessageAsync(
+                broker.EnqueueExternalCountryMessageAsync(
                     It.Is(SameMessageAs(
                         expectedExternalCountryEventMessage))),
                             Times.Once);

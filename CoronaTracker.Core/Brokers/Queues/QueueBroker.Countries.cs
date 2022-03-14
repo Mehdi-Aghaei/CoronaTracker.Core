@@ -10,9 +10,9 @@ namespace CoronaTracker.Core.Brokers.Queues
 {
     public partial class QueueBroker
     {
-        public IQueueClient CountryQueue { get; set; }
+        public IQueueClient ExternalCountryQueue { get; set; }
 
-        public async ValueTask EnqueueCountryMessageAsync(Message message) =>
-            await this.CountryQueue.SendAsync(message);
+        public async ValueTask EnqueueExternalCountryMessageAsync(Message message) =>
+            await this.ExternalCountryQueue.SendAsync(message);
     }
 }
