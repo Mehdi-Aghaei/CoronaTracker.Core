@@ -3,6 +3,7 @@
 // FREE TO USE TO CONNECT THE WORLD
 // ---------------------------------------------------------------
 
+using System.Threading.Tasks;
 using Microsoft.Azure.ServiceBus;
 using Microsoft.Extensions.Configuration;
 
@@ -15,7 +16,7 @@ namespace CoronaTracker.Core.Brokers.Queues
         public QueueBroker(IConfiguration configuration)
         {
             this.configuration = configuration;
-            InitializeClients();
+            InitializeQueueClients();
         }
 
         private void InitializeClients() =>
@@ -27,6 +28,22 @@ namespace CoronaTracker.Core.Brokers.Queues
                 this.configuration.GetConnectionString("ServiceBusConnection");
 
             return new QueueClient(queueConnectionString, queueName);
+        }
+
+        private MessageHandlerOptions GetMessageHandlerOptions()
+        {
+            return new MessageHandlerOptions(ExceptionReceivedHandler)
+            {
+                AutoComplete = false,
+                MaxConcurrentCalls = 1
+            };
+        }
+
+        private Task ExceptionReceivedHandler(ExceptionReceivedEventArgs exceptionReceivedEventArgs)
+        {
+            ExceptionReceivedContext context = exceptionReceivedEventArgs.ExceptionReceivedContext;
+
+            return Task.CompletedTask;
         }
     }
 }
