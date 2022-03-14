@@ -12,32 +12,31 @@ namespace CoronaTracker.Core.Brokers.Queues
 {
     public partial class QueueBroker
     {
-        public IQueueClient CountriesQueue { get; set; }
-        public IQueueClient ExternalCountryQueue { get; set; }
+        public IQueueClient ExternalCountriesQueue { get; set; }
 
         public async ValueTask EnqueueCountryMessageAsync(Message message) =>
-            await this.CountriesQueue.SendAsync(message);
+            await this.ExternalCountriesQueue.SendAsync(message);
 
-        public void ListenToCountriesQueue(Func<Message, CancellationToken, Task> eventHandler)
+        public void ListenToExternalCountriesQueue(Func<Message, CancellationToken, Task> eventHandler)
         {
             MessageHandlerOptions messageHandlerOptions = GetMessageHandlerOptions();
 
             Func<Message, CancellationToken, Task> messageEventHasndler =
-                CompleteCountriesQueueMessageAsync(eventHandler);
+                CompleteExternalCountriesQueueMessageAsync(eventHandler);
 
-            this.CountriesQueue.RegisterMessageHandler(messageEventHasndler, messageHandlerOptions);
+            this.ExternalCountriesQueue.RegisterMessageHandler(messageEventHasndler, messageHandlerOptions);
         }
 
-        private Func<Message,CancellationToken,Task> CompleteCountriesQueueMessageAsync(
+        private Func<Message,CancellationToken,Task> CompleteExternalCountriesQueueMessageAsync(
             Func<Message, CancellationToken, Task> handler)
         {
             return async (message, token) =>
             {
                 await handler(message, token);
-                await this.CountriesQueue.CompleteAsync(message.SystemProperties.LockToken);
+                await this.ExternalCountriesQueue.CompleteAsync(message.SystemProperties.LockToken);
             };
         }
         public async ValueTask EnqueueExternalCountryMessageAsync(Message message) =>
-            await this.ExternalCountryQueue.SendAsync(message);
+            await this.ExternalCountriesQueue.SendAsync(message);
     }
 }

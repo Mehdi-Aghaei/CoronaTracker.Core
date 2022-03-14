@@ -19,8 +19,8 @@ namespace CoronaTracker.Core.Brokers.Queues
             InitializeQueueClients();
         }
 
-        private void InitializeClients() =>
-            this.ExternalCountryQueue = GetQueueClient(nameof(ExternalCountryQueue));
+        private void InitializeQueueClients() =>
+            this.ExternalCountriesQueue = GetQueueClient(nameof(ExternalCountriesQueue));
 
         private IQueueClient GetQueueClient(string queueName)
         {

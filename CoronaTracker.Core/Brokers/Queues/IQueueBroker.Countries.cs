@@ -12,8 +12,7 @@ namespace CoronaTracker.Core.Brokers.Queues
 {
     public partial interface IQueueBroker
     {
-        ValueTask EnqueueCountryMessageAsync(Message message);
-        void ListenToCountriesQueue(Func<Message, CancellationToken, Task> eventHandler);
         ValueTask EnqueueExternalCountryMessageAsync(Message message);
+        void ListenToExternalCountriesQueue(Func<Message, CancellationToken, Task> eventHandler);
     }
 }
