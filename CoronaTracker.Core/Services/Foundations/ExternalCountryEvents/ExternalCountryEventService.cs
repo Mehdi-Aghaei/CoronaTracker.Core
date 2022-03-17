@@ -58,7 +58,6 @@ namespace CoronaTracker.Core.Services.Foundations.ExternalCountryEvents
                 Encoding.UTF8.GetString(message.Body);
 
             return JsonSerializer.Deserialize<ExternalCountry>(serializedExternalCountry);
-            //return Newtonsoft.Json.JsonConvert.DeserializeObject<ExternalCountry>(serializedExternalCountry);
         }
 
         private Message MapToMessage(ExternalCountryEvent externalCountryEvent)

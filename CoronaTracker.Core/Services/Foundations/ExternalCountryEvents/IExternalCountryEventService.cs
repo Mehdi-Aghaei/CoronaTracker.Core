@@ -14,6 +14,6 @@ namespace CoronaTracker.Core.Services.Foundations.ExternalCountryEvents
     {
         ValueTask<ExternalCountryEvent> AddExternalCountryEventAsync(ExternalCountryEvent countryEvent);
 
-        void ListenToExternalCountriesEvent(Func<ExternalCountry, ValueTask> externalCountryEventHandler);   
+        void ListenToExternalCountriesEvent(Func<ExternalCountry, ValueTask> externalCountryEventHandler);
     }
 }

@@ -89,7 +89,7 @@ public partial class ExternalCountryEventServiceTests
     }
 
 
-    private Expression<Func<ExternalCountry,bool>> SameExternalCountryAs(ExternalCountry expectedExternalCountry) 
+    private Expression<Func<ExternalCountry, bool>> SameExternalCountryAs(ExternalCountry expectedExternalCountry)
     {
         return actualExternalCountry =>
             this.compareLogic.Compare(expectedExternalCountry, actualExternalCountry).AreEqual;
