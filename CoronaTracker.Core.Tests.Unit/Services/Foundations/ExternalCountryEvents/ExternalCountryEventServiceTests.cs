@@ -8,6 +8,7 @@ using System.Linq.Expressions;
 using CoronaTracker.Core.Brokers.Configurations;
 using CoronaTracker.Core.Brokers.Loggings;
 using CoronaTracker.Core.Brokers.Queues;
+using CoronaTracker.Core.Models.ExternalCountries;
 using CoronaTracker.Core.Models.ExternalCountryEvents;
 using CoronaTracker.Core.Services.Foundations.ExternalCountryEvents;
 using KellermanSoftware.CompareNetObjects;
@@ -71,6 +72,9 @@ public partial class ExternalCountryEventServiceTests
     private static ExternalCountryEvent CreateRandomExternalCountryEvent() =>
         CreateExternalCountryEventFiller(dates: GetRandomDateTime()).Create();
 
+    private static ExternalCountry CreateRandomExternalCountry() =>
+        CreateExternalCountryFiller(dates: GetRandomDateTime()).Create();
+
     private static DateTimeOffset GetRandomDateTime() =>
         new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
@@ -84,6 +88,13 @@ public partial class ExternalCountryEventServiceTests
 
     }
 
+
+    private Expression<Func<ExternalCountry, bool>> SameExternalCountryAs(ExternalCountry expectedExternalCountry)
+    {
+        return actualExternalCountry =>
+            this.compareLogic.Compare(expectedExternalCountry, actualExternalCountry).AreEqual;
+    }
+
     private static Expression<Func<Xeption, bool>> SameExceptionAs(Xeption expectedException)
     {
         return actualException =>
@@ -95,6 +106,14 @@ public partial class ExternalCountryEventServiceTests
     private static Filler<ExternalCountryEvent> CreateExternalCountryEventFiller(DateTimeOffset dates)
     {
         var filler = new Filler<ExternalCountryEvent>();
+
+        filler.Setup().OnType<DateTimeOffset>().Use(dates);
+
+        return filler;
+    }
+    private static Filler<ExternalCountry> CreateExternalCountryFiller(DateTimeOffset dates)
+    {
+        var filler = new Filler<ExternalCountry>();
 
         filler.Setup().OnType<DateTimeOffset>().Use(dates);
 

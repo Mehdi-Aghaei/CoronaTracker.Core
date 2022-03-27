@@ -27,7 +27,7 @@ namespace CoronaTracker.Core.Brokers.Queues
             this.ExternalCountriesQueue.RegisterMessageHandler(messageEventHasndler, messageHandlerOptions);
         }
 
-        private Func<Message,CancellationToken,Task> CompleteExternalCountriesQueueMessageAsync(
+        private Func<Message, CancellationToken, Task> CompleteExternalCountriesQueueMessageAsync(
             Func<Message, CancellationToken, Task> handler)
         {
             return async (message, token) =>
