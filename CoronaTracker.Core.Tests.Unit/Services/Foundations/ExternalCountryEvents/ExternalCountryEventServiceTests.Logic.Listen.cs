@@ -4,8 +4,6 @@
 // ---------------------------------------------------------------
 
 using System;
-using System.Text;
-using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using CoronaTracker.Core.Models.ExternalCountries;
@@ -21,23 +19,20 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.ExternalCountryEven
         public void ShouldListenToExternalCountryEvent()
         {
             // given
-            var externalCountryEventHandlerMock = new Mock<Func<ExternalCountry, ValueTask>>();
-            ExternalCountry randomExternalCountry = CreateRandomExternalCountry();
-            ExternalCountry incomingExternalCountry = randomExternalCountry;
+            var externalCountryEventHandlerMock =
+                new Mock<Func<ExternalCountry, ValueTask>>();
 
-            string serializedExternalCountryEvent =
-                JsonSerializer.Serialize(incomingExternalCountry);
+            var randomExternalCountry = CreateRandomExternalCountry();
+            var incomingExternalCountry = randomExternalCountry;
 
-            var externalCountryEventMessage = new Message
-            {
-                Body = Encoding.UTF8.GetBytes(serializedExternalCountryEvent)
-            };
+            Message externalCountryMessage =
+                CreateExternalCountryMessage(incomingExternalCountry);
 
             this.queueBrokerMock.Setup(broker =>
                broker.ListenToExternalCountriesQueue(
                    It.IsAny<Func<Message, CancellationToken, Task>>()))
                        .Callback<Func<Message, CancellationToken, Task>>(eventFunction =>
-                           eventFunction.Invoke(externalCountryEventMessage, It.IsAny<CancellationToken>()));
+                           eventFunction.Invoke(externalCountryMessage, It.IsAny<CancellationToken>()));
             // when
             this.externalCountryEventService.ListenToExternalCountriesEvent(externalCountryEventHandlerMock.Object);
 

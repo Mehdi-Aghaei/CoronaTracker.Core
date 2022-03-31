@@ -5,6 +5,7 @@
 
 using System;
 using System.Linq.Expressions;
+using System.Text;
 using CoronaTracker.Core.Brokers.Configurations;
 using CoronaTracker.Core.Brokers.Loggings;
 using CoronaTracker.Core.Brokers.Queues;
@@ -15,6 +16,7 @@ using KellermanSoftware.CompareNetObjects;
 using Microsoft.Azure.ServiceBus;
 using Microsoft.ServiceBus.Messaging;
 using Moq;
+using Newtonsoft.Json;
 using Tynamix.ObjectFiller;
 using Xeptions;
 using Xunit;
@@ -66,6 +68,17 @@ public partial class ExternalCountryEventServiceTests
         {
             new UnauthorizedAccessException(),
             new MessagingEntityDisabledException(exceptionMessage)
+        };
+    }
+
+    private static Message CreateExternalCountryMessage(ExternalCountry externalCountry)
+    {
+        string serializedExternalCountry = JsonConvert.SerializeObject(externalCountry);
+        byte[] externalCountryBody = Encoding.UTF8.GetBytes(serializedExternalCountry);
+
+        return new Message
+        {
+            Body = externalCountryBody
         };
     }
 
