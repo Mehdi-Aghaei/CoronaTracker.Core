@@ -34,7 +34,8 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.ExternalCountryEven
                        .Callback<Func<Message, CancellationToken, Task>>(eventFunction =>
                            eventFunction.Invoke(externalCountryMessage, It.IsAny<CancellationToken>()));
             // when
-            this.externalCountryEventService.ListenToExternalCountriesEvent(externalCountryEventHandlerMock.Object);
+            this.externalCountryEventService.ListenToExternalCountriesEvent(
+                externalCountryEventHandler: externalCountryEventHandlerMock.Object);
 
             // then
             externalCountryEventHandlerMock.Verify(handler =>
