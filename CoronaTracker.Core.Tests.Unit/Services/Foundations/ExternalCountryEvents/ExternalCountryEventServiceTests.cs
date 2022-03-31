@@ -5,6 +5,8 @@
 
 using System;
 using System.Linq.Expressions;
+using System.Text;
+using System.Text.Json;
 using CoronaTracker.Core.Brokers.Configurations;
 using CoronaTracker.Core.Brokers.Loggings;
 using CoronaTracker.Core.Brokers.Queues;
@@ -66,6 +68,17 @@ public partial class ExternalCountryEventServiceTests
         {
             new UnauthorizedAccessException(),
             new MessagingEntityDisabledException(exceptionMessage)
+        };
+    }
+
+    private static Message CreateExternalCountryMessage(ExternalCountry externalCountry)
+    {
+        string serializedExternalCountry = JsonSerializer.Serialize(externalCountry);
+        byte[] externalCountryBody = Encoding.UTF8.GetBytes(serializedExternalCountry);
+
+        return new Message
+        {
+            Body = externalCountryBody
         };
     }
 
