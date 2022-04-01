@@ -16,22 +16,24 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.ExternalCountryEven
     public partial class ExternalCountryEventServiceTests
     {
         [Theory]
-        [MemberData(nameof(CriticalDependencyMessageQueueExceptions))]
+        [MemberData(nameof(MessageQueueExceptions))]
         public async Task ShouldThrowCriticalDependencyExceptionOnAddIfDependencyErrorOccursAndLogItAsync(
-            Exception criticalDependencyMessageQueueException)
+            Exception messageQueueException)
         {
             // given
             ExternalCountryEvent someExternalCountryEvent = CreateRandomExternalCountryEvent();
 
             var failedExternalCountryEventDependencyException =
-                new FailedExternalCountryEventDependencyException(criticalDependencyMessageQueueException);
+                new FailedExternalCountryEventDependencyException(
+                    messageQueueException);
 
             var expectedExternalCountryEventDependencyException =
-                new ExternalCountryEventDependencyException(failedExternalCountryEventDependencyException);
+                new ExternalCountryEventDependencyException(
+                    failedExternalCountryEventDependencyException);
 
             this.configuratinBrokerMock.Setup(broker =>
                 broker.GetTrustedSourceId())
-                    .Throws(criticalDependencyMessageQueueException);
+                    .Throws(messageQueueException);
 
             // when
             ValueTask<ExternalCountryEvent> externalCountryEventTask =
