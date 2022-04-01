@@ -29,6 +29,10 @@ namespace CoronaTracker.Core.Services.Foundations.ExternalCountryEvents
             {
                 throw CreateAndLogValidationException(nullCountryEventException);
             }
+            catch(InvalidExternalCountryEventException invalidExternalCountryEventException)
+            {
+                throw CreateAndLogValidationException(invalidExternalCountryEventException);
+            }
             catch(MessagingEntityNotFoundException messagingEntityNotFoundException)
             {
                 var failedExternalCountryEventDependencyException =
