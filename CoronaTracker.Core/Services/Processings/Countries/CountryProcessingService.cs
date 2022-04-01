@@ -48,6 +48,6 @@ namespace CoronaTracker.Core.Services.Processings.Countries
         }
 
         private static Expression<Func<Country, bool>> SameCountryAs(Country country) =>
-            retrievedCountry => retrievedCountry.Id == country.Id;
+            retrievedCountry => retrievedCountry.Name == country.Name;
     }
 }
