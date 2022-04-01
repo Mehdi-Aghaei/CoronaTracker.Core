@@ -143,7 +143,7 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.ExternalCountryEven
 
             this.queueBrokerMock.Verify(broker =>
                 broker.EnqueueExternalCountryMessageAsync(
-                    It.IsAny<Message>()),Times.Never);
+                    It.IsAny<Message>()), Times.Never);
 
             this.configurationBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();

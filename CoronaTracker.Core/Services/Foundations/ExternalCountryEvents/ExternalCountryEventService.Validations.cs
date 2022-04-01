@@ -3,7 +3,6 @@
 // FREE TO USE TO CONNECT THE WORLD
 // ---------------------------------------------------------------
 
-using System;
 using CoronaTracker.Core.Models.ExternalCountryEvents;
 using CoronaTracker.Core.Models.ExternalCountryEvents.Exceptions;
 
@@ -17,12 +16,12 @@ namespace CoronaTracker.Core.Services.Foundations.ExternalCountryEvents
 
             Validate(
                 (Rule: IsInvalid(@object: externalCountryEvent.ExternalCountry),
-                Parameter:nameof(externalCountryEvent.ExternalCountry)));
+                Parameter: nameof(externalCountryEvent.ExternalCountry)));
         }
 
         private static void ValidateExternalCountryEventIsNotNull(ExternalCountryEvent externalCountryEvent)
         {
-            if( externalCountryEvent is null)
+            if (externalCountryEvent is null)
             {
                 throw new NullExternalCountryEventException();
             }

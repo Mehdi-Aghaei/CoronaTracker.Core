@@ -20,7 +20,6 @@ using Tynamix.ObjectFiller;
 using Xeptions;
 using Xunit;
 using Messaging = Microsoft.ServiceBus.Messaging;
-using MessagingEntityDisabledException = Microsoft.Azure.ServiceBus.MessagingEntityDisabledException;
 
 namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.ExternalCountryEvents;
 
@@ -57,7 +56,7 @@ public partial class ExternalCountryEventServiceTests
             new UnauthorizedAccessException()
         };
     }
-    
+
     public static TheoryData MessageQueueDependencyExceptions()
     {
         string message = GetRandomString();
@@ -69,7 +68,7 @@ public partial class ExternalCountryEventServiceTests
             new ServerBusyException(message: message),
         };
     }
-    
+
     private static Message CreateExternalCountryMessage(ExternalCountry externalCountry)
     {
         string serializedExternalCountry = JsonSerializer.Serialize(externalCountry);

@@ -11,7 +11,7 @@ namespace CoronaTracker.Core.Models.ExternalCountryEvents.Exceptions
     public class InvalidExternalCountryEventArgumentException : Xeption
     {
         public InvalidExternalCountryEventArgumentException(Exception innerException)
-            :base(message: "Invalid external country event argument error occurred.", innerException)
+            : base(message: "Invalid external country event argument error occurred.", innerException)
         { }
     }
 }
