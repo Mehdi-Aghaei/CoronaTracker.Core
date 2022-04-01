@@ -28,6 +28,14 @@ namespace CoronaTracker.Core.Services.Processings.CountryEvents
                 throw CreateAndLogValidationException(
                     nullCountryEventProcessingException);
             }
+            catch (ExternalCountryEventValidationException externalCountryEventValidationException)
+            {
+                throw CreateAndLogDependencyValidationException(externalCountryEventValidationException);
+            }
+            catch (ExternalCountryEventDependencyValidationException externalCountryEventDependencyValidationException)
+            {
+                throw CreateAndLogDependencyValidationException(externalCountryEventDependencyValidationException);
+            }
             catch (ExternalCountryEventDependencyException externalCountryEventDependencyException)
             {
                 throw CreateAndLogDependencyException(externalCountryEventDependencyException);
@@ -53,6 +61,17 @@ namespace CoronaTracker.Core.Services.Processings.CountryEvents
             this.loggingBroker.LogError(externalCountryEventProcessingValidationException);
 
             return externalCountryEventProcessingValidationException;
+        }
+
+        private ExternalCountryEventProcessingDependencyValidationException CreateAndLogDependencyValidationException(
+            Xeption exception)
+        {
+            var externalCountryEventProcessingDependencyValidationException =
+                new ExternalCountryEventProcessingDependencyValidationException(exception.InnerException as Xeption);
+
+            this.loggingBroker.LogError(externalCountryEventProcessingDependencyValidationException);
+
+            return externalCountryEventProcessingDependencyValidationException;
         }
 
         private ExternalCountryEventProcessingDependencyException CreateAndLogDependencyException(Xeption exception)
