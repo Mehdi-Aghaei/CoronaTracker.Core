@@ -3,7 +3,6 @@
 // FREE TO USE TO CONNECT THE WORLD
 // ---------------------------------------------------------------
 
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using CoronaTracker.Core.Brokers.Loggings;
@@ -32,7 +31,25 @@ namespace CoronaTracker.Core.Services.Orchestrations.ExternalCountryEvents
 
         public async void AddExternalCountryToQueueAsync()
         {
-            throw new NotImplementedException();
+            List<ExternalCountry> allExternalCountries =
+                await this.externalCountryProcessingService
+                    .RetrieveAllExternalCountriesAsync();
+
+            foreach (var externalCountry in allExternalCountries)
+            {
+                await AddExternalCountryEventAsync(externalCountry);
+            }
+        }
+
+        private async ValueTask AddExternalCountryEventAsync(ExternalCountry persistedExternalCountry)
+        {
+            var externalCountryEvent = new ExternalCountryEvent
+            {
+                ExternalCountry = persistedExternalCountry
+            };
+
+            await this.externalCountryEventProcessingService
+                .AddExternalCountryEventAsync(externalCountryEvent);
         }
     }
 }
