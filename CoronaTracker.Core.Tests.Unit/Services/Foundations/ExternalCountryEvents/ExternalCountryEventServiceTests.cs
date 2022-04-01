@@ -20,7 +20,6 @@ using Tynamix.ObjectFiller;
 using Xeptions;
 using Xunit;
 using Messaging = Microsoft.ServiceBus.Messaging;
-using MessagingEntityDisabledException = Microsoft.Azure.ServiceBus.MessagingEntityDisabledException;
 
 namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.ExternalCountryEvents;
 
