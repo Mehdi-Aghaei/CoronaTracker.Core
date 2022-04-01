@@ -5,12 +5,12 @@
 
 using Xeptions;
 
-namespace CoronaTracker.Core.Models.CountryEvents.Exceptions
+namespace CoronaTracker.Core.Models.Processings.ExternalCountryEvents.Exceptions
 {
-    public class NullCountryEventException : Xeption
+    public class NullExternalCountryEventProcessingException : Xeption
     {
-        public NullCountryEventException()
-        : base(message: "Country event is null.")
+        public NullExternalCountryEventProcessingException()
+            : base(message: "Country event is null.")
         { }
     }
 }

@@ -5,11 +5,14 @@
 
 using System;
 using System.Linq.Expressions;
+using System.Text;
+using System.Text.Json;
 using CoronaTracker.Core.Brokers.Configurations;
 using CoronaTracker.Core.Brokers.Loggings;
 using CoronaTracker.Core.Brokers.Queues;
-using CoronaTracker.Core.Models.CountryEvents;
-using CoronaTracker.Core.Services.Foundations.CountryEvents;
+using CoronaTracker.Core.Models.ExternalCountries;
+using CoronaTracker.Core.Models.ExternalCountryEvents;
+using CoronaTracker.Core.Services.Foundations.ExternalCountryEvents;
 using KellermanSoftware.CompareNetObjects;
 using Microsoft.Azure.ServiceBus;
 using Moq;
@@ -19,24 +22,24 @@ using Xunit;
 using Messaging = Microsoft.ServiceBus.Messaging;
 using MessagingEntityDisabledException = Microsoft.Azure.ServiceBus.MessagingEntityDisabledException;
 
-namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.CountryEvents;
+namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.ExternalCountryEvents;
 
-public partial class CountryEventServiceTests
+public partial class ExternalCountryEventServiceTests
 {
     private readonly Mock<IQueueBroker> queueBrokerMock;
     private readonly Mock<IConfigurationBroker> configuratinBrokerMock;
     private readonly Mock<ILoggingBroker> loggingBrokerMock;
     private readonly ICompareLogic compareLogic;
-    private readonly ICountryEventService countryEventService;
+    private readonly IExternalCountryEventService externalCountryEventService;
 
-    public CountryEventServiceTests()
+    public ExternalCountryEventServiceTests()
     {
         this.queueBrokerMock = new Mock<IQueueBroker>();
         this.configuratinBrokerMock = new Mock<IConfigurationBroker>();
         this.loggingBrokerMock = new Mock<ILoggingBroker>();
         this.compareLogic = new CompareLogic();
 
-        this.countryEventService = new CountryEventService(
+        this.externalCountryEventService = new ExternalCountryEventService(
             queueBroker: this.queueBrokerMock.Object,
             configurationBroker: this.configuratinBrokerMock.Object,
             loggingBroker: this.loggingBrokerMock.Object);
@@ -102,6 +105,13 @@ public partial class CountryEventServiceTests
             this.compareLogic.Compare(expectedExternalCountry, actualExternalCountry).AreEqual;
     }
 
+
+    private Expression<Func<ExternalCountry, bool>> SameExternalCountryAs(ExternalCountry expectedExternalCountry)
+    {
+        return actualExternalCountry =>
+            this.compareLogic.Compare(expectedExternalCountry, actualExternalCountry).AreEqual;
+    }
+
     private static Expression<Func<Xeption, bool>> SameExceptionAs(Xeption expectedException)
     {
         return actualException =>
@@ -110,9 +120,17 @@ public partial class CountryEventServiceTests
             && (actualException.InnerException as Xeption).DataEquals(expectedException.InnerException.Data);
     }
 
-    private static Filler<CountryEvent> CreateCountryEventFiller(DateTimeOffset dates)
+    private static Filler<ExternalCountryEvent> CreateExternalCountryEventFiller(DateTimeOffset dates)
     {
-        var filler = new Filler<CountryEvent>();
+        var filler = new Filler<ExternalCountryEvent>();
+
+        filler.Setup().OnType<DateTimeOffset>().Use(dates);
+
+        return filler;
+    }
+    private static Filler<ExternalCountry> CreateExternalCountryFiller(DateTimeOffset dates)
+    {
+        var filler = new Filler<ExternalCountry>();
 
         filler.Setup().OnType<DateTimeOffset>().Use(dates);
 

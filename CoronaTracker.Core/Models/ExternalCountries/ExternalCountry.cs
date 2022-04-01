@@ -49,6 +49,6 @@ namespace CoronaTracker.Core.Models.ExternalCountries
         public float RecoveredPerOneMillion { get; set; }
 
         [JsonProperty("criticalPerOneMillion")]
-        public float criticalPerOneMillion { get; set; }
+        public float CriticalPerOneMillion { get; set; }
     }
 }

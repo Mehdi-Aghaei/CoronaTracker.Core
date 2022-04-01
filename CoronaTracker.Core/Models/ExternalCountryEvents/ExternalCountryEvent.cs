@@ -4,13 +4,13 @@
 // ---------------------------------------------------------------
 
 using System;
-using CoronaTracker.Core.Models.Countries;
+using CoronaTracker.Core.Models.ExternalCountries;
 
-namespace CoronaTracker.Core.Models.CountryEvents
+namespace CoronaTracker.Core.Models.ExternalCountryEvents
 {
-    public class CountryEvent
+    public class ExternalCountryEvent
     {
         public Guid TrustedSourceId { get; set; }
-        public Country Country { get; set; }
+        public ExternalCountry ExternalCountry { get; set; }
     }
 }

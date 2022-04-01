@@ -7,10 +7,13 @@ using CoronaTracker.Core.Brokers.Apis;
 using CoronaTracker.Core.Brokers.Configurations;
 using CoronaTracker.Core.Brokers.DateTimes;
 using CoronaTracker.Core.Brokers.Loggings;
+using CoronaTracker.Core.Brokers.Queues;
 using CoronaTracker.Core.Brokers.Storages;
 using CoronaTracker.Core.Services.Foundations.Countries;
 using CoronaTracker.Core.Services.Foundations.ExternalCountries;
+using CoronaTracker.Core.Services.Foundations.ExternalCountryEvents;
 using CoronaTracker.Core.Services.Processings.Countries;
+using CoronaTracker.Core.Services.Processings.CountryEvents;
 using CoronaTracker.Core.Services.Processings.ExternalCountries;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -76,6 +79,7 @@ namespace CoronaTracker.Core
         {
             services.AddTransient<IApiBroker, ApiBroker>();
             services.AddTransient<IStorageBroker, StorageBroker>();
+            services.AddTransient<IQueueBroker, QueueBroker>();
             services.AddTransient<ILoggingBroker, LoggingBroker>();
             services.AddTransient<IDateTimeBroker, DateTimeBroker>();
             services.AddTransient<IConfigurationBroker, ConfigurationBroker>();
@@ -86,7 +90,9 @@ namespace CoronaTracker.Core
             services.AddTransient<IExternalCountryService, ExternalCountryService>();
             services.AddTransient<ICountryService, CountryService>();
             services.AddTransient<ICountryProcessingService, CountryProcessingService>();
+            services.AddTransient<IExternalCountryEventService, ExternalCountryEventService>();
             services.AddTransient<IExternalCountryProcessingService, ExternalCountryProcessingService>();
+            services.AddTransient<IExternalCountryEventProcessingService, ExternalCountryEventProcessingService>();
         }
     }
 }
