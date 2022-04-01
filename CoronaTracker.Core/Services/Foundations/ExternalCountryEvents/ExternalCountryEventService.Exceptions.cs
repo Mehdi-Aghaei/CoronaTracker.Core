@@ -71,6 +71,13 @@ namespace CoronaTracker.Core.Services.Foundations.ExternalCountryEvents
 
                 throw CreateAndLogDependencyException(failedExternalCountryEventException);
             }
+            catch (ArgumentException argumentException)
+            {
+                var invalidExternalCountryEventArgumentException =
+                    new InvalidExternalCountryEventArgumentException(argumentException);
+
+                throw CreateAndLogDependencyValidationException(invalidExternalCountryEventArgumentException);
+            }
             catch (Exception exception)
             {
                 var failedExternalCountryEventServiceException =
@@ -79,7 +86,7 @@ namespace CoronaTracker.Core.Services.Foundations.ExternalCountryEvents
                 throw CreateAndLogServiceException(failedExternalCountryEventServiceException);
             }
         }
-
+ 
         private ExternalCountryEventValidationException CreateAndLogValidationException(Xeption exception)
         {
             var externalCountryEventValidationException =
@@ -108,6 +115,17 @@ namespace CoronaTracker.Core.Services.Foundations.ExternalCountryEvents
             this.loggingBroker.LogError(externalcountryEventDependencyException);
 
             return externalcountryEventDependencyException;
+        }
+
+        private ExternalCountryEventDependencyValidationException CreateAndLogDependencyValidationException(
+           Xeption exception)
+        {
+            var externalCountryEventDependencyValidationException =
+                new ExternalCountryEventDependencyValidationException(exception);
+
+            this.loggingBroker.LogError(externalCountryEventDependencyValidationException);
+
+            return externalCountryEventDependencyValidationException;
         }
 
         private ExternalCountryEventServiceException CreateAndLogServiceException(Xeption exception)
