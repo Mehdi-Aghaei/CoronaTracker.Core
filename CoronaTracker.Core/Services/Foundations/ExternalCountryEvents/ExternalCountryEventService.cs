@@ -35,7 +35,7 @@ namespace CoronaTracker.Core.Services.Foundations.ExternalCountryEvents
         public ValueTask<ExternalCountryEvent> AddExternalCountryEventAsync(ExternalCountryEvent externalCountryEvent) =>
         TryCatch(async () =>
         {
-            ValidateExternalCountryEventIsNotNull(externalCountryEvent);
+            ValidateExternalCountryEvent(externalCountryEvent);
             Message message = MapToMessage(externalCountryEvent);
 
             await this.queueBroker.EnqueueExternalCountryMessageAsync(message);

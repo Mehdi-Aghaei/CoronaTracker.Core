@@ -16,6 +16,43 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Processings.ExternalCountryEven
     public partial class ExternalCountryEventProcessingServiceTests
     {
         [Theory]
+        [MemberData(nameof(DependencyValidationExceptions))]
+        public async Task ShouldThrowDependencyValidationExceptionOnAddIfValidationErrorOccursAndLogItAsync(
+            Xeption dependencyValidationException)
+        {
+            // given
+            ExternalCountryEvent someExternalCountryEvent = CreateRandomExternalCountryEvent();
+
+            var expectedExternalCountryEventProcessingDependencyValidationException =
+                new ExternalCountryEventProcessingDependencyValidationException(
+                    dependencyValidationException.InnerException as Xeption);
+
+            this.externalCountryEventServiceMock.Setup(broker =>
+                broker.AddExternalCountryEventAsync(It.IsAny<ExternalCountryEvent>()))
+                    .ThrowsAsync(dependencyValidationException);
+
+            // when
+            ValueTask<ExternalCountryEvent> addExternalCountryEventTask =
+                this.externalCountryEventProcessingService.AddExternalCountryEventAsync(someExternalCountryEvent);
+
+            // then
+            await Assert.ThrowsAsync<ExternalCountryEventProcessingDependencyValidationException>(() =>
+                addExternalCountryEventTask.AsTask());
+
+            this.externalCountryEventServiceMock.Verify(service =>
+                service.AddExternalCountryEventAsync(It.IsAny<ExternalCountryEvent>()),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedExternalCountryEventProcessingDependencyValidationException))),
+                        Times.Once);
+
+            this.externalCountryEventServiceMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Theory]
         [MemberData(nameof(DependencyExceptions))]
         public async Task ShouldThrowDependencyExceptionOnAddIfDependencyErrorOccursAndLogItAsync(
             Xeption dependencyException)

@@ -34,11 +34,20 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Processings.ExternalCountryEven
 
         }
 
+        public static TheoryData DependencyValidationExceptions()
+        {
+            var innerException = new Xeption();
+
+            return new TheoryData<Xeption>
+            {
+                new ExternalCountryEventValidationException(innerException),
+                new ExternalCountryEventDependencyValidationException(innerException)
+            };
+        }
+
         public static TheoryData DependencyExceptions()
         {
-            string randomString = GetRandomString();
-            string exceptionMessage = randomString;
-            var innerException = new Xeption(exceptionMessage);
+            var innerException = new Xeption();
 
             return new TheoryData<Xeption>
             {

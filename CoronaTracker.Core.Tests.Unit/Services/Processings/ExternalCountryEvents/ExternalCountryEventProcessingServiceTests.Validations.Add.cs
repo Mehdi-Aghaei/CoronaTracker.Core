@@ -18,6 +18,7 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Processings.ExternalCountryEven
         {
             // given
             ExternalCountryEvent nullExternalCountryEvent = null;
+
             var nullExternalCountryEventException =
                 new NullExternalCountryEventProcessingException();
 

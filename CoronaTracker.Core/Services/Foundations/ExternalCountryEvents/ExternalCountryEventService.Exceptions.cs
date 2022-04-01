@@ -7,9 +7,9 @@ using System;
 using System.Threading.Tasks;
 using CoronaTracker.Core.Models.ExternalCountryEvents;
 using CoronaTracker.Core.Models.ExternalCountryEvents.Exceptions;
-using Microsoft.ServiceBus.Messaging;
+using Microsoft.Azure.ServiceBus;
 using Xeptions;
-using MessagingEntityDisabledException = Microsoft.Azure.ServiceBus.MessagingEntityDisabledException;
+using Messaging = Microsoft.ServiceBus.Messaging;
 
 
 namespace CoronaTracker.Core.Services.Foundations.ExternalCountryEvents
@@ -29,12 +29,16 @@ namespace CoronaTracker.Core.Services.Foundations.ExternalCountryEvents
             {
                 throw CreateAndLogValidationException(nullCountryEventException);
             }
-            catch (UnauthorizedAccessException unauthorizedAccessException)
+            catch (InvalidExternalCountryEventException invalidExternalCountryEventException)
             {
-                var failedExternalCountryEventException =
-                    new FailedExternalCountryEventDependencyException(unauthorizedAccessException);
+                throw CreateAndLogValidationException(invalidExternalCountryEventException);
+            }
+            catch (MessagingEntityNotFoundException messagingEntityNotFoundException)
+            {
+                var failedExternalCountryEventDependencyException =
+                    new FailedExternalCountryEventDependencyException(messagingEntityNotFoundException);
 
-                throw CreateAndLogCriticalDependencyException(failedExternalCountryEventException);
+                throw CreateAndLogCriticalDependencyException(failedExternalCountryEventDependencyException);
             }
             catch (MessagingEntityDisabledException messagingEntityDisabledException)
             {
@@ -43,6 +47,27 @@ namespace CoronaTracker.Core.Services.Foundations.ExternalCountryEvents
 
                 throw CreateAndLogCriticalDependencyException(failedExternalCountryEventException);
             }
+            catch (UnauthorizedAccessException unauthorizedAccessException)
+            {
+                var failedExternalCountryEventException =
+                    new FailedExternalCountryEventDependencyException(unauthorizedAccessException);
+
+                throw CreateAndLogCriticalDependencyException(failedExternalCountryEventException);
+            }
+            catch (InvalidOperationException invalidOperationException)
+            {
+                var failedExternalCountryEventDependencyException =
+                    new FailedExternalCountryEventDependencyException(invalidOperationException);
+
+                throw CreateAndLogDependencyException(failedExternalCountryEventDependencyException);
+            }
+            catch (Messaging.MessagingCommunicationException messagingCommunicationException)
+            {
+                var failedExternalCountryEventException =
+                    new FailedExternalCountryEventDependencyException(messagingCommunicationException);
+
+                throw CreateAndLogDependencyException(failedExternalCountryEventException);
+            }
             catch (ServerBusyException serverBusyException)
             {
                 var failedExternalCountryEventException =
@@ -50,19 +75,12 @@ namespace CoronaTracker.Core.Services.Foundations.ExternalCountryEvents
 
                 throw CreateAndLogDependencyException(failedExternalCountryEventException);
             }
-            catch (MessagingCommunicationException messagingCommunicationException)
+            catch (ArgumentException argumentException)
             {
-                var failedExternalCountryEventException =
-                    new FailedExternalCountryEventDependencyException(messagingCommunicationException);
+                var invalidExternalCountryEventArgumentException =
+                    new InvalidExternalCountryEventArgumentException(argumentException);
 
-                throw CreateAndLogDependencyException(failedExternalCountryEventException);
-            }
-            catch (MessagingException messagingException)
-            {
-                var failedExternalCountryEventException =
-                    new FailedExternalCountryEventDependencyException(messagingException);
-
-                throw CreateAndLogDependencyException(failedExternalCountryEventException);
+                throw CreateAndLogDependencyValidationException(invalidExternalCountryEventArgumentException);
             }
             catch (Exception exception)
             {
@@ -101,6 +119,17 @@ namespace CoronaTracker.Core.Services.Foundations.ExternalCountryEvents
             this.loggingBroker.LogError(externalcountryEventDependencyException);
 
             return externalcountryEventDependencyException;
+        }
+
+        private ExternalCountryEventDependencyValidationException CreateAndLogDependencyValidationException(
+           Xeption exception)
+        {
+            var externalCountryEventDependencyValidationException =
+                new ExternalCountryEventDependencyValidationException(exception);
+
+            this.loggingBroker.LogError(externalCountryEventDependencyValidationException);
+
+            return externalCountryEventDependencyValidationException;
         }
 
         private ExternalCountryEventServiceException CreateAndLogServiceException(Xeption exception)

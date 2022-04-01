@@ -16,22 +16,24 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.ExternalCountryEven
     public partial class ExternalCountryEventServiceTests
     {
         [Theory]
-        [MemberData(nameof(CriticalDependencyMessageQueueExceptions))]
+        [MemberData(nameof(MessageQueueExceptions))]
         public async Task ShouldThrowCriticalDependencyExceptionOnAddIfDependencyErrorOccursAndLogItAsync(
-            Exception criticalDependencyMessageQueueException)
+            Exception messageQueueException)
         {
             // given
             ExternalCountryEvent someExternalCountryEvent = CreateRandomExternalCountryEvent();
 
             var failedExternalCountryEventDependencyException =
-                new FailedExternalCountryEventDependencyException(criticalDependencyMessageQueueException);
+                new FailedExternalCountryEventDependencyException(
+                    messageQueueException);
 
             var expectedExternalCountryEventDependencyException =
-                new ExternalCountryEventDependencyException(failedExternalCountryEventDependencyException);
+                new ExternalCountryEventDependencyException(
+                    failedExternalCountryEventDependencyException);
 
-            this.configuratinBrokerMock.Setup(broker =>
+            this.configurationBrokerMock.Setup(broker =>
                 broker.GetTrustedSourceId())
-                    .Throws(criticalDependencyMessageQueueException);
+                    .Throws(messageQueueException);
 
             // when
             ValueTask<ExternalCountryEvent> externalCountryEventTask =
@@ -41,7 +43,7 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.ExternalCountryEven
             await Assert.ThrowsAsync<ExternalCountryEventDependencyException>(() =>
                 externalCountryEventTask.AsTask());
 
-            this.configuratinBrokerMock.Verify(broker =>
+            this.configurationBrokerMock.Verify(broker =>
                 broker.GetTrustedSourceId(),
                     Times.Once);
 
@@ -54,30 +56,30 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.ExternalCountryEven
                 broker.EnqueueExternalCountryMessageAsync(It.IsAny<Message>()),
                     Times.Never);
 
-            this.configuratinBrokerMock.VerifyNoOtherCalls();
+            this.configurationBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.queueBrokerMock.VerifyNoOtherCalls();
         }
 
         [Theory]
-        [MemberData(nameof(DependencyMessageQueueExceptions))]
+        [MemberData(nameof(MessageQueueDependencyExceptions))]
         public async Task ShouldThrowDependencyExceptionOnAddIfDependencyErrorOccursAndLogItAsync(
-            Exception dependencyMessageQueueException)
+            Exception messageQueueDependencyException)
         {
             // given
             ExternalCountryEvent someExternalCountryEvent = CreateRandomExternalCountryEvent();
 
             var failedExternalCountryEventDependencyException =
                 new FailedExternalCountryEventDependencyException(
-                    dependencyMessageQueueException);
+                    messageQueueDependencyException);
 
             var expectedExternalCountryEventDependencyException =
                 new ExternalCountryEventDependencyException(
                     failedExternalCountryEventDependencyException);
 
-            this.configuratinBrokerMock.Setup(broker =>
+            this.configurationBrokerMock.Setup(broker =>
                 broker.GetTrustedSourceId())
-                    .Throws(dependencyMessageQueueException);
+                    .Throws(messageQueueDependencyException);
 
             // when
             ValueTask<ExternalCountryEvent> addExternalCountryEventTask =
@@ -87,7 +89,7 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.ExternalCountryEven
             await Assert.ThrowsAsync<ExternalCountryEventDependencyException>(() =>
                 addExternalCountryEventTask.AsTask());
 
-            this.configuratinBrokerMock.Verify(broker =>
+            this.configurationBrokerMock.Verify(broker =>
                 broker.GetTrustedSourceId(),
                     Times.Once);
 
@@ -100,7 +102,50 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.ExternalCountryEven
                 broker.EnqueueExternalCountryMessageAsync(It.IsAny<Message>()),
                     Times.Never);
 
-            this.configuratinBrokerMock.VerifyNoOtherCalls();
+            this.configurationBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.queueBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async Task ShouldThrowDependencyValidationExceptionOnAddIfArgumentExceptionOccursAndLogItAsync()
+        {
+            // given
+            ExternalCountryEvent someExternalCountryEvent = CreateRandomExternalCountryEvent();
+            var argumentException = new ArgumentException();
+
+            var invalidExternalCountryEventArgumentExcpetion =
+                new InvalidExternalCountryEventArgumentException(argumentException);
+
+            var expectedExternalCountryEventDependencyValidationException =
+                new ExternalCountryEventDependencyValidationException(
+                    invalidExternalCountryEventArgumentExcpetion);
+
+            this.configurationBrokerMock.Setup(broker =>
+                broker.GetTrustedSourceId())
+                    .Throws(argumentException);
+
+            // when
+            ValueTask<ExternalCountryEvent> addExternalCountryEventTask =
+                this.externalCountryEventService.AddExternalCountryEventAsync(someExternalCountryEvent);
+
+            // then
+            await Assert.ThrowsAsync<ExternalCountryEventDependencyValidationException>(() =>
+                addExternalCountryEventTask.AsTask());
+
+            this.configurationBrokerMock.Verify(broker =>
+                broker.GetTrustedSourceId(), Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedExternalCountryEventDependencyValidationException))),
+                        Times.Once);
+
+            this.queueBrokerMock.Verify(broker =>
+                broker.EnqueueExternalCountryMessageAsync(
+                    It.IsAny<Message>()), Times.Never);
+
+            this.configurationBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.queueBrokerMock.VerifyNoOtherCalls();
         }
@@ -118,7 +163,7 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.ExternalCountryEven
             var expectedExternalCountryEventServiceException =
                 new ExternalCountryEventServiceException(failedExternalCountryEventServiceException);
 
-            this.configuratinBrokerMock.Setup(broker =>
+            this.configurationBrokerMock.Setup(broker =>
                 broker.GetTrustedSourceId())
                     .Throws(serviceException);
 
@@ -130,7 +175,7 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.ExternalCountryEven
             await Assert.ThrowsAsync<ExternalCountryEventServiceException>(() =>
                 addExternalCountryEventTask.AsTask());
 
-            this.configuratinBrokerMock.Verify(broker =>
+            this.configurationBrokerMock.Verify(broker =>
                 broker.GetTrustedSourceId(),
                     Times.Once);
 
@@ -143,7 +188,7 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.ExternalCountryEven
                 broker.EnqueueExternalCountryMessageAsync(It.IsAny<Message>()),
                     Times.Never);
 
-            this.configuratinBrokerMock.VerifyNoOtherCalls();
+            this.configurationBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.queueBrokerMock.VerifyNoOtherCalls();
         }
