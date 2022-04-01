@@ -43,8 +43,45 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.ExternalCountryEven
                 broker.EnqueueExternalCountryMessageAsync(It.IsAny<Message>()),
                     Times.Never);
 
-            this.queueBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.queueBrokerMock.VerifyNoOtherCalls();
+            this.configurationBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async Task ShouldThrowValidationExceptionOnAddIfExternalCountryEventIsInvalidAndLogItAsync()
+        {
+            // given
+            var invalidExternalCountryEvent = new ExternalCountryEvent();
+            var invalidExternalCountryEventException = new InvalidExternalCountryEventException();
+
+            invalidExternalCountryEventException.AddData(
+                key: nameof(ExternalCountryEvent.ExternalCountry),
+                values: "Object is required");
+
+            var expectedExternalCountryEventValidationException =
+                new ExternalCountryEventValidationException(invalidExternalCountryEventException);
+
+            // when
+            ValueTask<ExternalCountryEvent> addExternalCountryEventTask =
+                this.externalCountryEventService.AddExternalCountryEventAsync(invalidExternalCountryEvent);
+
+            // then
+            await Assert.ThrowsAsync<ExternalCountryEventValidationException>(() =>
+                addExternalCountryEventTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedExternalCountryEventValidationException))),
+                        Times.Once);
+
+            this.queueBrokerMock.Verify(broker =>
+                broker.EnqueueExternalCountryMessageAsync(It.IsAny<Message>()),
+                    Times.Never);
+
+            this.configurationBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.queueBrokerMock.VerifyNoOtherCalls();
         }
     }
 }

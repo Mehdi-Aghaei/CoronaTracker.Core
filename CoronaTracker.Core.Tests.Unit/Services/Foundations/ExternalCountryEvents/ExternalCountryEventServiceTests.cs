@@ -15,7 +15,6 @@ using CoronaTracker.Core.Models.ExternalCountryEvents;
 using CoronaTracker.Core.Services.Foundations.ExternalCountryEvents;
 using KellermanSoftware.CompareNetObjects;
 using Microsoft.Azure.ServiceBus;
-using Microsoft.ServiceBus.Messaging;
 using Moq;
 using Tynamix.ObjectFiller;
 using Xeptions;
@@ -28,7 +27,7 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.ExternalCountryEven
 public partial class ExternalCountryEventServiceTests
 {
     private readonly Mock<IQueueBroker> queueBrokerMock;
-    private readonly Mock<IConfigurationBroker> configuratinBrokerMock;
+    private readonly Mock<IConfigurationBroker> configurationBrokerMock;
     private readonly Mock<ILoggingBroker> loggingBrokerMock;
     private readonly ICompareLogic compareLogic;
     private readonly IExternalCountryEventService externalCountryEventService;
@@ -36,41 +35,41 @@ public partial class ExternalCountryEventServiceTests
     public ExternalCountryEventServiceTests()
     {
         this.queueBrokerMock = new Mock<IQueueBroker>();
-        this.configuratinBrokerMock = new Mock<IConfigurationBroker>();
+        this.configurationBrokerMock = new Mock<IConfigurationBroker>();
         this.loggingBrokerMock = new Mock<ILoggingBroker>();
         this.compareLogic = new CompareLogic();
 
         this.externalCountryEventService = new ExternalCountryEventService(
             queueBroker: this.queueBrokerMock.Object,
-            configurationBroker: this.configuratinBrokerMock.Object,
+            configurationBroker: this.configurationBrokerMock.Object,
             loggingBroker: this.loggingBrokerMock.Object);
 
     }
 
-    public static TheoryData DependencyMessageQueueExceptions()
+    public static TheoryData MessageQueueExceptions()
     {
-        string randomString = GetRandomString();
-        string exceptionMessage = randomString;
-
-        return new TheoryData<Exception>{
-            new MessagingException(message: exceptionMessage),
-            new Messaging.ServerBusyException(message: exceptionMessage),
-            new MessagingCommunicationException(communicationPath: randomString)
-        };
-    }
-
-    public static TheoryData CriticalDependencyMessageQueueExceptions()
-    {
-        string randomString = GetRandomString();
-        string exceptionMessage = randomString;
+        string message = GetRandomString();
 
         return new TheoryData<Exception>
         {
-            new UnauthorizedAccessException(),
-            new MessagingEntityDisabledException(exceptionMessage)
+            new MessagingEntityNotFoundException(message),
+            new MessagingEntityDisabledException(message),
+            new UnauthorizedAccessException()
         };
     }
+    
+    public static TheoryData MessageQueueDependencyExceptions()
+    {
+        string message = GetRandomString();
 
+        return new TheoryData<Exception>
+        {
+            new InvalidOperationException(),
+            new Messaging.MessagingCommunicationException(communicationPath: message),
+            new ServerBusyException(message: message),
+        };
+    }
+    
     private static Message CreateExternalCountryMessage(ExternalCountry externalCountry)
     {
         string serializedExternalCountry = JsonSerializer.Serialize(externalCountry);
@@ -100,7 +99,6 @@ public partial class ExternalCountryEventServiceTests
             this.compareLogic.Compare(expectedMessage, actualMessage).AreEqual;
 
     }
-
 
     private Expression<Func<ExternalCountry, bool>> SameExternalCountryAs(ExternalCountry expectedExternalCountry)
     {
