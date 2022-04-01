@@ -20,8 +20,8 @@ namespace CoronaTracker.Core.Services.Orchestrations.ExternalCountryEvents
         private readonly ILoggingBroker loggingBroker;
 
         public ExternalCountryEventOrchestrationService(
-            IExternalCountryProcessingService externalCountryProcessingService, 
-            IExternalCountryEventProcessingService externalCountryEventProcessingService, 
+            IExternalCountryProcessingService externalCountryProcessingService,
+            IExternalCountryEventProcessingService externalCountryEventProcessingService,
             ILoggingBroker loggingBroker)
         {
             this.externalCountryProcessingService = externalCountryProcessingService;

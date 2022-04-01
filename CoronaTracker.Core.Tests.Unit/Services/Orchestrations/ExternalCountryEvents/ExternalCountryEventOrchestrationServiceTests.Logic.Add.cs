@@ -3,19 +3,9 @@
 // FREE TO USE TO CONNECT THE WORLD
 // ---------------------------------------------------------------
 
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CoronaTracker.Core.Brokers.Loggings;
 using CoronaTracker.Core.Models.ExternalCountries;
 using CoronaTracker.Core.Models.ExternalCountryEvents;
-using CoronaTracker.Core.Services.Foundations.ExternalCountries;
-using CoronaTracker.Core.Services.Orchestrations.ExternalCountryEvents;
-using CoronaTracker.Core.Services.Processings.CountryEvents;
-using CoronaTracker.Core.Services.Processings.ExternalCountries;
-using Force.DeepCloner;
 using Moq;
 using Xunit;
 
@@ -27,10 +17,10 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Orchestrations.ExternalCountryE
         public void ShouldAddExternalCountryToQueue()
         {
             // given
-            List<ExternalCountry> randomExternalCountries = 
+            List<ExternalCountry> randomExternalCountries =
                 CreateRandomExternalCountries();
 
-            List<ExternalCountry> returningExternalCountries = 
+            List<ExternalCountry> returningExternalCountries =
                 randomExternalCountries;
 
             var mockSequence = new MockSequence();
@@ -54,7 +44,7 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Orchestrations.ExternalCountryE
 
             // then
             this.externalCountryProcessingServiceMock.Verify(service =>
-                service.RetrieveAllExternalCountriesAsync(), 
+                service.RetrieveAllExternalCountriesAsync(),
                     Times.AtLeastOnce);
 
             this.externalCountryEventProcessingServiceMock.Verify(service =>
