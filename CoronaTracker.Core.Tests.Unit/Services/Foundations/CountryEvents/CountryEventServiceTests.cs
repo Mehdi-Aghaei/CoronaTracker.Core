@@ -12,7 +12,6 @@ using CoronaTracker.Core.Models.CountryEvents;
 using CoronaTracker.Core.Services.Foundations.CountryEvents;
 using KellermanSoftware.CompareNetObjects;
 using Microsoft.Azure.ServiceBus;
-using Microsoft.ServiceBus.Messaging;
 using Moq;
 using Tynamix.ObjectFiller;
 using Xeptions;
@@ -44,32 +43,45 @@ public partial class CountryEventServiceTests
 
     }
 
-    public static TheoryData DependencyMessageQueueExceptions()
+    public static TheoryData MessageQueueExceptions()
     {
-        string randomString = GetRandomString();
-        string exceptionMessage = randomString;
-
-        return new TheoryData<Exception>{
-            new MessagingException(message: exceptionMessage),
-            new Messaging.ServerBusyException(message: exceptionMessage),
-            new MessagingCommunicationException(communicationPath: randomString)
-        };
-    }
-
-    public static TheoryData CriticalDependencyMessageQueueExceptions()
-    {
-        string randomString = GetRandomString();
-        string exceptionMessage = randomString;
+        string message = GetRandomString();
 
         return new TheoryData<Exception>
         {
-            new UnauthorizedAccessException(),
-            new MessagingEntityDisabledException(exceptionMessage)
+            new MessagingEntityNotFoundException(message),
+            new MessagingEntityDisabledException(message),
+            new UnauthorizedAccessException()
+        };
+    }
+    
+    public static TheoryData MessageQueueDependencyExceptions()
+    {
+        string message = GetRandomString();
+
+        return new TheoryData<Exception>{
+            new InvalidOperationException(),
+            new Messaging.MessagingCommunicationException(communicationPath: message),
+            new ServerBusyException(message: message),
+        };
+    }
+    
+    private static Message CreateExternalCountryMessage(ExternalCountry externalCountry)
+    {
+        string serializedExternalCountry = JsonSerializer.Serialize(externalCountry);
+        byte[] externalCountryBody = Encoding.UTF8.GetBytes(serializedExternalCountry);
+
+        return new Message
+        {
+            Body = externalCountryBody
         };
     }
 
-    private static CountryEvent CreateRandomCountryEvent() =>
-        CreateCountryEventFiller(dates: GetRandomDateTime()).Create();
+    private static ExternalCountryEvent CreateRandomExternalCountryEvent() =>
+        CreateExternalCountryEventFiller(dates: GetRandomDateTime()).Create();
+
+    private static ExternalCountry CreateRandomExternalCountry() =>
+        CreateExternalCountryFiller(dates: GetRandomDateTime()).Create();
 
     private static DateTimeOffset GetRandomDateTime() =>
         new DateTimeRange(earliestDate: new DateTime()).GetValue();
@@ -82,6 +94,12 @@ public partial class CountryEventServiceTests
         return actualMessage =>
             this.compareLogic.Compare(expectedMessage, actualMessage).AreEqual;
 
+    }
+
+    private Expression<Func<ExternalCountry, bool>> SameExternalCountryAs(ExternalCountry expectedExternalCountry)
+    {
+        return actualExternalCountry =>
+            this.compareLogic.Compare(expectedExternalCountry, actualExternalCountry).AreEqual;
     }
 
     private static Expression<Func<Xeption, bool>> SameExceptionAs(Xeption expectedException)

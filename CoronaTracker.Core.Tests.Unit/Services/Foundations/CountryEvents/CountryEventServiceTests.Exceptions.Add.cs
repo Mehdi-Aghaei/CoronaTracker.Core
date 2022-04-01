@@ -60,7 +60,7 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.CountryEvents
         }
 
         [Theory]
-        [MemberData(nameof(DependencyMessageQueueExceptions))]
+        [MemberData(nameof(MessageQueueDependencyExceptions))]
         public async Task ShouldThrowDependencyExceptionOnAddIfDependencyErrorOccursAndLogItAsync(
             Exception dependencyMessageQueueException)
         {
