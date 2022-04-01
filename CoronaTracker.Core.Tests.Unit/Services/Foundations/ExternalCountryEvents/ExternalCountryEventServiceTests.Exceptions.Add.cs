@@ -108,6 +108,49 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.ExternalCountryEven
         }
 
         [Fact]
+        public async Task ShouldThrowDependencyValidationExceptionOnAddIfArgumentExceptionOccursAndLogItAsync()
+        {
+            // given
+            ExternalCountryEvent someExternalCountryEvent = CreateRandomExternalCountryEvent();
+            var argumentException = new ArgumentException();
+
+            var invalidExternalCountryEventArgumentExcpetion =
+                new InvalidExternalCountryEventArgumentException(argumentException);
+
+            var expectedExternalCountryEventDependencyValidationException =
+                new ExternalCountryEventDependencyValidationException(
+                    invalidExternalCountryEventArgumentExcpetion);
+
+            this.configuratinBrokerMock.Setup(broker =>
+                broker.GetTrustedSourceId())
+                    .Throws(argumentException);
+
+            // when
+            ValueTask<ExternalCountryEvent> addExternalCountryEventTask =
+                this.externalCountryEventService.AddExternalCountryEventAsync(someExternalCountryEvent);
+
+            // then
+            await Assert.ThrowsAsync<ExternalCountryEventDependencyValidationException>(() =>
+                addExternalCountryEventTask.AsTask());
+
+            this.configuratinBrokerMock.Verify(broker =>
+                broker.GetTrustedSourceId(), Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedExternalCountryEventDependencyValidationException))),
+                        Times.Once);
+
+            this.queueBrokerMock.Verify(broker =>
+                broker.EnqueueExternalCountryMessageAsync(
+                    It.IsAny<Message>()),Times.Never);
+
+            this.configuratinBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.queueBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
         public async Task ShouldThrowServiceExceptionOnAddIfServiceErrorOccursAndLogItAsync()
         {
             // given
