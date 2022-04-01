@@ -29,11 +29,11 @@ namespace CoronaTracker.Core.Services.Foundations.ExternalCountryEvents
             {
                 throw CreateAndLogValidationException(nullCountryEventException);
             }
-            catch(InvalidExternalCountryEventException invalidExternalCountryEventException)
+            catch (InvalidExternalCountryEventException invalidExternalCountryEventException)
             {
                 throw CreateAndLogValidationException(invalidExternalCountryEventException);
             }
-            catch(MessagingEntityNotFoundException messagingEntityNotFoundException)
+            catch (MessagingEntityNotFoundException messagingEntityNotFoundException)
             {
                 var failedExternalCountryEventDependencyException =
                     new FailedExternalCountryEventDependencyException(messagingEntityNotFoundException);
@@ -54,7 +54,7 @@ namespace CoronaTracker.Core.Services.Foundations.ExternalCountryEvents
 
                 throw CreateAndLogCriticalDependencyException(failedExternalCountryEventException);
             }
-            catch(InvalidOperationException invalidOperationException)
+            catch (InvalidOperationException invalidOperationException)
             {
                 var failedExternalCountryEventDependencyException =
                     new FailedExternalCountryEventDependencyException(invalidOperationException);
@@ -90,7 +90,7 @@ namespace CoronaTracker.Core.Services.Foundations.ExternalCountryEvents
                 throw CreateAndLogServiceException(failedExternalCountryEventServiceException);
             }
         }
- 
+
         private ExternalCountryEventValidationException CreateAndLogValidationException(Xeption exception)
         {
             var externalCountryEventValidationException =
