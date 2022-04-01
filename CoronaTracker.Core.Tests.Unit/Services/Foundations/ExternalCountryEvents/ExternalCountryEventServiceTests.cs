@@ -27,7 +27,7 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.ExternalCountryEven
 public partial class ExternalCountryEventServiceTests
 {
     private readonly Mock<IQueueBroker> queueBrokerMock;
-    private readonly Mock<IConfigurationBroker> configuratinBrokerMock;
+    private readonly Mock<IConfigurationBroker> configurationBrokerMock;
     private readonly Mock<ILoggingBroker> loggingBrokerMock;
     private readonly ICompareLogic compareLogic;
     private readonly IExternalCountryEventService externalCountryEventService;
@@ -35,13 +35,13 @@ public partial class ExternalCountryEventServiceTests
     public ExternalCountryEventServiceTests()
     {
         this.queueBrokerMock = new Mock<IQueueBroker>();
-        this.configuratinBrokerMock = new Mock<IConfigurationBroker>();
+        this.configurationBrokerMock = new Mock<IConfigurationBroker>();
         this.loggingBrokerMock = new Mock<ILoggingBroker>();
         this.compareLogic = new CompareLogic();
 
         this.externalCountryEventService = new ExternalCountryEventService(
             queueBroker: this.queueBrokerMock.Object,
-            configurationBroker: this.configuratinBrokerMock.Object,
+            configurationBroker: this.configurationBrokerMock.Object,
             loggingBroker: this.loggingBrokerMock.Object);
 
     }

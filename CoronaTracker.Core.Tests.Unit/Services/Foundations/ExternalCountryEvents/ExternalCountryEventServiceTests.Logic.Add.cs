@@ -37,17 +37,17 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.ExternalCountryEven
                 Body = Encoding.UTF8.GetBytes(serializedExternalCountryEvent)
             };
 
-            this.configuratinBrokerMock.Setup(broker =>
+            this.configurationBrokerMock.Setup(broker =>
                 broker.GetTrustedSourceId()).Returns(givenTrustedSourceId);
 
             // when
-            var actualExternalCountryEvent =
+            ExternalCountryEvent actualExternalCountryEvent =
                 await this.externalCountryEventService.AddExternalCountryEventAsync(inputExternalCountryEvent);
 
             // then
             actualExternalCountryEvent.Should().BeEquivalentTo(expectedExternalCountryEvent);
 
-            this.configuratinBrokerMock.Verify(broker =>
+            this.configurationBrokerMock.Verify(broker =>
                 broker.GetTrustedSourceId(),
                     Times.Once);
 
@@ -57,8 +57,8 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.ExternalCountryEven
                         expectedExternalCountryEventMessage))),
                             Times.Once);
 
+            this.configurationBrokerMock.VerifyNoOtherCalls();
             this.queueBrokerMock.VerifyNoOtherCalls();
-            this.configuratinBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
         }
     }
