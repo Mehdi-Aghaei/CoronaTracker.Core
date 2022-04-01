@@ -62,7 +62,8 @@ public partial class ExternalCountryEventServiceTests
     {
         string message = GetRandomString();
 
-        return new TheoryData<Exception>{
+        return new TheoryData<Exception>
+        {
             new InvalidOperationException(),
             new Messaging.MessagingCommunicationException(communicationPath: message),
             new ServerBusyException(message: message),

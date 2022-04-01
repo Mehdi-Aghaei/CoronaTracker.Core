@@ -50,17 +50,24 @@ namespace CoronaTracker.Core.Services.Foundations.ExternalCountryEvents
 
                 throw CreateAndLogCriticalDependencyException(failedExternalCountryEventException);
             }
-            catch (ServerBusyException serverBusyException)
+            catch(InvalidOperationException invalidOperationException)
             {
-                var failedExternalCountryEventException =
-                    new FailedExternalCountryEventDependencyException(serverBusyException);
+                var failedExternalCountryEventDependencyException =
+                    new FailedExternalCountryEventDependencyException(invalidOperationException);
 
-                throw CreateAndLogDependencyException(failedExternalCountryEventException);
+                throw CreateAndLogDependencyException(failedExternalCountryEventDependencyException);
             }
             catch (Messaging.MessagingCommunicationException messagingCommunicationException)
             {
                 var failedExternalCountryEventException =
                     new FailedExternalCountryEventDependencyException(messagingCommunicationException);
+
+                throw CreateAndLogDependencyException(failedExternalCountryEventException);
+            }
+            catch (ServerBusyException serverBusyException)
+            {
+                var failedExternalCountryEventException =
+                    new FailedExternalCountryEventDependencyException(serverBusyException);
 
                 throw CreateAndLogDependencyException(failedExternalCountryEventException);
             }
