@@ -3,15 +3,20 @@
 // FREE TO USE TO CONNECT THE WORLD
 // ---------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using CoronaTracker.Core.Brokers.Loggings;
 using CoronaTracker.Core.Models.ExternalCountries;
+using CoronaTracker.Core.Models.Processings.ExternalCountryEvents.Exceptions;
 using CoronaTracker.Core.Services.Orchestrations.ExternalCountryEvents;
 using CoronaTracker.Core.Services.Processings.CountryEvents;
 using CoronaTracker.Core.Services.Processings.ExternalCountries;
 using Moq;
 using Tynamix.ObjectFiller;
+using Xeptions;
+using Xunit;
 
 namespace CoronaTracker.Core.Tests.Unit.Services.Orchestrations.ExternalCountryEvents
 {
@@ -34,6 +39,13 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Orchestrations.ExternalCountryE
                 loggingBroker: this.loggingBrokerMock.Object);
         }
 
+        private static Expression<Func<Xeption, bool>> SameExceptionAs(Xeption expectedException)
+        {
+            return actualException =>
+                actualException.Message == expectedException.Message
+                && actualException.InnerException.Message == expectedException.InnerException.Message
+                && (actualException.InnerException as Xeption).DataEquals(expectedException.InnerException.Data);
+        }
 
         private static int GetRandomNumber() =>
             new IntRange(min: 2, max: 10).GetValue();
