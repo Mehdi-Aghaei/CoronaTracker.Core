@@ -12,6 +12,7 @@ using CoronaTracker.Core.Brokers.Storages;
 using CoronaTracker.Core.Services.Foundations.Countries;
 using CoronaTracker.Core.Services.Foundations.ExternalCountries;
 using CoronaTracker.Core.Services.Foundations.ExternalCountryEvents;
+using CoronaTracker.Core.Services.Orchestrations.Countries;
 using CoronaTracker.Core.Services.Processings.Countries;
 using CoronaTracker.Core.Services.Processings.CountryEvents;
 using CoronaTracker.Core.Services.Processings.ExternalCountries;
@@ -93,6 +94,7 @@ namespace CoronaTracker.Core
             services.AddTransient<IExternalCountryEventService, ExternalCountryEventService>();
             services.AddTransient<IExternalCountryProcessingService, ExternalCountryProcessingService>();
             services.AddTransient<IExternalCountryEventProcessingService, ExternalCountryEventProcessingService>();
+            services.AddTransient<ICountryOrchestrationService, CountryOrchestrationService>();
         }
     }
 }

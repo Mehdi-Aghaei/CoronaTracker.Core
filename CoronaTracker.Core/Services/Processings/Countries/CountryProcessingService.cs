@@ -25,6 +25,18 @@ namespace CoronaTracker.Core.Services.Processings.Countries
             this.countryService = countryService;
             this.loggingBroker = loggingBroker;
         }
+        public bool VerifyCountryChanged(Country country) =>
+        TryCatch(() =>
+        {
+            ValidateCountryOnVerify(country);
+            Country maybeCountry = RetrieveMatchingCountry(country);
+
+            return maybeCountry switch
+            {
+                null => true,
+                _ => IsCountryChanged(country, maybeCountry)
+            };
+        });
 
         public ValueTask<Country> UpsertCountryAsync(Country country) =>
         TryCatch(async () =>
@@ -49,5 +61,16 @@ namespace CoronaTracker.Core.Services.Processings.Countries
 
         private static Expression<Func<Country, bool>> SameCountryAs(Country country) =>
             retrievedCountry => retrievedCountry.Name == country.Name;
+        
+        private static bool IsCountryChanged(Country incomingCountry, Country existingCountry)
+        {
+            return (incomingCountry, existingCountry) switch
+            {
+                _ when incomingCountry.Cases != existingCountry.Cases => true,
+                _ when incomingCountry.Deaths != existingCountry.Deaths => true,
+                _ when incomingCountry.Recovered != existingCountry.Recovered => true,
+                _ => false
+            };
+        }
     }
 }

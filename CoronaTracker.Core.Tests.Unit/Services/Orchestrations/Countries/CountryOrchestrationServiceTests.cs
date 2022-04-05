@@ -9,33 +9,32 @@ using System.Linq;
 using System.Linq.Expressions;
 using CoronaTracker.Core.Brokers.Loggings;
 using CoronaTracker.Core.Models.ExternalCountries;
-using CoronaTracker.Core.Models.Processings.ExternalCountryEvents.Exceptions;
-using CoronaTracker.Core.Services.Orchestrations.ExternalCountryEvents;
+using CoronaTracker.Core.Services.Orchestrations.Countries;
+using CoronaTracker.Core.Services.Processings.Countries;
 using CoronaTracker.Core.Services.Processings.CountryEvents;
 using CoronaTracker.Core.Services.Processings.ExternalCountries;
 using Moq;
 using Tynamix.ObjectFiller;
 using Xeptions;
-using Xunit;
 
 namespace CoronaTracker.Core.Tests.Unit.Services.Orchestrations.ExternalCountryEvents
 {
-    public partial class ExternalCountryEventOrchestrationServiceTests
+    public partial class CountryOrchestrationServiceTests
     {
         private readonly Mock<IExternalCountryProcessingService> externalCountryProcessingServiceMock;
-        private readonly Mock<IExternalCountryEventProcessingService> externalCountryEventProcessingServiceMock;
+        private readonly Mock<ICountryProcessingService> countryProcessinServiceMock;
         private readonly Mock<ILoggingBroker> loggingBrokerMock;
-        private readonly IExternalCountryEventOrchestrationService externalCountryEventOrchestrationService;
+        private readonly ICountryOrchestrationService countryOrchestrationService;
 
-        public ExternalCountryEventOrchestrationServiceTests()
+        public CountryOrchestrationServiceTests()
         {
             this.externalCountryProcessingServiceMock = new Mock<IExternalCountryProcessingService>();
-            this.externalCountryEventProcessingServiceMock = new Mock<IExternalCountryEventProcessingService>();
+            this.countryProcessinServiceMock = new Mock<ICountryProcessingService>();
             this.loggingBrokerMock = new Mock<ILoggingBroker>();
 
-            this.externalCountryEventOrchestrationService = new ExternalCountryEventOrchestrationService(
+            this.countryOrchestrationService = new CountryOrchestrationService(
                 externalCountryProcessingService: this.externalCountryProcessingServiceMock.Object,
-                externalCountryEventProcessingService: this.externalCountryEventProcessingServiceMock.Object,
+                ,
                 loggingBroker: this.loggingBrokerMock.Object);
         }
 

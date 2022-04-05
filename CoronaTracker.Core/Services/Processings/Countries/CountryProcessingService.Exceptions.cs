@@ -14,7 +14,47 @@ namespace CoronaTracker.Core.Services.Processings.Countries
 {
     public partial class CountryProcessingService
     {
+        private delegate bool ReturningBooleanFunction();
         private delegate ValueTask<Country> ReturningCountryFunction();
+
+        private bool TryCatch(ReturningBooleanFunction returningBooleanFunction)
+        {
+            try
+            {
+                return returningBooleanFunction();
+            }
+            catch (NullCountryProcessingException nullCountryProcessingException)
+            {
+                throw CreateAndLogValidationException(nullCountryProcessingException);
+            }
+            catch (InvalidCountryProcessingException invalidCountryProcessingException)
+            {
+                throw CreateAndLogValidationException(invalidCountryProcessingException);
+            }
+            catch (CountryValidationException countryValidationException)
+            {
+                throw CreateAndLogDependencyValidationException(countryValidationException);
+            }
+            catch (CountryDependencyValidationException countryDependencyValidationException)
+            {
+                throw CreateAndLogDependencyValidationException(countryDependencyValidationException);
+            }
+            catch (CountryDependencyException countryDependencyException)
+            {
+                throw CreateAndLogDependencyException(countryDependencyException);
+            }
+            catch (CountryServiceException countryServiceException)
+            {
+                throw CreateAndLogDependencyException(countryServiceException);
+            }
+            catch (Exception exception)
+            {
+                var failedCountryProcessingServiceException =
+                    new FailedCountryProcessingServiceException(exception);
+
+                throw CreateAndLogServiceException(failedCountryProcessingServiceException);
+            }
+        }
 
         private async ValueTask<Country> TryCatch(ReturningCountryFunction returningCountryFunction)
         {
