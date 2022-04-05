@@ -68,7 +68,7 @@ public partial class ExternalCountryEventServiceTests
             new ServerBusyException(message: message),
         };
     }
-
+    
     private static Message CreateExternalCountryMessage(ExternalCountry externalCountry)
     {
         string serializedExternalCountry = JsonSerializer.Serialize(externalCountry);
