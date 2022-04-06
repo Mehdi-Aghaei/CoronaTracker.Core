@@ -22,8 +22,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\Orchestrations\" />
-    <Folder Include="Services\Orchestrations\" />
     <Folder Include="Services\Processings\ExternalCountries\" />
   </ItemGroup>
 

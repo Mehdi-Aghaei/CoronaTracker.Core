@@ -25,6 +25,10 @@ namespace CoronaTracker.Core.Services.Processings.Countries
             this.countryService = countryService;
             this.loggingBroker = loggingBroker;
         }
+
+        public IQueryable<Country> RetrieveAllCountries() =>
+        TryCatch(() => this.countryService.RetrieveAllCountries());
+
         public bool VerifyCountryChanged(Country country) =>
         TryCatch(() =>
         {
@@ -41,10 +45,20 @@ namespace CoronaTracker.Core.Services.Processings.Countries
         public ValueTask<Country> UpsertCountryAsync(Country country) =>
         TryCatch(async () =>
         {
+            if (country.Name is "Diamond Princess")
+            {
+                country.Iso3 = "Not specified";
+                country.Continent = "Not specified";
+            }
+            if (country.Name is "MS Zaandam")
+            {
+                country.Iso3 = "Not specified";
+                country.Continent = "Not specified";
+            }
             ValidateCountry(country);
             Country maybeCountry = RetrieveMatchingCountry(country);
 
-            if(maybeCountry is null)
+            if (maybeCountry is null)
             {
                 return await this.countryService.AddCountryAsync(country);
             }
@@ -66,7 +80,7 @@ namespace CoronaTracker.Core.Services.Processings.Countries
 
         private static Expression<Func<Country, bool>> SameCountryAs(Country country) =>
             retrievedCountry => retrievedCountry.Name == country.Name;
-        
+
         private static bool IsCountryChanged(Country incomingCountry, Country existingCountry)
         {
             return (incomingCountry, existingCountry) switch

@@ -11,11 +11,8 @@ using CoronaTracker.Core.Brokers.DateTimes;
 using CoronaTracker.Core.Brokers.Loggings;
 using CoronaTracker.Core.Models.Countries;
 using CoronaTracker.Core.Models.ExternalCountries;
-using CoronaTracker.Core.Models.Orchestrations.Exceptions;
-using CoronaTracker.Core.Services.Foundations.Countries;
 using CoronaTracker.Core.Services.Processings.Countries;
 using CoronaTracker.Core.Services.Processings.ExternalCountries;
-using Xeptions;
 
 namespace CoronaTracker.Core.Services.Orchestrations.Countries
 {
@@ -23,57 +20,35 @@ namespace CoronaTracker.Core.Services.Orchestrations.Countries
     {
         private readonly IExternalCountryProcessingService externalCountryProcessingService;
         private readonly ICountryProcessingService countryProcessingService;
-        private readonly ICountryService countryService;
         private readonly ILoggingBroker loggingBroker;
         private readonly IDateTimeBroker dateTimeBroker;
 
         public CountryOrchestrationService(
             IExternalCountryProcessingService externalCountryProcessingService,
             ICountryProcessingService countryProcessingService,
-            ICountryService countryService,
             ILoggingBroker loggingBroker,
             IDateTimeBroker dateTimeBroker)
         {
             this.externalCountryProcessingService = externalCountryProcessingService;
             this.countryProcessingService = countryProcessingService;
-            this.countryService = countryService;
             this.loggingBroker = loggingBroker;
             this.dateTimeBroker = dateTimeBroker;
         }
 
-        public async ValueTask<IQueryable<Country>> ProcessAllExternalCountriesAsync()
+        public ValueTask<IQueryable<Country>> ProcessAllExternalCountriesAsync() =>
+        TryCatch(async () =>
         {
-            try
-            {
-                List<ExternalCountry> allExternalCountries =
+            List<ExternalCountry> allExternalCountries =
                 await this.externalCountryProcessingService
                     .RetrieveAllExternalCountriesAsync();
 
-                foreach (var externalCountry in allExternalCountries)
-                {
-                    await MapToCountryAndUpsertAsync(externalCountry);
-                }
-
-                return this.countryService.RetrieveAllCountries();
-            }
-            catch (Exception exception)
+            foreach (var externalCountry in allExternalCountries)
             {
-                var failedExternalCountryOrchestrationServiceException =
-                    new FailedExternalCountryOrchestrationServiceException(exception);
-
-                throw CreateAndLogServiceException(failedExternalCountryOrchestrationServiceException);
+                await MapToCountryAndUpsertAsync(externalCountry);
             }
-        }
 
-        private ExternalCountryOrchestrationServiceException CreateAndLogServiceException(Xeption exception)
-        {
-            var externalCountryOrchestrationServiceException =
-               new ExternalCountryOrchestrationServiceException(exception);
-
-            this.loggingBroker.LogError(externalCountryOrchestrationServiceException);
-
-            return externalCountryOrchestrationServiceException;
-        }
+            return this.countryProcessingService.RetrieveAllCountries();
+        });
 
         private async ValueTask<Country> MapToCountryAndUpsertAsync(ExternalCountry persistedExternalCountry)
         {

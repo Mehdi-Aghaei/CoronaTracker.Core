@@ -6,12 +6,12 @@
 using System;
 using Xeptions;
 
-namespace CoronaTracker.Core.Models.Orchestrations.Exceptions
+namespace CoronaTracker.Core.Models.Orchestrations.Countries
 {
-    public class FailedExternalCountryOrchestrationServiceException : Xeption
+    public class FailedCountryOrchestrationServiceException : Xeption
     {
-        public FailedExternalCountryOrchestrationServiceException(Exception innerException)
-            : base(message: "failed External country error occurred, please try again.",
+        public FailedCountryOrchestrationServiceException(Exception innerException)
+            : base(message: "Failed country service error occurred, contact support.",
                   innerException)
         { }
     }

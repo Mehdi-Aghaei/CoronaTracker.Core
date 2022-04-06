@@ -5,7 +5,6 @@
 
 using System;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 using CoronaTracker.Core.Brokers.DateTimes;
 using CoronaTracker.Core.Brokers.Loggings;
@@ -34,16 +33,6 @@ namespace CoronaTracker.Core.Services.Foundations.Countries
         public ValueTask<Country> AddCountryAsync(Country country) =>
         TryCatch(async () =>
         {
-            if (country.Name is "Diamond Princess")
-            {
-                country.Iso3 = "Not specified";
-                country.Continent = "Not specified";
-            }
-            if (country.Name is "MS Zaandam")
-            {
-                country.Iso3 = "Not specified";
-                country.Continent = "Not specified";
-            }
             ValidateCountryOnAdd(country);
 
             return await this.storageBroker.InsertCountryAsync(country);
