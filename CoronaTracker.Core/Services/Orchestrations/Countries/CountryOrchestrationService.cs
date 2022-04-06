@@ -35,7 +35,7 @@ namespace CoronaTracker.Core.Services.Orchestrations.Countries
             this.dateTimeBroker = dateTimeBroker;
         }
 
-        public ValueTask<IQueryable<Country>> ProcessAllExternalCountriesAsync() =>
+        public ValueTask<IQueryable<Country>> RetrieveAllCountriesAsync() =>
         TryCatch(async () =>
         {
             List<ExternalCountry> allExternalCountries =

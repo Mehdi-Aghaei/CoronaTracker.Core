@@ -11,6 +11,6 @@ namespace CoronaTracker.Core.Services.Orchestrations.Countries
 {
     public interface ICountryOrchestrationService
     {
-        ValueTask<IQueryable<Country>> ProcessAllExternalCountriesAsync();
+        ValueTask<IQueryable<Country>> RetrieveAllCountriesAsync();
     }
 }
