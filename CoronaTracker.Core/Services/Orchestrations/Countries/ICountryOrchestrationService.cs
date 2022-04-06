@@ -3,14 +3,14 @@
 // FREE TO USE TO CONNECT THE WORLD
 // ---------------------------------------------------------------
 
+using System.Linq;
 using System.Threading.Tasks;
 using CoronaTracker.Core.Models.Countries;
 
-namespace CoronaTracker.Core.Services.Processings.Countries
+namespace CoronaTracker.Core.Services.Orchestrations.Countries
 {
-    public interface ICountryProcessingService
+    public interface ICountryOrchestrationService
     {
-        bool VerifyCountryChanged(Country country);
-        ValueTask<Country> UpsertCountryAsync(Country country);
+        ValueTask<IQueryable<Country>> ProcessAllExternalCountriesAsync();
     }
 }

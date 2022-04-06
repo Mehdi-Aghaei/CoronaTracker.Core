@@ -19,6 +19,11 @@ namespace CoronaTracker.Core.Services.Processings.Countries
                 (Rule: IsInvalid(country.Id),
                 Parameter: nameof(Country.Id)));
         }
+        
+        private void ValidateCountryOnVerify(Country Country)
+        {
+            ValidateCountryIsNotNull(Country);
+        }
 
         private static void ValidateCountryIsNotNull(Country country)
         {
