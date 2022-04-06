@@ -41,7 +41,7 @@ namespace CoronaTracker.Core.Services.Orchestrations.Countries
             this.dateTimeBroker = dateTimeBroker;
         }
 
-        public async ValueTask<IQueryable<Country>> ProcessAllExternalCountriesCountriesAsync()
+        public async ValueTask<IQueryable<Country>> ProcessAllExternalCountriesAsync()
         {
             try
             {
@@ -51,10 +51,10 @@ namespace CoronaTracker.Core.Services.Orchestrations.Countries
 
                 foreach (var externalCountry in allExternalCountries)
                 {
-                    await MapToCountry(externalCountry);
+                    await MapToCountryAndUpsertAsync(externalCountry);
                 }
-                return this.countryService.RetrieveAllCountries();
 
+                return this.countryService.RetrieveAllCountries();
             }
             catch (Exception exception)
             {
@@ -75,7 +75,7 @@ namespace CoronaTracker.Core.Services.Orchestrations.Countries
             return externalCountryOrchestrationServiceException;
         }
 
-        private async ValueTask<Country> MapToCountry(ExternalCountry persistedExternalCountry)
+        private async ValueTask<Country> MapToCountryAndUpsertAsync(ExternalCountry persistedExternalCountry)
         {
             DateTimeOffset currentDateTime =
                 this.dateTimeBroker.GetCurrentDateTimeOffset();
@@ -100,6 +100,7 @@ namespace CoronaTracker.Core.Services.Orchestrations.Countries
                 CreatedDate = currentDateTime,
                 UpdatedDate = currentDateTime
             };
+
             bool isCountryChanged = this.countryProcessingService.VerifyCountryChanged(country);
 
             return isCountryChanged

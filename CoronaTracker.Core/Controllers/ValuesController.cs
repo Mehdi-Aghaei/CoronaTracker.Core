@@ -30,7 +30,7 @@ namespace CoronaTracker.Core.Controllers
             try
             {
                 var retrievedCounttries = await this.countryOrchestrationService
-                    .ProcessAllExternalCountriesCountriesAsync();
+                    .ProcessAllExternalCountriesAsync();
 
                 return Ok(retrievedCounttries);
             }

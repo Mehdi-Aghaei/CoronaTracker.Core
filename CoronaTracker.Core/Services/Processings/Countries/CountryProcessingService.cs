@@ -44,11 +44,16 @@ namespace CoronaTracker.Core.Services.Processings.Countries
             ValidateCountry(country);
             Country maybeCountry = RetrieveMatchingCountry(country);
 
-            return maybeCountry switch
+            if(maybeCountry is null)
             {
-                null => await this.countryService.AddCountryAsync(country),
-                _ => await this.countryService.ModifyCountryAsync(country)
-            };
+                return await this.countryService.AddCountryAsync(country);
+            }
+            else
+            {
+                country.Id = maybeCountry.Id;
+                country.CreatedDate = maybeCountry.CreatedDate;
+                return await this.countryService.ModifyCountryAsync(country);
+            }
         });
 
         private Country RetrieveMatchingCountry(Country country)
