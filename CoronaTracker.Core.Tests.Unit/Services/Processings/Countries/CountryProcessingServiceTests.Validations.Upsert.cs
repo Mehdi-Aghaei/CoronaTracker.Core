@@ -14,7 +14,7 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Processings.Countries
 {
     public partial class CountryProcessingServiceTests
     {
-        [Fact]
+       /* [Fact]
         public async Task ShouldThrowValidationExceptionOnUpsertIfCountryIsNullAndLogItAsync()
         {
             // given
@@ -55,7 +55,7 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Processings.Countries
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.countryServiceMock.VerifyNoOtherCalls();
-        }
+        }*/
 
         [Fact]
         public async Task ShouldThrowValidationExceptionOnUpsertIfCountryIdIsInvalidAndLogItAsync()
