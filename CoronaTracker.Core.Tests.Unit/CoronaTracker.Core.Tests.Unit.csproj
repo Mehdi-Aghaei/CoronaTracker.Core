@@ -30,6 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Services\Orchestrations\" />
     <Folder Include="Services\Processings\ExternalCountries\" />
   </ItemGroup>
 
