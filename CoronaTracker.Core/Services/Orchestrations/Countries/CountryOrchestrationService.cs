@@ -44,13 +44,35 @@ namespace CoronaTracker.Core.Services.Orchestrations.Countries
 
             foreach (var externalCountry in allExternalCountries)
             {
-                await MapToCountryAndUpsertAsync(externalCountry);
+                await UpsertCountryAsync(externalCountry);
             }
 
             return this.countryProcessingService.RetrieveAllCountries();
         });
 
-        private async ValueTask<Country> MapToCountryAndUpsertAsync(ExternalCountry persistedExternalCountry)
+        private async ValueTask<Country> UpsertCountryAsync(ExternalCountry persistedExternalCountry)
+        {
+            if (persistedExternalCountry.CountryName is "Diamond Princess")
+            {
+                persistedExternalCountry.CountryInfo.Iso3 = "Not specified";
+                persistedExternalCountry.Continent = "Not specified";
+            }
+            if (persistedExternalCountry.CountryName is "MS Zaandam")
+            {
+                persistedExternalCountry.CountryInfo.Iso3 = "Not specified";
+                persistedExternalCountry.Continent = "Not specified";
+            }
+
+            Country country = MapToCountry(persistedExternalCountry);
+
+            bool isCountryChanged = this.countryProcessingService.VerifyCountryChanged(country);
+
+            return isCountryChanged
+                ? await this.countryProcessingService.UpsertCountryAsync(country)
+                : country;
+        }
+
+        private Country MapToCountry(ExternalCountry persistedExternalCountry)
         {
             DateTimeOffset currentDateTime =
                 this.dateTimeBroker.GetCurrentDateTimeOffset();
@@ -75,12 +97,7 @@ namespace CoronaTracker.Core.Services.Orchestrations.Countries
                 CreatedDate = currentDateTime,
                 UpdatedDate = currentDateTime
             };
-
-            bool isCountryChanged = this.countryProcessingService.VerifyCountryChanged(country);
-
-            return isCountryChanged
-                ? await this.countryProcessingService.UpsertCountryAsync(country)
-                : country;
+            return country;
         }
     }
 }
