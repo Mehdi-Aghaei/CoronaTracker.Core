@@ -41,6 +41,17 @@ namespace CoronaTracker.Core.Services.Processings.Countries
         public ValueTask<Country> UpsertCountryAsync(Country country) =>
         TryCatch(async () =>
         {
+            if (country.Name is "Diamond Princess")
+            {
+                country.Iso3 = "Not specified";
+                country.Continent = "Not specified";
+            }
+            if (country.Name is "MS Zaandam")
+            {
+                country.Iso3 = "Not specified";
+                country.Continent = "Not specified";
+            }
+            
             ValidateCountry(country);
             Country maybeCountry = RetrieveMatchingCountry(country);
 
