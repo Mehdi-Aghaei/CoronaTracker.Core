@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using CoronaTracker.Core.Models.Countries;
 using CoronaTracker.Core.Models.Orchestrations.Countries;
 using CoronaTracker.Core.Services.Orchestrations.Countries;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RESTFulSense.Controllers;
 
