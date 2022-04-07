@@ -52,18 +52,6 @@ namespace CoronaTracker.Core.Services.Processings.Countries
             {
                 throw CreateAndLogValidationException(nullCountryProcessingException);
             }
-            catch (InvalidCountryProcessingException invalidCountryProcessingException)
-            {
-                throw CreateAndLogValidationException(invalidCountryProcessingException);
-            }
-            catch (CountryValidationException countryValidationException)
-            {
-                throw CreateAndLogDependencyValidationException(countryValidationException);
-            }
-            catch (CountryDependencyValidationException countryDependencyValidationException)
-            {
-                throw CreateAndLogDependencyValidationException(countryDependencyValidationException);
-            }
             catch (CountryDependencyException countryDependencyException)
             {
                 throw CreateAndLogDependencyException(countryDependencyException);
