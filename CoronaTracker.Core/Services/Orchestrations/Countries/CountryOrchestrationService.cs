@@ -9,8 +9,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using CoronaTracker.Core.Brokers.DateTimes;
 using CoronaTracker.Core.Brokers.Loggings;
-using CoronaTracker.Core.Models.Countries;
-using CoronaTracker.Core.Models.ExternalCountries;
+using CoronaTracker.Core.Models.Foundations.Countries;
+using CoronaTracker.Core.Models.Foundations.ExternalCountries;
 using CoronaTracker.Core.Services.Processings.Countries;
 using CoronaTracker.Core.Services.Processings.ExternalCountries;
 

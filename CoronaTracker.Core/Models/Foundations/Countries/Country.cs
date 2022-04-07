@@ -5,7 +5,7 @@
 
 using System;
 
-namespace CoronaTracker.Core.Models.Countries
+namespace CoronaTracker.Core.Models.Foundations.Countries
 {
     public class Country
     {

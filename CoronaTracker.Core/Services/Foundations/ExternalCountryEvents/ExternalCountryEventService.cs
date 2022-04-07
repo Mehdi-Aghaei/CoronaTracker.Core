@@ -10,8 +10,8 @@ using System.Threading.Tasks;
 using CoronaTracker.Core.Brokers.Configurations;
 using CoronaTracker.Core.Brokers.Loggings;
 using CoronaTracker.Core.Brokers.Queues;
-using CoronaTracker.Core.Models.ExternalCountries;
 using CoronaTracker.Core.Models.ExternalCountryEvents;
+using CoronaTracker.Core.Models.Foundations.ExternalCountries;
 using Microsoft.Azure.ServiceBus;
 
 namespace CoronaTracker.Core.Services.Foundations.ExternalCountryEvents

@@ -6,7 +6,7 @@
 using System;
 using Xeptions;
 
-namespace CoronaTracker.Core.Models.ExternalCountries.Exceptions
+namespace CoronaTracker.Core.Models.Foundations.ExternalCountries.Exceptions
 {
     public class FailedExternalCountryServiceException : Xeption
     {

@@ -4,7 +4,7 @@
 // ---------------------------------------------------------------
 
 using System;
-using CoronaTracker.Core.Models.ExternalCountries;
+using CoronaTracker.Core.Models.Foundations.ExternalCountries;
 
 namespace CoronaTracker.Core.Models.ExternalCountryEvents
 {

@@ -5,7 +5,7 @@
 
 using Newtonsoft.Json;
 
-namespace CoronaTracker.Core.Models.ExternalCountries
+namespace CoronaTracker.Core.Models.Foundations.ExternalCountries
 {
     public class CountryInfo
     {

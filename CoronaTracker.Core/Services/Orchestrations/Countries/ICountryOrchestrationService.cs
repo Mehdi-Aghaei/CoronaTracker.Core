@@ -5,7 +5,7 @@
 
 using System.Linq;
 using System.Threading.Tasks;
-using CoronaTracker.Core.Models.Countries;
+using CoronaTracker.Core.Models.Foundations.Countries;
 
 namespace CoronaTracker.Core.Services.Orchestrations.Countries
 {

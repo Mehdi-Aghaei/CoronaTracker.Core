@@ -5,7 +5,7 @@
 
 using Xeptions;
 
-namespace CoronaTracker.Core.Models.Countries.Exceptions
+namespace CoronaTracker.Core.Models.Foundations.Countries.Exceptions
 {
     public class CountryDependencyException : Xeption
     {

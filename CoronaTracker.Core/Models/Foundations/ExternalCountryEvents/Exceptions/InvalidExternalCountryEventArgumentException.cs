@@ -6,7 +6,7 @@
 using System;
 using Xeptions;
 
-namespace CoronaTracker.Core.Models.ExternalCountryEvents.Exceptions
+namespace CoronaTracker.Core.Models.Foundations.ExternalCountryEvents.Exceptions
 {
     public class InvalidExternalCountryEventArgumentException : Xeption
     {

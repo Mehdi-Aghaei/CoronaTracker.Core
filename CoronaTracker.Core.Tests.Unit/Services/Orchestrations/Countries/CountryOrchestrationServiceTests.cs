@@ -9,7 +9,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using CoronaTracker.Core.Brokers.DateTimes;
 using CoronaTracker.Core.Brokers.Loggings;
-using CoronaTracker.Core.Models.ExternalCountries;
+using CoronaTracker.Core.Models.Foundations.ExternalCountries;
 using CoronaTracker.Core.Models.Processings.Countries.Exceptions;
 using CoronaTracker.Core.Services.Orchestrations.Countries;
 using CoronaTracker.Core.Services.Processings.Countries;

@@ -4,7 +4,7 @@
 // ---------------------------------------------------------------
 
 using System.Linq;
-using CoronaTracker.Core.Models.Countries;
+using CoronaTracker.Core.Models.Foundations.Countries;
 using FluentAssertions;
 using Force.DeepCloner;
 using Moq;

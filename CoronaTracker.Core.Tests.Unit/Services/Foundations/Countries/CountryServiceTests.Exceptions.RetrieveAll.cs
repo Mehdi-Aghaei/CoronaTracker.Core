@@ -4,7 +4,7 @@
 // ---------------------------------------------------------------
 
 using System;
-using CoronaTracker.Core.Models.Countries.Exceptions;
+using CoronaTracker.Core.Models.Foundations.Countries.Exceptions;
 using Microsoft.Data.SqlClient;
 using Moq;
 using Xunit;

@@ -8,7 +8,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using CoronaTracker.Core.Brokers.Loggings;
-using CoronaTracker.Core.Models.Countries;
+using CoronaTracker.Core.Models.Foundations.Countries;
 using CoronaTracker.Core.Services.Foundations.Countries;
 
 namespace CoronaTracker.Core.Services.Processings.Countries
