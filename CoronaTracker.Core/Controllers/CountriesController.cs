@@ -6,7 +6,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using CoronaTracker.Core.Models.Countries;
-using CoronaTracker.Core.Models.Orchestrations.Countries;
+using CoronaTracker.Core.Models.Orchestrations.Countries.Exceptions;
 using CoronaTracker.Core.Services.Orchestrations.Countries;
 using Microsoft.AspNetCore.Mvc;
 using RESTFulSense.Controllers;

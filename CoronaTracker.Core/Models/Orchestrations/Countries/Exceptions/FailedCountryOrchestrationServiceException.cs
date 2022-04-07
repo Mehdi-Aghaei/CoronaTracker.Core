@@ -6,7 +6,7 @@
 using System;
 using Xeptions;
 
-namespace CoronaTracker.Core.Models.Orchestrations.Countries
+namespace CoronaTracker.Core.Models.Orchestrations.Countries.Exceptions
 {
     public class FailedCountryOrchestrationServiceException : Xeption
     {
