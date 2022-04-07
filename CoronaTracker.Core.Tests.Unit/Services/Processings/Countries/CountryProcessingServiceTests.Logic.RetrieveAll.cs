@@ -4,10 +4,8 @@
 // ---------------------------------------------------------------
 
 using System.Linq;
-using System.Threading.Tasks;
 using CoronaTracker.Core.Models.Countries;
 using FluentAssertions;
-using Force.DeepCloner;
 using Moq;
 using Xunit;
 
@@ -28,7 +26,7 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Processings.Countries
                     .Returns(storageCountries);
 
             // when
-            IQueryable<Country> actualCountries = 
+            IQueryable<Country> actualCountries =
                 this.countryProcessingService.RetrieveAllCountries();
 
             // then
