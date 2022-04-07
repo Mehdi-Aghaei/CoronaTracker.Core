@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using CoronaTracker.Core.Models.Foundations.Countries;
 using CoronaTracker.Core.Models.Orchestrations.Countries.Exceptions;
 using CoronaTracker.Core.Models.Processings.Countries.Exceptions;
+using CoronaTracker.Core.Models.Processings.ExternalCountries.Exceptions;
 using Xeptions;
 
 namespace CoronaTracker.Core.Services.Orchestrations.Countries
@@ -36,6 +37,14 @@ namespace CoronaTracker.Core.Services.Orchestrations.Countries
             {
                 throw CreateAndLogDependencyException(countryProcessingDependencyException);
             }
+            catch (ExternalCountryProcessingDependencyException externalCountryProcessingDependencyException)
+            {
+                throw CreateAndLogDependencyException(externalCountryProcessingDependencyException);
+            }
+            catch (ExternalCountryProcessingServiceException externalCountryEventProcessingServiceException)
+            {
+                throw CreateAndLogDependencyException(externalCountryEventProcessingServiceException);
+            } 
             catch (CountryProcessingServiceException countryEventProcessingServiceException)
             {
                 throw CreateAndLogDependencyException(countryEventProcessingServiceException);
