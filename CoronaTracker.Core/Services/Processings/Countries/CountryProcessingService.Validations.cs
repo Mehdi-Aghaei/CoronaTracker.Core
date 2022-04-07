@@ -4,7 +4,7 @@
 // ---------------------------------------------------------------
 
 using System;
-using CoronaTracker.Core.Models.Countries;
+using CoronaTracker.Core.Models.Foundations.Countries;
 using CoronaTracker.Core.Models.Processings.Countries.Exceptions;
 
 namespace CoronaTracker.Core.Services.Processings.Countries
@@ -18,6 +18,11 @@ namespace CoronaTracker.Core.Services.Processings.Countries
             Validate(
                 (Rule: IsInvalid(country.Id),
                 Parameter: nameof(Country.Id)));
+        }
+
+        private void ValidateCountryOnVerify(Country Country)
+        {
+            ValidateCountryIsNotNull(Country);
         }
 
         private static void ValidateCountryIsNotNull(Country country)

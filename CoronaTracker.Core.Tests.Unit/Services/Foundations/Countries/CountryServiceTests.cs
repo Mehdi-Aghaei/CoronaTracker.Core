@@ -11,7 +11,7 @@ using System.Runtime.Serialization;
 using CoronaTracker.Core.Brokers.DateTimes;
 using CoronaTracker.Core.Brokers.Loggings;
 using CoronaTracker.Core.Brokers.Storages;
-using CoronaTracker.Core.Models.Countries;
+using CoronaTracker.Core.Models.Foundations.Countries;
 using CoronaTracker.Core.Services.Foundations.Countries;
 using Microsoft.Data.SqlClient;
 using Moq;

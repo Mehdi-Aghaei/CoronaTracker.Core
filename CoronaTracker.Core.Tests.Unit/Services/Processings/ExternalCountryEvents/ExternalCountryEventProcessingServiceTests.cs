@@ -7,7 +7,7 @@ using System;
 using System.Linq.Expressions;
 using CoronaTracker.Core.Brokers.Loggings;
 using CoronaTracker.Core.Models.ExternalCountryEvents;
-using CoronaTracker.Core.Models.ExternalCountryEvents.Exceptions;
+using CoronaTracker.Core.Models.Foundations.ExternalCountryEvents.Exceptions;
 using CoronaTracker.Core.Services.Foundations.ExternalCountryEvents;
 using CoronaTracker.Core.Services.Processings.CountryEvents;
 using Moq;

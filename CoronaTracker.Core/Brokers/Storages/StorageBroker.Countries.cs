@@ -6,7 +6,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using CoronaTracker.Core.Models.Countries;
+using CoronaTracker.Core.Models.Foundations.Countries;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 

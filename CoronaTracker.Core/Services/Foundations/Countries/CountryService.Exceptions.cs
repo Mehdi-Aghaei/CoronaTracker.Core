@@ -6,8 +6,8 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using CoronaTracker.Core.Models.Countries;
-using CoronaTracker.Core.Models.Countries.Exceptions;
+using CoronaTracker.Core.Models.Foundations.Countries;
+using CoronaTracker.Core.Models.Foundations.Countries.Exceptions;
 using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;

@@ -5,7 +5,7 @@
 
 using System.Threading.Tasks;
 using CoronaTracker.Core.Models.ExternalCountryEvents;
-using CoronaTracker.Core.Models.ExternalCountryEvents.Exceptions;
+using CoronaTracker.Core.Models.Foundations.ExternalCountryEvents.Exceptions;
 using Microsoft.Azure.ServiceBus;
 using Moq;
 using Xunit;

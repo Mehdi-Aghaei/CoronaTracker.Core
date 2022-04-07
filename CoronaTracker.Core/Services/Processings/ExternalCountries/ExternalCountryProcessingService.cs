@@ -6,7 +6,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using CoronaTracker.Core.Brokers.Loggings;
-using CoronaTracker.Core.Models.ExternalCountries;
+using CoronaTracker.Core.Models.Foundations.ExternalCountries;
 using CoronaTracker.Core.Services.Foundations.ExternalCountries;
 
 namespace CoronaTracker.Core.Services.Processings.ExternalCountries

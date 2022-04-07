@@ -6,7 +6,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using CoronaTracker.Core.Models.ExternalCountries;
+using CoronaTracker.Core.Models.Foundations.ExternalCountries;
 using Microsoft.Azure.ServiceBus;
 using Moq;
 using Xunit;

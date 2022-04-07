@@ -10,7 +10,7 @@ using System.Linq.Expressions;
 using System.Net.Http;
 using CoronaTracker.Core.Brokers.Apis;
 using CoronaTracker.Core.Brokers.Loggings;
-using CoronaTracker.Core.Models.ExternalCountries;
+using CoronaTracker.Core.Models.Foundations.ExternalCountries;
 using CoronaTracker.Core.Services.Foundations.ExternalCountries;
 using Moq;
 using RESTFulSense.Exceptions;

@@ -7,8 +7,8 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
-using CoronaTracker.Core.Models.ExternalCountries;
-using CoronaTracker.Core.Models.ExternalCountries.Exceptions;
+using CoronaTracker.Core.Models.Foundations.ExternalCountries;
+using CoronaTracker.Core.Models.Foundations.ExternalCountries.Exceptions;
 using RESTFulSense.Exceptions;
 using Xeptions;
 

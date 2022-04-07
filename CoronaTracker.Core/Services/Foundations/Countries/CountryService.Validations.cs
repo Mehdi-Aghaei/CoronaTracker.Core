@@ -4,8 +4,8 @@
 // ---------------------------------------------------------------
 
 using System;
-using CoronaTracker.Core.Models.Countries;
-using CoronaTracker.Core.Models.Countries.Exceptions;
+using CoronaTracker.Core.Models.Foundations.Countries;
+using CoronaTracker.Core.Models.Foundations.Countries.Exceptions;
 
 namespace CoronaTracker.Core.Services.Foundations.Countries
 {

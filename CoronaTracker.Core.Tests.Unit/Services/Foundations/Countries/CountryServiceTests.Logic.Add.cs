@@ -5,7 +5,7 @@
 
 using System;
 using System.Threading.Tasks;
-using CoronaTracker.Core.Models.Countries;
+using CoronaTracker.Core.Models.Foundations.Countries;
 using FluentAssertions;
 using Force.DeepCloner;
 using Moq;

@@ -4,7 +4,7 @@
 // ---------------------------------------------------------------
 
 using CoronaTracker.Core.Models.ExternalCountryEvents;
-using CoronaTracker.Core.Models.ExternalCountryEvents.Exceptions;
+using CoronaTracker.Core.Models.Foundations.ExternalCountryEvents.Exceptions;
 
 namespace CoronaTracker.Core.Services.Foundations.ExternalCountryEvents
 {
