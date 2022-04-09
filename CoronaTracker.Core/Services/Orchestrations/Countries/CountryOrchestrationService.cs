@@ -38,13 +38,18 @@ namespace CoronaTracker.Core.Services.Orchestrations.Countries
         public ValueTask<IQueryable<Country>> RetrieveAllCountriesAsync() =>
         TryCatch(async () =>
         {
-            List<ExternalCountry> allExternalCountries =
-                await this.externalCountryProcessingService
-                    .RetrieveAllExternalCountriesAsync();
-
-            foreach (var externalCountry in allExternalCountries)
+            if (this.countryProcessingService.RetrieveAllCountries() is null)
             {
-                await UpsertCountryAsync(externalCountry);
+                List<ExternalCountry> allExternalCountries =
+                    await this.externalCountryProcessingService
+                        .RetrieveAllExternalCountriesAsync();
+                if (allExternalCountries.Count < 230)
+                {
+                    foreach (var externalCountry in allExternalCountries)
+                    {
+                        await UpsertCountryAsync(externalCountry);
+                    }
+                }
             }
 
             return this.countryProcessingService.RetrieveAllCountries();

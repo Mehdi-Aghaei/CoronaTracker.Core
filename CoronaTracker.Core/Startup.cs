@@ -53,24 +53,23 @@ namespace CoronaTracker.Core
                     name: "v1",
                     info: openApiInfo);
             });
+            services.AddAzureAppConfiguration();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-                app.UseSwagger();
+            app.UseDeveloperExceptionPage();
+            app.UseSwagger();
 
-                app.UseSwaggerUI(options =>
-                 {
-                     options.SwaggerEndpoint(
-                        url: "/swagger/v1/swagger.json",
-                        name: "CoronaTracker.Core v1");
-                 });
-            }
+            app.UseSwaggerUI(options =>
+            {
+                options.SwaggerEndpoint(
+                    url: "/swagger/v1/swagger.json",
+                    name: "CoronaTracker.Core v1");
+            });
 
             app.UseHttpsRedirection();
+            app.UseAzureAppConfiguration();
             app.UseRouting();
             app.UseAuthorization();
             app.UseEndpoints(endpoints => endpoints.MapControllers());

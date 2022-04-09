@@ -4,7 +4,9 @@
 // ---------------------------------------------------------------
 
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
+using Azure.Identity;
 
 namespace CoronaTracker.Core
 {
@@ -17,7 +19,15 @@ namespace CoronaTracker.Core
         {
             return Host.CreateDefaultBuilder(args)
                .ConfigureWebHostDefaults(webBuilder =>
-                   webBuilder.UseStartup<Startup>());
+               {
+                   webBuilder.ConfigureAppConfiguration(config =>
+                   {
+                       var connectionString = config.Build().GetConnectionString("AppConfiguration");
+                       config.AddAzureAppConfiguration(connectionString);
+                   });
+                   webBuilder.UseStartup<Startup>();
+               });
         }
-    }
+    } 
 }
+
