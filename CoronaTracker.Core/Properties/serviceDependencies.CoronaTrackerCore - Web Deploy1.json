@@ -1,0 +1,23 @@
+{
+  "dependencies": {
+    "appConfig1": {
+      "secretStore": "AzureAppSettings",
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.AppConfiguration/configurationStores/trackerconfig",
+      "type": "appConfig.azure",
+      "connectionId": "AppConfig",
+      "dynamicId": null
+    },
+    "apis1": {
+      "apiEndpoint": "https://coronatrackercoreapi.azure-api.net/",
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.ApiManagement/service/CoronaTrackerCoreapi/apis/CoronaTrackerCore",
+      "type": "apis.azure"
+    },
+    "mssql1": {
+      "secretStore": "AzureAppSettings",
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/coronatrackercoredbserver/databases/CoronaTrackerCoreDb",
+      "type": "mssql.azure",
+      "connectionId": "DefaultConnection",
+      "dynamicId": null
+    }
+  }
+}

@@ -42,12 +42,9 @@ namespace CoronaTracker.Core.Services.Orchestrations.Countries
                 await this.externalCountryProcessingService
                     .RetrieveAllExternalCountriesAsync();
 
-            if (allExternalCountries.Count < 230)
+            foreach (var externalCountry in allExternalCountries)
             {
-                foreach (var externalCountry in allExternalCountries)
-                {
-                    await UpsertCountryAsync(externalCountry);
-                }
+                await UpsertCountryAsync(externalCountry);
             }
 
             return this.countryProcessingService.RetrieveAllCountries();
