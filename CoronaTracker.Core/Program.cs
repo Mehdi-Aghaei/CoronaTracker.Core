@@ -6,7 +6,6 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using Azure.Identity;
 
 namespace CoronaTracker.Core
 {
@@ -28,6 +27,6 @@ namespace CoronaTracker.Core
                    webBuilder.UseStartup<Startup>();
                });
         }
-    } 
+    }
 }
 
