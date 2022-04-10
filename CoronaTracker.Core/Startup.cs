@@ -70,7 +70,7 @@ namespace CoronaTracker.Core
                 options.SwaggerEndpoint(
                     url: "/swagger/v1/swagger.json",
                     name: "CoronaTracker.Core v1");
-                
+
                 options.RoutePrefix = string.Empty;
             });
 
