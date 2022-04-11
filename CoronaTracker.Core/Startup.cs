@@ -18,6 +18,7 @@ using CoronaTracker.Core.Services.Processings.CountryEvents;
 using CoronaTracker.Core.Services.Processings.ExternalCountries;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.OData;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -35,7 +36,10 @@ namespace CoronaTracker.Core
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddLogging();
-            services.AddControllers();
+            
+            services.AddControllers().AddOData(options =>
+                options.Select().Filter().OrderBy().Expand());
+            
             services.AddHttpClient();
             services.AddDbContext<StorageBroker>();
             AddBrokers(services);

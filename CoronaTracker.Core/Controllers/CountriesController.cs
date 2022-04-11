@@ -9,6 +9,7 @@ using CoronaTracker.Core.Models.Foundations.Countries;
 using CoronaTracker.Core.Models.Orchestrations.Countries.Exceptions;
 using CoronaTracker.Core.Services.Orchestrations.Countries;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OData.Query;
 using RESTFulSense.Controllers;
 
 namespace CoronaTracker.Core.Controllers
@@ -25,6 +26,7 @@ namespace CoronaTracker.Core.Controllers
         }
 
         [HttpGet]
+        [EnableQuery]
         public async ValueTask<ActionResult<IQueryable<Country>>> GetAllCountriesAsync()
         {
             try
