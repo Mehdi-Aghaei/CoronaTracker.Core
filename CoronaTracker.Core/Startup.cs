@@ -36,10 +36,10 @@ namespace CoronaTracker.Core
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddLogging();
-            
+
             services.AddControllers().AddOData(options =>
                 options.Select().Filter().OrderBy().Expand());
-            
+
             services.AddHttpClient();
             services.AddDbContext<StorageBroker>();
             AddBrokers(services);
