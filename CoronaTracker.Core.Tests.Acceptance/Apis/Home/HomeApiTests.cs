@@ -6,14 +6,14 @@
 using CoronaTracker.Core.Tests.Acceptance.Brokers;
 using Xunit;
 
-namespace CoronaTracker.Core.Tests.Acceptance.Apis.Countries
+namespace CoronaTracker.Core.Tests.Acceptance.Apis.Home
 {
     [Collection(nameof(ApiTestCollection))]
-    public partial class CountryApiTests
+    public partial class HomeApiTests
     {
-        private readonly CoronaTrackerApiBroker apiBroker;
+        private readonly CoronaTrackerApiBroker coronaTrackerApiBroker;
 
-        public CountryApiTests(CoronaTrackerApiBroker apiBroker) =>
-            this.apiBroker = apiBroker;
+        public HomeApiTests(CoronaTrackerApiBroker coronaTrackerApiBroker) =>
+            this.coronaTrackerApiBroker = coronaTrackerApiBroker;
     }
 }

@@ -14,6 +14,6 @@ namespace CoronaTracker.Core.Controllers
 
         [HttpGet]
         public ActionResult<string> Get() =>
-            Ok("Hello,everyone");
+            Ok("Hi dear, you have to check countries' API :)");
     }
 }
