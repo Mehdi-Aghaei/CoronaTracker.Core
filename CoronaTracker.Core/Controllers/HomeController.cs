@@ -11,8 +11,9 @@ namespace CoronaTracker.Core.Controllers
     [ApiController]
     public class HomeController : ControllerBase
     {
+
         [HttpGet]
         public ActionResult<string> Get() =>
-           Ok("Hello, world");
+            Ok("Hi dear, you have to check countries' API :)");
     }
 }
