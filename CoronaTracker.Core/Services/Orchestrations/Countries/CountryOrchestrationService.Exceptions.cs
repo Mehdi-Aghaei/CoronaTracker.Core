@@ -44,7 +44,7 @@ namespace CoronaTracker.Core.Services.Orchestrations.Countries
             catch (ExternalCountryProcessingServiceException externalCountryEventProcessingServiceException)
             {
                 throw CreateAndLogDependencyException(externalCountryEventProcessingServiceException);
-            } 
+            }
             catch (CountryProcessingServiceException countryEventProcessingServiceException)
             {
                 throw CreateAndLogDependencyException(countryEventProcessingServiceException);
