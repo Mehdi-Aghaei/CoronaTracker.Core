@@ -4,11 +4,8 @@
 // ---------------------------------------------------------------
 
 using System.Collections.Generic;
-using System.Net.Http;
 using System.Threading.Tasks;
 using CoronaTracker.Core.Models.Foundations.Countries;
-using Microsoft.AspNetCore.Mvc.Testing;
-using RESTFulSense.Clients;
 
 namespace CoronaTracker.Core.Tests.Acceptance.Brokers
 {
