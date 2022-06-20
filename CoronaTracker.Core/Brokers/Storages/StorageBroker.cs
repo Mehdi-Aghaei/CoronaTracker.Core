@@ -24,7 +24,8 @@ namespace CoronaTracker.Core.Brokers.Storages
             string connectionString = this.counfiguration
                 .GetConnectionString(name: "DefaultConnection");
 
-            optionsBuilder.UseSqlServer(connectionString);
+            optionsBuilder.UseSqlServer(connectionString)
+                .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
         }
 
         public override void Dispose()
