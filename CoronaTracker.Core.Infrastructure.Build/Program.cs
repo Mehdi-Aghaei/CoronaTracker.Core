@@ -12,7 +12,7 @@ var aDotNetClient = new ADotNetClient();
 
 var githubPipeline = new GithubPipeline
 {
-    Name = ".Net",
+    Name = "Corona Tracker Build",
 
     OnEvents = new Events
     {
@@ -31,43 +31,42 @@ var githubPipeline = new GithubPipeline
     {
         Build = new BuildJob
         {
-            RunsOn = BuildMachines.Windows2022,
+            RunsOn = BuildMachines.WindowsLatest,
 
             Steps = new List<GithubTask>
             {
                 new CheckoutTaskV2
                 {
-                    Name = "Check Out"
-                },
+                    Name = "Pulling Code"
+				},
 
                 new SetupDotNetTaskV1
                 {
-                    Name = "Setup Dot Net Version",
+                    Name = "Installing .NET",
 
                     TargetDotNetVersion = new TargetDotNetVersion
                     {
-                        DotNetVersion = "6.0.100",
-                        IncludePrerelease = true
+                        DotNetVersion = "7.0.201",
                     }
                 },
 
                 new RestoreTask
                 {
-                    Name = "Restore"
-                },
+                    Name = "Restoring Packages"
+				},
 
                 new DotNetBuildTask
                 {
-                    Name = "Build"
-                },
+                    Name = "Building Solution"
+				},
 
                 new TestTask
                 {
-                    Name = "Test"
-                }
+                    Name = "Running Tests"
+				}
             }
         }
     }
 };
 
-aDotNetClient.SerializeAndWriteToFile(githubPipeline, "../../../../.github/workflows/dotnet.yml");
+aDotNetClient.SerializeAndWriteToFile(adoPipeline: githubPipeline, path: "../../../../.github/workflows/dotnet.yml");

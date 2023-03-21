@@ -7,6 +7,7 @@ using System;
 using System.Threading.Tasks;
 using CoronaTracker.Core.Models.Foundations.Countries;
 using CoronaTracker.Core.Models.Foundations.Countries.Exceptions;
+using FluentAssertions;
 using Moq;
 using Xunit;
 
@@ -115,7 +116,8 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.Countries
         {
             // give
             int randomNumber = GetRandomNumber();
-            Country randomCountry = CreateRandomCountry();
+			DateTimeOffset randomDateTimeOffset = GetRandomDateTimeOffset();
+			Country randomCountry = CreateRandomCountry(randomDateTimeOffset);
             Country invalidCountry = randomCountry;
 
             invalidCountry.UpdatedDate =
@@ -131,15 +133,24 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.Countries
             var expectedCountryValidationException =
                     new CountryValidationException(invalidCountryException);
 
-            // when
-            ValueTask<Country> addCountryTask =
+			this.dateTimeBrokerMock.Setup(broker =>
+				broker.GetCurrentDateTimeOffset())
+					.Returns(randomDateTimeOffset);
+
+			// when
+			ValueTask<Country> addCountryTask =
                 this.countryService.AddCountryAsync(invalidCountry);
 
-            // then
-            await Assert.ThrowsAsync<CountryValidationException>(() =>
-                addCountryTask.AsTask());
+			var actualCountryValidationException = await Assert.ThrowsAsync<CountryValidationException>(addCountryTask.AsTask);
 
-            this.loggingBrokerMock.Verify(broker =>
+			// then
+            actualCountryValidationException.Should().BeEquivalentTo(expectedCountryValidationException);
+
+			this.dateTimeBrokerMock.Verify(broker =>
+		        broker.GetCurrentDateTimeOffset(),
+			        Times.Once);
+
+			this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(
                     expectedCountryValidationException))),
                         Times.Once);
@@ -148,6 +159,7 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.Countries
                 broker.InsertCountryAsync(It.IsAny<Country>()),
                     Times.Never);
 
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }

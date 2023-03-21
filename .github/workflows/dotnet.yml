@@ -1,4 +1,4 @@
-name: .Net
+name: Corona Tracker Build
 on:
   push:
     branches:
@@ -8,18 +8,17 @@ on:
     - main
 jobs:
   build:
-    runs-on: windows-2022
+    runs-on: windows-latest
     steps:
-    - name: Check Out
-      uses: actions/checkout@v2
-    - name: Setup Dot Net Version
-      uses: actions/setup-dotnet@v1
+    - name: Pulling Code
+      uses: actions/checkout@v3
+    - name: Installing .NET
+      uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: 6.0.100
-        include-prerelease: true
-    - name: Restore
+        dotnet-version: 7.0.x
+    - name: Restoring Packages
       run: dotnet restore
-    - name: Build
+    - name: Building Solution
       run: dotnet build --no-restore
-    - name: Test
+    - name: Running Tests
       run: dotnet test --no-build --verbosity normal
