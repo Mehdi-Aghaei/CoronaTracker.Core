@@ -87,17 +87,11 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.Countries
 
         private static DateTimeOffset GetRandomDateTimeOffset() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
+		
+        private static Expression<Func<Xeption, bool>> SameExceptionAs(Xeption expectedException) =>
+            actualException => actualException.SameExceptionAs(expectedException);
 
-        private static Expression<Func<Xeption, bool>> SameExceptionAs(Xeption expectedException)
-        {
-
-            return actualException =>
-                actualException.Message == expectedException.Message
-                && actualException.InnerException.Message == expectedException.InnerException.Message
-                && (actualException.InnerException as Xeption).DataEquals(expectedException.InnerException.Data);
-        }
-
-        public static IEnumerable<object[]> InvalidMinuteCases()
+		public static IEnumerable<object[]> InvalidMinuteCases()
         {
             int randomMoreThanMinuteFromNow = GetRandomNumber();
             int randomMoreThanMinuteBeforeNow = GetRandomNegativeNumber();
