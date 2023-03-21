@@ -5,8 +5,6 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoronaTracker.Core", "CoronaTracker.Core\CoronaTracker.Core.csproj", "{D738106F-3CB4-4568-A5F3-C79DFC0DB151}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoronaTracker.Core.Infrastructure.Build", "CoronaTracker.Core.Infrastructure.Build\CoronaTracker.Core.Infrastructure.Build.csproj", "{058BC952-9C2F-40DC-AC16-E4D86EA8BD22}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoronaTracker.Core.Tests.Unit", "CoronaTracker.Core.Tests.Unit\CoronaTracker.Core.Tests.Unit.csproj", "{4F2A2A6C-E491-4891-88AF-5BF6AEC1F25C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoronaTracker.Core.Tests.Acceptance", "CoronaTracker.Core.Tests.Acceptance\CoronaTracker.Core.Tests.Acceptance.csproj", "{3CAE7911-E6EE-43FB-BC95-ABF5127FE183}"
@@ -26,10 +24,6 @@ Global
 		{D738106F-3CB4-4568-A5F3-C79DFC0DB151}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D738106F-3CB4-4568-A5F3-C79DFC0DB151}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D738106F-3CB4-4568-A5F3-C79DFC0DB151}.Release|Any CPU.Build.0 = Release|Any CPU
-		{058BC952-9C2F-40DC-AC16-E4D86EA8BD22}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{058BC952-9C2F-40DC-AC16-E4D86EA8BD22}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{058BC952-9C2F-40DC-AC16-E4D86EA8BD22}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{058BC952-9C2F-40DC-AC16-E4D86EA8BD22}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4F2A2A6C-E491-4891-88AF-5BF6AEC1F25C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4F2A2A6C-E491-4891-88AF-5BF6AEC1F25C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4F2A2A6C-E491-4891-88AF-5BF6AEC1F25C}.Release|Any CPU.ActiveCfg = Release|Any CPU
