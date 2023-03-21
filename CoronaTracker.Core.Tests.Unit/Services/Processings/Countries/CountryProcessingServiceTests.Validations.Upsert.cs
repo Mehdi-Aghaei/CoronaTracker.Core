@@ -7,6 +7,7 @@ using System;
 using System.Threading.Tasks;
 using CoronaTracker.Core.Models.Foundations.Countries;
 using CoronaTracker.Core.Models.Processings.Countries.Exceptions;
+using FluentAssertions;
 using Moq;
 using Xunit;
 
@@ -78,11 +79,12 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Processings.Countries
             ValueTask<Country> upsertCountryTask =
                 this.countryProcessingService.UpsertCountryAsync(invalidCountry);
 
-            // then
-            await Assert.ThrowsAsync<CountryProcessingValidationException>(() =>
-                upsertCountryTask.AsTask());
+			var actualValidationException = await Assert.ThrowsAsync<CountryProcessingValidationException>(upsertCountryTask.AsTask);
 
-            this.loggingBrokerMock.Verify(broker =>
+			// then
+            actualValidationException.Should().BeEquivalentTo(expectedCountryProcessingValidationException);
+
+			this.loggingBrokerMock.Verify(broker =>
               broker.LogError(It.Is(SameExceptionAs(
                   expectedCountryProcessingValidationException))),
                       Times.Once);
