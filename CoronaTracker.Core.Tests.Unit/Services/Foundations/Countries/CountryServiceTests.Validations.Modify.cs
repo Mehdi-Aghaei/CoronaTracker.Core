@@ -272,13 +272,15 @@ namespace CoronaTracker.Core.Tests.Unit.Services.Foundations.Countries
             int randomNumber = GetRandomNumber();
             int randomMinutes = randomNumber;
             DateTimeOffset randomDateTime = GetRandomDateTimeOffset();
-            Country randomCountry = CreateRandomCountry(randomDateTime);
-            Country invalidCountry = randomCountry;
-            invalidCountry.UpdatedDate = randomDateTime;
+            Country randomCountry = CreateRandomModifyCountry(randomDateTime);
+            Country invalidCountry = randomCountry.DeepClone();
             Country storageCountry = randomCountry.DeepClone();
             Guid countryId = invalidCountry.Id;
-            invalidCountry.CreatedDate = storageCountry.CreatedDate.AddMinutes(randomMinutes);
-            var invalidCountryException = new InvalidCountryException();
+            storageCountry.CreatedDate = storageCountry.CreatedDate.AddMinutes(randomMinutes);
+            storageCountry.UpdatedDate = storageCountry.UpdatedDate.AddMinutes(randomMinutes);
+
+			var invalidCountryException = 
+                new InvalidCountryException();
 
             invalidCountryException.AddData(
                 key: nameof(Country.CreatedDate),
