@@ -1,24 +1,23 @@
 name: Corona Tracker Build
 on:
   push:
-    branches:
-    - main
+    branches: ["master", "feature/*"]
   pull_request:
-    branches:
-    - main
+    branches: ["master", "feature/*"]
+
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
+
     steps:
-    - name: Pulling Code
-      uses: actions/checkout@v3
-    - name: Installing .NET
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: 7.0.x
-    - name: Restoring Packages
-      run: dotnet restore
-    - name: Building Solution
-      run: dotnet build --no-restore
-    - name: Running Tests
-      run: dotnet test --no-build --verbosity normal
+      - uses: actions/checkout@v3
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 7.0.x
+      - name: Restore dependencies
+        run: dotnet restore
+      - name: Build
+        run: dotnet build --no-restore
+      - name: Running Tests
+        run: dotnet test --no-build --verbosity normal
