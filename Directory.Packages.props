@@ -8,6 +8,7 @@
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.11" PrivateAssets="all" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.11" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.11" PrivateAssets="all" />
+    <PackageVersion Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.5" />
     <PackageVersion Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageVersion Include="RESTFulSense" Version="2.15.0" />
     <PackageVersion Include="Swashbuckle.AspNetCore" Version="6.5.0" />
